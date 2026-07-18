@@ -89,7 +89,7 @@
         .author-편집자 { color: #3ea6ff; background: rgba(62, 166, 255, 0.12); }
         .chat-text { color: #f1f5f9; }
 
-        /* 피드백 내부 댓글 작성창 - 그리드 칼정렬 구현 */
+        /* 피드백 내부 댓글 작성창 */
         .chat-input-area { background: #171a26; border: 1px solid #24293d; border-radius: 12px; padding: 15px; margin-top: auto; }
         .chat-input-row { display: flex; gap: 12px; align-items: center; width: 100%; justify-content: space-between; }
 
@@ -146,7 +146,7 @@
                     <span>💬 선택된 영상의 피드백 트랙</span>
                     <span id="active_status_area"></span>
                 </div>
-                <!-- 선택된 영상의 가편집 주소를 추가/수정하는 컨트롤러 -->
+                <!-- 가편집 주소 추가 컨트롤러 -->
                 <div class="url-update-row" id="url_controller" style="display: none;">
                     <input type="text" id="active_video_url" placeholder="🔗 가편집 영상 주소 등록 (유튜브 주소 시 썸네일 자동 추출)" style="flex-grow: 1; height: 36px; padding: 6px 12px; font-size: 12.5px;">
                     <button class="btn-submit" style="height: 36px; padding: 0 14px; font-size: 12px; background: #2ecc71;" onclick="updateProjectUrl()">주소 저장</button>
@@ -184,6 +184,8 @@
     </div>
 
     <script>
+        // 질문자님의 고구마 주소 연동 및 깃허브 전용 독립 FETCH 네트워크망 구축 완료
+        var scriptUrl = "https://script.google.com/macros/s/AKfycbwfRgP3K4mtl9pHUQYTL_r2SKrwLEsyve0HXnD8d0m9v6opS1m6SzOphQR9XYRKMCtG/exec";
         var globalRawData = [];
         var selectedTitle = ""; 
 
@@ -220,14 +222,16 @@
             return null;
         }
 
-        // 백엔드의 getFeedbackData() 함수 규격과 완벽 동기화
+        // [구조 대수정] 웹 API 통신 모듈을 탑재하여 깃허브 페이지에서 구글 시트를 완벽히 제어
         function syncData() {
-            google.script.run.withSuccessHandler(processData).getFeedbackData();
+            fetch(scriptUrl + "?action=get")
+            .then(res => res.json())
+            .then(data => { if(data) processData(data); })
+            .catch(e => console.log("로드 중..."));
         }
 
         function processData(data) {
             globalRawData = data;
-            
             var uniqueTitles = [];
             var titleDataMap = {};
             
@@ -239,7 +243,6 @@
             });
 
             document.getElementById('project_count').innerText = uniqueTitles.length;
-
             var listBox = document.getElementById('list_box');
             listBox.innerHTML = '';
 
@@ -257,7 +260,7 @@
                     var storedUrl = (lastItem.feedbackText && lastItem.feedbackText.startsWith('http')) ? lastItem.feedbackText : "";
                     document.getElementById('active_video_url').value = storedUrl;
                     
-                    syncData();
+                    renderChat();
                 };
 
                 var thumbUrl = (lastItem.feedbackText && lastItem.feedbackText.startsWith('http')) ? getYoutubeThumb(lastItem.feedbackText) : null;
@@ -287,7 +290,6 @@
             }
 
             chatBox.innerHTML = '';
-            
             var filtered = globalRawData.filter(function(item) {
                 return item.videoUrl === selectedTitle;
             });
@@ -315,12 +317,17 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // 백엔드의 doPost() 데이터 수신 API 규격에 맞춰 클라이언트 연동구조 전면 정상화
-        function runServerPost(payload, successMsg) {
-            google.script.run.withSuccessHandler(function() {
+        function sendToDatabase(payload, alertText) {
+            fetch(scriptUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' }, // CORS 우회를 위한 플랫 텍스트 패킹 적용
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
                 syncData();
-                if(successMsg) alert(successMsg);
-            }).scriptDoPost(payload); 
+                if(alertText) alert(alertText);
+            })
+            .catch(err => alert("서버 통신 실패: " + err));
         }
 
         function registerNewVideo() {
@@ -340,12 +347,8 @@
                 feedbackText: "—— 새 영상 프로젝트 개설 ——"
             };
 
-            // 백엔드 직접 연결 처리
-            google.script.run.withSuccessHandler(function() {
-                document.getElementById('new_project_title').value = ''; 
-                syncData();
-                alert('새로운 기획 프로젝트가 성공적으로 추가되었습니다!');
-            }).doPost({postData: {contents: JSON.stringify(payload)}});
+            sendToDatabase(payload, '새로운 기획 프로젝트가 성공적으로 추가되었습니다!');
+            document.getElementById('new_project_title').value = '';
         }
 
         function updateProjectUrl() {
@@ -365,10 +368,7 @@
                 feedbackText: urlValue 
             };
 
-            google.script.run.withSuccessHandler(function() {
-                syncData();
-                alert('가편집 영상 링크 및 유튜브 썸네일 동기화가 완료되었습니다!');
-            }).doPost({postData: {contents: JSON.stringify(payload)}});
+            sendToDatabase(payload, '가편집 영상 링크 및 유튜브 썸네일 동기화가 완료되었습니다!');
         }
 
         function postComment() {
@@ -396,11 +396,9 @@
                 feedbackText: feedbackText
             };
 
-            google.script.run.withSuccessHandler(function() {
-                txtArea.value = ''; 
-                txtArea.style.height = '44px'; 
-                syncData();
-            }).doPost({postData: {contents: JSON.stringify(payload)}});
+            sendToDatabase(payload);
+            txtArea.value = ''; 
+            txtArea.style.height = '44px';
         }
     </script>
 </body>
