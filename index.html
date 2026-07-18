@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>대표님 x 편집자 콘텐츠 스튜디오</title>
+    <style>
+        /* 프리미엄 다크 그라데이션 배경 테마 */
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: radial-gradient(circle at 50% 0%, #141622 0%, #090a0f 100%); 
+            color: #ffffff; 
+            margin: 0; 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            box-sizing: border-box; 
+        }
+        
+        .sub-header { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+        h3 { margin: 0 0 20px 0; font-size: 24px; font-weight: 700; color: #f8fafc; letter-spacing: -0.5px; }
+        
+        /* 메인 워크스페이스 대형 2단 분할 */
+        .workspace { display: flex; flex-grow: 1; gap: 24px; height: calc(100% - 140px); overflow: hidden; }
+        
+        /* 패널 공통 */
+        .panel { 
+            background: #11131e; 
+            border-radius: 16px; 
+            border: 1px solid #1e2235; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px; 
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+        .video-list-panel { flex: 1.2; }
+        .chat-panel { flex: 1; overflow: hidden; }
+        
+        .panel-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #94a3b8; display: flex; align-items: center; gap: 8px; }
+        .list-container { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
+        
+        /* 스튜디오 카드 디자인 */
+        .video-card { 
+            display: flex; 
+            gap: 16px; 
+            background: #171a26; 
+            padding: 12px; 
+            border-radius: 12px; 
+            border: 1px solid #24293d; 
+            cursor: pointer; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .video-card:hover { border-color: #3ea6ff; background: #1e2235; transform: translateY(-2px); }
+        .video-card.active { border-color: #3ea6ff; background: rgba(62, 166, 255, 0.08); }
+        
+        .thumb-box { 
+            width: 120px; 
+            height: 68px; 
+            background: #090a0f; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 10px; 
+            color: #475569; 
+            font-weight: 600;
+            border: 1px solid #1e2235;
+            text-align: center;
+            padding: 0 4px;
+        }
+        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+        .card-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 2px 0; min-width: 0; }
+        .card-url { font-size: 13.5px; font-weight: 600; color: #e2e8f0; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        
+        /* 피드백 헤더 및 영상 주소 관리 구역 */
+        .chat-header { padding-bottom: 12px; border-bottom: 1px solid #1e2235; font-weight: 600; font-size: 14px; display: flex; flex-direction: column; gap: 10px; color: #94a3b8; }
+        .chat-header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .url-update-row { display: flex; gap: 8px; width: 100%; align-items: center; }
+        
+        /* 대화 스트림 */
+        .chat-messages { flex-grow: 1; padding: 15px 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .chat-item { font-size: 13.5px; line-height: 1.5; padding: 4px 0; }
+        .chat-time { color: #475569; font-size: 11px; margin-right: 8px; font-variant-numeric: tabular-nums; }
+        .chat-author { font-weight: 600; margin-right: 8px; border-radius: 4px; padding: 2px 6px; font-size: 12px; }
+        
+        .author-대표님 { color: #ff4e45; background: rgba(255, 78, 69, 0.12); }
+        .author-편집자 { color: #3ea6ff; background: rgba(62, 166, 255, 0.12); }
+        .chat-text { color: #f1f5f9; }
+
+        /* 피드백 내부 댓글 작성창 - 그리드 칼정렬 구현 */
+        .chat-input-area { background: #171a26; border: 1px solid #24293d; border-radius: 12px; padding: 15px; margin-top: auto; }
+        .chat-input-row { display: flex; gap: 12px; align-items: center; width: 100%; justify-content: space-between; }
+
+        /* 신호등 뱃지 */
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-align: center; }
+        .badge-기획중 { background: rgba(245, 176, 65, 0.15); color: #f5b041; border: 1px solid rgba(245, 176, 65, 0.3); }
+        .badge-편집중 { background: rgba(52, 152, 219, 0.15); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
+        .badge-완료 { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+
+        /* 하단 바 */
+        .control-bar { background: #11131e; border: 1px solid #1e2235; border-radius: 16px; padding: 16px 20px; margin-top: 20px; display: flex; gap: 16px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); }
+        .control-label { font-size: 13px; font-weight: 600; color: #94a3b8; white-space: nowrap; }
+        
+        input, select, textarea { background: #171a26; border: 1px solid #24293d; color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: all 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #3ea6ff; background: #1e2235; outline: none; }
+        
+        textarea { flex-grow: 1; resize: none; min-height: 44px; max-height: 150px; line-height: 22px; overflow-y: hidden; padding: 10px 14px; }
+        
+        .user-select { height: 44px; font-weight: 600; min-width: 95px; text-align: center; cursor: pointer; }
+        .btn-submit { background: #3ea6ff; color: #090a0f; border: none; padding: 0 22px; border-radius: 8px; font-weight: 600; cursor: pointer; height: 44px; transition: all 0.2s; white-space: nowrap; }
+        .btn-submit:hover { background: #65b8ff; transform: scale(1.02); }
+        
+        .status-select { font-weight: 600; cursor: pointer; border: none !important; height: 40px; border-radius: 8px; padding: 0 10px; }
+        .status-plan { background-color: rgba(245, 176, 65, 0.2) !important; color: #f5b041; border: 1px solid rgba(245, 176, 65, 0.4) !important; }
+        .status-edit { background-color: rgba(52, 152, 219, 0.2) !important; color: #3498db; border: 1px solid rgba(52, 152, 219, 0.4) !important; }
+        .status-complete { background-color: rgba(46, 204, 113, 0.2) !important; color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4) !important; }
+
+        .btn-register { background: #ffffff; color: #090a0f; border: none; padding: 0 22px; border-radius: 8px; font-weight: 600; cursor: pointer; height: 40px; white-space: nowrap; transition: all 0.2s; }
+        .btn-register:hover { background: #e2e8f0; transform: scale(1.02); }
+
+        /* 스크롤바 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #24293d; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3ea6ff; }
+    </style>
+</head>
+<body>
+
+    <div class="sub-header">MEDIA PRODUCTION CONTROL BOARD</div>
+    <h3>준석 TV 콘텐츠 스튜디오</h3>
+
+    <div class="workspace">
+        <!-- 좌측: 영상 목록 패널 -->
+        <div class="panel video-list-panel">
+            <div class="panel-title">📁 등록된 영상 프로젝트 (<span id="project_count">0</span>)</div>
+            <div class="list-container" id="list_box"></div>
+        </div>
+
+        <!-- 우측: 대화 트랙 패널 -->
+        <div class="panel chat-panel">
+            <div class="chat-header">
+                <div class="chat-header-top">
+                    <span>💬 선택된 영상의 피드백 트랙</span>
+                    <span id="active_status_area"></span>
+                </div>
+                <!-- 선택된 영상의 가편집 주소를 추가/수정하는 컨트롤러 -->
+                <div class="url-update-row" id="url_controller" style="display: none;">
+                    <input type="text" id="active_video_url" placeholder="🔗 가편집 영상 주소 등록 (유튜브 주소 시 썸네일 자동 추출)" style="flex-grow: 1; height: 36px; padding: 6px 12px; font-size: 12.5px;">
+                    <button class="btn-submit" style="height: 36px; padding: 0 14px; font-size: 12px; background: #2ecc71;" onclick="updateProjectUrl()">주소 저장</button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chat_box">
+                <div style="color:#475569; text-align:center; margin-top:180px; font-size:14px;">왼쪽 리스트에서 검토할 영상을 선택하세요.</div>
+            </div>
+            
+            <!-- 하단 입력 컴포넌트 -->
+            <div class="chat-input-area" id="chat_input_panel">
+                <div class="chat-input-row">
+                    <select id="user_identity" class="user-select">
+                        <option value="편집자" selected>🔵 편집자</option>
+                        <option value="대표님">🔴 대표님</option>
+                    </select>
+                    <textarea id="feedback_message" placeholder="왼쪽 리스트에서 영상을 먼저 선택한 뒤 댓글을 입력해 주세요..." oninput="autoResizeTextarea(this)"></textarea>
+                    <button class="btn-submit" onclick="postComment()">댓글 등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단: 새 프로젝트 제목 등록 바 -->
+    <div class="control-bar">
+        <span class="control-label">🆕 새 프로젝트 추가:</span>
+        <input type="text" id="new_project_title" placeholder="🎬 제작할 영상의 프로젝트 제목을 입력하세요 (예: 3억 수익 인증 롱폼)" style="flex-grow: 1; height: 40px;">
+        <select id="video_status" class="status-select status-plan" onchange="updateSelectColor(this)">
+            <option value="기획중" class="status-plan" selected>🟡 기획중</option>
+            <option value="편집중" class="status-edit">🔵 편집중</option>
+            <option value="완료" class="status-complete">🟢 완료</option>
+        </select>
+        <button class="btn-register" onclick="registerNewVideo()">프로젝트 추가</button>
+    </div>
+
+    <script>
+        var globalRawData = [];
+        var selectedTitle = ""; 
+
+        window.onload = function() {
+            syncData();
+            setInterval(syncData, 4000); 
+            updateSelectColor(document.getElementById('video_status'));
+        };
+
+        function autoResizeTextarea(el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+            if (el.scrollHeight > 150) {
+                el.style.overflowY = 'auto';
+            } else {
+                el.style.overflowY = 'hidden';
+            }
+        }
+
+        function updateSelectColor(el) {
+            el.className = "status-select";
+            if(el.value === "기획중") el.classList.add("status-plan");
+            else if(el.value === "편집중") el.classList.add("status-edit");
+            else if(el.value === "완료") el.classList.add("status-complete");
+        }
+
+        function getYoutubeThumb(url) {
+            if (!url || !url.startsWith('http')) return null;
+            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = url.match(regExp);
+            if (match && match[2].length == 11) {
+                return "https://img.youtube.com/vi/" + match[2] + "/mqdefault.jpg";
+            }
+            return null;
+        }
+
+        // 백엔드의 getFeedbackData() 함수 규격과 완벽 동기화
+        function syncData() {
+            google.script.run.withSuccessHandler(processData).getFeedbackData();
+        }
+
+        function processData(data) {
+            globalRawData = data;
+            
+            var uniqueTitles = [];
+            var titleDataMap = {};
+            
+            data.forEach(function(item) {
+                if (!uniqueTitles.includes(item.videoUrl)) { 
+                    uniqueTitles.push(item.videoUrl);
+                }
+                titleDataMap[item.videoUrl] = item;
+            });
+
+            document.getElementById('project_count').innerText = uniqueTitles.length;
+
+            var listBox = document.getElementById('list_box');
+            listBox.innerHTML = '';
+
+            uniqueTitles.reverse().forEach(function(title) {
+                var lastItem = titleDataMap[title];
+                var card = document.createElement('div');
+                card.className = 'video-card';
+                if (title === selectedTitle) card.classList.add('active');
+                
+                card.onclick = function() {
+                    selectedTitle = title;
+                    document.getElementById('feedback_message').placeholder = "유튜브 실시간 댓글을 달듯이 피드백을 입력하세요...";
+                    document.getElementById('url_controller').style.display = 'flex';
+                    
+                    var storedUrl = (lastItem.feedbackText && lastItem.feedbackText.startsWith('http')) ? lastItem.feedbackText : "";
+                    document.getElementById('active_video_url').value = storedUrl;
+                    
+                    syncData();
+                };
+
+                var thumbUrl = (lastItem.feedbackText && lastItem.feedbackText.startsWith('http')) ? getYoutubeThumb(lastItem.feedbackText) : null;
+                var thumbHtml = thumbUrl ? `<img src="${thumbUrl}">` : `<span>🎬<br>기획중</span>`;
+
+                card.innerHTML = `
+                    <div class="thumb-box">${thumbHtml}</div>
+                    <div class="card-info">
+                        <div class="card-url">${title}</div>
+                        <span class="status-badge badge-${lastItem.status}">${lastItem.status}</span>
+                    </div>
+                `;
+                listBox.appendChild(card);
+            });
+
+            renderChat();
+        }
+
+        function renderChat() {
+            var chatBox = document.getElementById('chat_box');
+            var statusArea = document.getElementById('active_status_area');
+            
+            if (!selectedTitle) {
+                statusArea.innerHTML = '';
+                document.getElementById('url_controller').style.display = 'none';
+                return;
+            }
+
+            chatBox.innerHTML = '';
+            
+            var filtered = globalRawData.filter(function(item) {
+                return item.videoUrl === selectedTitle;
+            });
+
+            if(filtered.length > 0) {
+                var currentStatus = filtered[filtered.length - 1].status;
+                statusArea.innerHTML = `<span class="status-badge badge-${currentStatus}">${currentStatus}</span>`;
+            }
+
+            filtered.forEach(function(item) {
+                if (item.writer === "시스템") return;
+
+                var itemDiv = document.createElement('div');
+                itemDiv.className = 'chat-item';
+                var time = new Date(item.timestamp);
+                var timeStr = String(time.getHours()).padStart(2, '0') + ":" + String(time.getMinutes()).padStart(2, '0');
+
+                itemDiv.innerHTML = `
+                    <span class="chat-time">${timeStr}</span>
+                    <span class="chat-author author-${item.writer}">${item.writer}</span>
+                    <span class="chat-text">${item.feedbackText}</span>
+                `;
+                chatBox.appendChild(itemDiv);
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 백엔드의 doPost() 데이터 수신 API 규격에 맞춰 클라이언트 연동구조 전면 정상화
+        function runServerPost(payload, successMsg) {
+            google.script.run.withSuccessHandler(function() {
+                syncData();
+                if(successMsg) alert(successMsg);
+            }).scriptDoPost(payload); 
+        }
+
+        function registerNewVideo() {
+            var title = document.getElementById('new_project_title').value;
+            var status = document.getElementById('video_status').value;
+
+            if (!title) {
+                alert('🎬 새로운 영상 프로젝트의 제목을 입력해 주세요!');
+                return;
+            }
+
+            selectedTitle = title;
+            var payload = {
+                writer: "시스템",
+                videoUrl: title,
+                status: status,
+                feedbackText: "—— 새 영상 프로젝트 개설 ——"
+            };
+
+            // 백엔드 직접 연결 처리
+            google.script.run.withSuccessHandler(function() {
+                document.getElementById('new_project_title').value = ''; 
+                syncData();
+                alert('새로운 기획 프로젝트가 성공적으로 추가되었습니다!');
+            }).doPost({postData: {contents: JSON.stringify(payload)}});
+        }
+
+        function updateProjectUrl() {
+            var urlValue = document.getElementById('active_video_url').value;
+            if(!urlValue) {
+                alert('🔗 가편집 영상 링크 주소를 입력해 주세요!');
+                return;
+            }
+            
+            var statusElement = document.getElementById('active_status_area').querySelector('.status-badge');
+            var currentStatus = statusElement ? statusElement.innerText : "편집중";
+
+            var payload = {
+                writer: "시스템",
+                videoUrl: selectedTitle,
+                status: currentStatus,
+                feedbackText: urlValue 
+            };
+
+            google.script.run.withSuccessHandler(function() {
+                syncData();
+                alert('가편집 영상 링크 및 유튜브 썸네일 동기화가 완료되었습니다!');
+            }).doPost({postData: {contents: JSON.stringify(payload)}});
+        }
+
+        function postComment() {
+            var writer = document.getElementById('user_identity').value;
+            var txtArea = document.getElementById('feedback_message');
+            var feedbackText = txtArea.value;
+
+            if (!selectedTitle) {
+                alert('⚠️ 왼쪽 리스트에서 대화할 영상을 먼저 선택해 주세요!');
+                return;
+            }
+
+            if (!feedbackText) {
+                alert('💬 피드백 내용을 입력해 주세요!');
+                return;
+            }
+
+            var statusElement = document.getElementById('active_status_area').querySelector('.status-badge');
+            var currentStatus = statusElement ? statusElement.innerText : "기획중";
+
+            var payload = {
+                writer: writer,
+                videoUrl: selectedTitle,
+                status: currentStatus,
+                feedbackText: feedbackText
+            };
+
+            google.script.run.withSuccessHandler(function() {
+                txtArea.value = ''; 
+                txtArea.style.height = '44px'; 
+                syncData();
+            }).doPost({postData: {contents: JSON.stringify(payload)}});
+        }
+    </script>
+</body>
+</html>
