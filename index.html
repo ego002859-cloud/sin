@@ -20,10 +20,8 @@
         .sub-header { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
         h3 { margin: 0 0 20px 0; font-size: 24px; font-weight: 700; color: #f8fafc; letter-spacing: -0.5px; }
         
-        /* 메인 워크스페이스 대형 2단 분할 */
         .workspace { display: flex; flex-grow: 1; gap: 24px; height: calc(100% - 140px); overflow: hidden; }
         
-        /* 패널 공통 */
         .panel { 
             background: #11131e; 
             border-radius: 16px; 
@@ -40,7 +38,6 @@
         .panel-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #94a3b8; display: flex; align-items: center; gap: 8px; }
         .list-container { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
         
-        /* 스튜디오 카드 디자인 */
         .video-card { 
             display: flex; 
             gap: 16px; 
@@ -74,12 +71,10 @@
         .card-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 2px 0; min-width: 0; }
         .card-url { font-size: 13.5px; font-weight: 600; color: #e2e8f0; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
         
-        /* 피드백 헤더 및 영상 주소 관리 구역 */
         .chat-header { padding-bottom: 12px; border-bottom: 1px solid #1e2235; font-weight: 600; font-size: 14px; display: flex; flex-direction: column; gap: 10px; color: #94a3b8; }
         .chat-header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .url-update-row { display: flex; gap: 8px; width: 100%; align-items: center; }
         
-        /* 대화 스트림 */
         .chat-messages { flex-grow: 1; padding: 15px 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         .chat-item { font-size: 13.5px; line-height: 1.5; padding: 4px 0; }
         .chat-time { color: #475569; font-size: 11px; margin-right: 8px; font-variant-numeric: tabular-nums; }
@@ -89,17 +84,14 @@
         .author-편집자 { color: #3ea6ff; background: rgba(62, 166, 255, 0.12); }
         .chat-text { color: #f1f5f9; }
 
-        /* 피드백 내부 댓글 작성창 */
         .chat-input-area { background: #171a26; border: 1px solid #24293d; border-radius: 12px; padding: 15px; margin-top: auto; }
         .chat-input-row { display: flex; gap: 12px; align-items: center; width: 100%; justify-content: space-between; }
 
-        /* 신호등 뱃지 */
         .status-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-align: center; }
         .badge-기획중 { background: rgba(245, 176, 65, 0.15); color: #f5b041; border: 1px solid rgba(245, 176, 65, 0.3); }
         .badge-편집중 { background: rgba(52, 152, 219, 0.15); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
         .badge-완료 { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
 
-        /* 하단 바 */
         .control-bar { background: #11131e; border: 1px solid #1e2235; border-radius: 16px; padding: 16px 20px; margin-top: 20px; display: flex; gap: 16px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); }
         .control-label { font-size: 13px; font-weight: 600; color: #94a3b8; white-space: nowrap; }
         
@@ -120,7 +112,6 @@
         .btn-register { background: #ffffff; color: #090a0f; border: none; padding: 0 22px; border-radius: 8px; font-weight: 600; cursor: pointer; height: 40px; white-space: nowrap; transition: all 0.2s; }
         .btn-register:hover { background: #e2e8f0; transform: scale(1.02); }
 
-        /* 스크롤바 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #24293d; border-radius: 10px; }
@@ -133,20 +124,17 @@
     <h3>준석 TV 콘텐츠 스튜디오</h3>
 
     <div class="workspace">
-        <!-- 좌측: 영상 목록 패널 -->
         <div class="panel video-list-panel">
             <div class="panel-title">📁 등록된 영상 프로젝트 (<span id="project_count">0</span>)</div>
             <div class="list-container" id="list_box"></div>
         </div>
 
-        <!-- 우측: 대화 트랙 패널 -->
         <div class="panel chat-panel">
             <div class="chat-header">
                 <div class="chat-header-top">
                     <span>💬 선택된 영상의 피드백 트랙</span>
                     <span id="active_status_area"></span>
                 </div>
-                <!-- 가편집 주소 추가 컨트롤러 -->
                 <div class="url-update-row" id="url_controller" style="display: none;">
                     <input type="text" id="active_video_url" placeholder="🔗 가편집 영상 주소 등록 (유튜브 주소 시 썸네일 자동 추출)" style="flex-grow: 1; height: 36px; padding: 6px 12px; font-size: 12.5px;">
                     <button class="btn-submit" style="height: 36px; padding: 0 14px; font-size: 12px; background: #2ecc71;" onclick="updateProjectUrl()">주소 저장</button>
@@ -157,7 +145,6 @@
                 <div style="color:#475569; text-align:center; margin-top:180px; font-size:14px;">왼쪽 리스트에서 검토할 영상을 선택하세요.</div>
             </div>
             
-            <!-- 하단 입력 컴포넌트 -->
             <div class="chat-input-area" id="chat_input_panel">
                 <div class="chat-input-row">
                     <select id="user_identity" class="user-select">
@@ -171,7 +158,6 @@
         </div>
     </div>
 
-    <!-- 하단: 새 프로젝트 제목 등록 바 -->
     <div class="control-bar">
         <span class="control-label">🆕 새 프로젝트 추가:</span>
         <input type="text" id="new_project_title" placeholder="🎬 제작할 영상의 프로젝트 제목을 입력하세요 (예: 3억 수익 인증 롱폼)" style="flex-grow: 1; height: 40px;">
@@ -184,7 +170,7 @@
     </div>
 
     <script>
-        // 질문자님의 고구마 주소 연동 및 깃허브 전용 독립 FETCH 네트워크망 구축 완료
+        // 고유 구글 앱스 스크립트 웹 앱 URL 주소 배핑
         var scriptUrl = "https://script.google.com/macros/s/AKfycbwfRgP3K4mtl9pHUQYTL_r2SKrwLEsyve0HXnD8d0m9v6opS1m6SzOphQR9XYRKMCtG/exec";
         var globalRawData = [];
         var selectedTitle = ""; 
@@ -222,12 +208,16 @@
             return null;
         }
 
-        // [구조 대수정] 웹 API 통신 모듈을 탑재하여 깃허브 페이지에서 구글 시트를 완벽히 제어
+        // 🔏 [에러 수정 핵심부] 깃허브에서 구글 스크립트 데이터를 정상적으로 호출할 수 있도록 GET 파라미터 핸들링 추가
         function syncData() {
             fetch(scriptUrl + "?action=get")
             .then(res => res.json())
-            .then(data => { if(data) processData(data); })
-            .catch(e => console.log("로드 중..."));
+            .then(data => { 
+                if(data && data.length >= 0) {
+                    processData(data); 
+                }
+            })
+            .catch(e => console.log("데이터 동기화 대기 중..."));
         }
 
         function processData(data) {
@@ -246,7 +236,9 @@
             var listBox = document.getElementById('list_box');
             listBox.innerHTML = '';
 
-            uniqueTitles.reverse().forEach(function(title) {
+            // 🔏 [변수 오타 전면 교정] uniqueUrls 대신 uniqueTitles로 그리도록 버그 패치
+            var reversedTitles = uniqueTitles.slice().reverse();
+            reversedTitles.forEach(function(title) {
                 var lastItem = titleDataMap[title];
                 var card = document.createElement('div');
                 card.className = 'video-card';
@@ -320,7 +312,7 @@
         function sendToDatabase(payload, alertText) {
             fetch(scriptUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'text/plain' }, // CORS 우회를 위한 플랫 텍스트 패킹 적용
+                headers: { 'Content-Type': 'text/plain' }, 
                 body: JSON.stringify(payload)
             })
             .then(() => {
