@@ -1,693 +1,615 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MY ATHLETIC JOURNEY</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>신부장 채널 운영판</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Pretendard','-apple-system','BlinkMacSystemFont','system-ui','sans-serif']}}}}
+</script>
+<style>
+@keyframes fadeInUp{from{opacity:0;transform:translateY(1.5rem)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(1.5rem)}.reveal.visible{animation:fadeInUp .6s cubic-bezier(.16,1,.3,1) forwards}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.b-A{color:#fb7185;background:rgba(251,113,133,.1)}.b-B{color:#fbbf24;background:rgba(251,191,36,.1)}
+.b-C{color:#a78bfa;background:rgba(167,139,250,.1)}.b-D{color:#38bdf8;background:rgba(56,189,248,.1)}
+.b-E{color:#34d399;background:rgba(52,211,153,.1)}
+.f-reels{color:#fb7185;background:rgba(251,113,133,.1)}.f-car{color:#38bdf8;background:rgba(56,189,248,.1)}
+.st-p{color:rgba(255,255,255,.35);background:rgba(255,255,255,.06)}
+.st-w{color:#fbbf24;background:rgba(251,191,36,.12)}.st-d{color:#34d399;background:rgba(52,211,153,.12)}
+.rf-visual{color:#60a5fa;background:rgba(96,165,250,.15)}.rf-caption{color:#fbbf24;background:rgba(251,191,36,.15)}
+.rf-tempo{color:#a78bfa;background:rgba(167,139,250,.15)}.rf-script{color:#34d399;background:rgba(52,211,153,.15)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+body{background:#0a0a0a}
+.glass{background:rgba(255,255,255,.04);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.08)}
+.glass-strong{background:rgba(255,255,255,.06);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.1)}
+.glass-nav{background:rgba(24,24,27,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+input,textarea,select{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important;color:#e4e4e7!important}
+input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,153,.4)!important;box-shadow:0 0 0 2px rgba(52,211,153,.1)}
+</style>
 
-  <style>
-    :root {
-      --bg-main: #0d0d0d;
-      --bg-card: #181818;
-      --bg-input: #242424;
-      --bg-bar-base: #2a2a2a;
-      --accent-color: #d2fb03;
-      --text-main: #ffffff;
-      --text-sub: #a0a0a0;
-      --border-color: #2c2c2c;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 16px;
-      max-width: 1280px;
-      margin: 0 auto;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Top Header */
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      gap: 10px;
-    }
-    .top-header h1 {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--accent-color);
-      white-space: nowrap;
-    }
-    .top-badge {
-      background-color: #242424;
-      color: var(--accent-color);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid var(--border-color);
-      white-space: nowrap;
-    }
-
-    /* Section Wrapper */
-    .dashboard-section {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-    .section-title { font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
-
-    /* Grid Layouts */
-    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    .daily-card {
-      background-color: #121212;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 14px 16px;
-    }
-    .daily-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-    .badge-growth {
-      background-color: rgba(210, 251, 3, 0.15);
-      color: var(--accent-color);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 12px;
-    }
-    .main-stat { display: flex; align-items: baseline; gap: 4px; margin-bottom: 10px; }
-    .main-stat .val { font-size: 32px; font-weight: 800; color: var(--accent-color); }
-
-    .bar-group { margin-bottom: 6px; }
-    .bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-bottom: 4px; }
-    .bar-track { background: var(--bg-bar-base); height: 8px; border-radius: 4px; width: 100%; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-    .bar-fill.today { background: var(--accent-color); width: 0%; }
-    .bar-fill.yesterday { background: #555; width: 0%; }
-
-    /* PB Cards Grid */
-    .pb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .pb-card { background-color: #121212; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; }
-    .pb-label { font-size: 10px; font-weight: 700; color: var(--text-sub); margin-bottom: 4px; }
-    .pb-value { font-size: 16px; font-weight: 800; color: var(--accent-color); }
-    .pb-sub { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
-
-    .pb-card-interactive {
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .pb-card-interactive:hover {
-      border-color: var(--accent-color);
-      background-color: #1e1e1e;
-    }
-
-    .feedback-box {
-      background-color: rgba(210, 251, 3, 0.05);
-      border: 1px dashed rgba(210, 251, 3, 0.4);
-      border-radius: 8px;
-      padding: 10px 14px;
-      margin-top: 12px;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    /* Input & Buttons */
-    .input-box {
-      width: 100%;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
-      color: #fff;
-      font-size: 13px;
-      margin-bottom: 8px;
-      height: 44px;
-    }
-    .btn-accent {
-      background: var(--accent-color);
-      color: #000;
-      font-weight: 800;
-      border: none;
-      border-radius: 8px;
-      padding: 12px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 14px;
-      height: 44px;
-    }
-    .list-item {
-      background: #121212;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-    }
-    .btn-del { color: #ff5555; cursor: pointer; font-weight: bold; padding: 4px 8px; }
-    .empty-msg { color: var(--text-sub); font-size: 12px; text-align: center; padding: 12px 0; }
-
-    .tag-badge {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-right: 6px;
-      display: inline-block;
-    }
-    .tag-jogging { background: rgba(3, 199, 90, 0.2); color: #03c75a; }
-    .tag-interval { background: rgba(255, 59, 48, 0.2); color: #ff3b30; }
-    .tag-lsd { background: rgba(0, 122, 255, 0.2); color: #007aff; }
-
-    /* Modal Style */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .modal-content {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      max-width: 480px;
-      width: 100%;
-      padding: 20px;
-    }
-
-    @media (max-width: 768px) {
-      body { padding: 12px; }
-      .grid-2col { grid-template-columns: 1fr; gap: 12px; }
-      .pb-grid { grid-template-columns: repeat(2, 1fr); }
-      .top-header h1 { font-size: 16px; }
-      .main-stat .val { font-size: 28px; }
-      .pb-value { font-size: 15px; }
-      .dashboard-section { padding: 14px; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Top Header -->
-  <div class="top-header">
-    <h1>🏃‍♂️ MY ATHLETIC JOURNEY</h1>
-    <span class="top-badge" id="total-year-badge">🔥 올해 누적: 5.0km</span>
+<!-- NAV -->
+<nav class="glass-nav sticky top-0 z-40 px-5 py-5">
+  <div class="max-w-5xl mx-auto flex items-center justify-between flex-wrap gap-3">
+    <div class="flex items-center gap-4">
+      <span class="text-2xl font-extrabold tracking-tight text-zinc-100">신부장</span>
+      <div>
+        <span class="text-xs font-semibold text-zinc-400 bg-white/[.06] px-3 py-1 rounded-full">@sinbujang_car</span>
+        <p class="text-[11px] text-zinc-500 mt-1">채널 운영판 · 대행-클라이언트 협력 도구</p>
+      </div>
+    </div>
+    <span class="text-xs font-medium text-zinc-500" id="hdDate"></span>
   </div>
+</nav>
 
-  <!-- 1. TRAINING SUMMARY & FITNESS FEEDBACK -->
-  <div class="dashboard-section">
-    <div class="section-header">
-      <span class="section-title">📊 TRAINING SUMMARY & FITNESS FEEDBACK</span>
-      <span style="font-size: 11px; color: var(--text-sub);">실시간 훈련 및 영양 연동 분석</span>
+<main class="max-w-5xl mx-auto px-5 pb-24 space-y-16 mt-4">
+
+<!-- 1. INSTAGRAM -->
+<section class="reveal">
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Instagram</p>
+      <h2 class="text-xl font-bold tracking-tight text-zinc-100">인스타 현황판</h2>
     </div>
-
-    <div class="grid-2col">
-      <div class="daily-card">
-        <div class="daily-header">
-          <span style="font-size: 11px; font-weight: 700; color: var(--text-sub);">DAILY RUNNING COMPARISON</span>
-          <span class="badge-growth" id="growth-badge">+100% UP ⬆</span>
-        </div>
-        <div class="main-stat">
-          <span class="val" id="today-dist-text">5.00</span><span style="font-size: 13px; color: var(--text-sub);">km</span>
-          <span style="font-size: 11px; color: var(--text-sub); margin-left: auto;" id="diff-dist-text">어제보다 <strong style="color:#fff;">+5.0km</strong> 더 달림</span>
-        </div>
-        <div class="bar-group">
-          <div class="bar-label"><span>오늘</span><span style="color: var(--accent-color);" id="today-bar-label">5.00 km</span></div>
-          <div class="bar-track"><div class="bar-fill today" id="bar-today" style="width: 100%;"></div></div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-label"><span>어제</span><span id="yesterday-bar-label">0.00 km</span></div>
-          <div class="bar-track"><div class="bar-fill yesterday" id="bar-yesterday" style="width: 0%;"></div></div>
-        </div>
-      </div>
-
-      <div class="pb-grid">
-        <div class="pb-card" style="border-color: rgba(210, 251, 3, 0.3);">
-          <div class="pb-label">🌤️ WEATHER & AQI</div>
-          <div class="pb-value" id="realtime-weather" style="color: #fff; font-size: 15px;">로딩 중...</div>
-          <div class="pb-sub" id="realtime-weather-sub" style="color: var(--accent-color);">날씨 수신 중 🏃‍♂️</div>
-        </div>
-
-        <div class="pb-card">
-          <div class="pb-label">RUN 5K PB</div>
-          <div class="pb-value" id="pb-5k" style="color: var(--accent-color);">43</div>
-          <div class="pb-sub" id="pb-5k-sub">7/30 (5km)</div>
-        </div>
-
-        <div class="pb-card">
-          <div class="pb-label">BEST 100M SPURT</div>
-          <div class="pb-value" id="best-spurt" style="color: var(--accent-color);">51.6 <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">초</span></div>
-          <div class="pb-sub" id="best-spurt-sub">100m 기준 스퍼트⚡</div>
-        </div>
-
-        <div class="pb-card">
-          <div class="pb-label">MONTHLY STREAK</div>
-          <div class="pb-value" id="monthly-streak">1 <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">회 완료</span></div>
-          <div class="pb-sub" id="streak-sub">7월 누적 횟수🏃‍♂️</div>
-        </div>
-
-        <div class="pb-card">
-          <div class="pb-label">NET CALORIES BURNED</div>
-          <div class="pb-value" id="monthly-cal">300 <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">kcal</span></div>
-          <div class="pb-sub" id="cal-sub" style="color: var(--accent-color);">소모 - 섭취 칼로리</div>
-        </div>
-
-        <div class="pb-card pb-card-interactive" onclick="openGuideModal()">
-          <div class="pb-label">💡 QUICK GUIDE</div>
-          <div class="pb-value" style="font-size: 14px; color: var(--accent-color);">사용 설명서 ↗</div>
-          <div class="pb-sub">터치하여 가이드 확인</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="feedback-box" id="feedback-text">
-      💡 <strong>훈련 & 영양 피드백:</strong> 날씨 데이터를 수신하는 중입니다. 🏃‍♂️🔥
+    <div class="flex gap-2">
+      <button onclick="openStatEdit()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+        <iconify-icon icon="solar:pen-2-linear" class="mr-1 align-[-2px]"></iconify-icon>수치 입력
+      </button>
+      <button onclick="openEmbedAdd()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+        <iconify-icon icon="solar:add-circle-linear" class="mr-1 align-[-2px]"></iconify-icon>게시물 추가
+      </button>
     </div>
   </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="igStats"></div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3" id="igEmbeds"></div>
+</section>
 
-  <!-- 2. FUELING & QUICK TRAINING LOG -->
-  <div class="grid-2col">
-    <div class="dashboard-section" style="margin-bottom: 0;">
-      <div class="section-header">
-        <span class="section-title">🍎 FUELING & NUTRITION</span>
-        <span style="font-size: 10px; color: var(--accent-color);">⏱ 자정(00:00) 자동 리셋</span>
-      </div>
-      <div id="nutrition-list"></div>
-      <div style="display: flex; gap: 6px; margin-top: 10px;">
-        <input class="input-box" id="new-nutrition-name" style="margin:0; flex: 2;" placeholder="새 영양 수칙 / 음식이름">
-        <input class="input-box" id="new-nutrition-cal" type="number" style="margin:0; flex: 1;" placeholder="칼로리(kcal)">
-        <button class="btn-accent" style="width: 60px; height: 44px;" onclick="addNutrition()">추가</button>
-      </div>
+<!-- 2. IDENTITY -->
+<section class="reveal">
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Identity</p>
+      <h2 class="text-xl font-bold tracking-tight text-zinc-100">채널 아이덴티티</h2>
     </div>
-
-    <div class="dashboard-section" style="margin-bottom: 0;">
-      <div class="section-header"><span class="section-title">📝 QUICK TRAINING LOG</span></div>
-      
-      <div style="display: flex; gap: 6px;">
-        <select class="input-box" id="log-type" style="flex:1;">
-          <option value="🏃‍♂️ 러닝 5K">🏃‍♂️ 러닝 5K</option>
-          <option value="🏃‍♂️ 자유 러닝">🏃‍♂️ 자유 러닝</option>
-        </select>
-        <select class="input-box" id="log-tag" style="flex:1;">
-          <option value="조깅">🟢 [조깅/회복]</option>
-          <option value="인터벌">🔴 [인터벌/스퍼트]</option>
-          <option value="LSD">🔵 [LSD/지속주]</option>
-        </select>
-      </div>
-
-      <div style="display: flex; gap: 6px;">
-        <input class="input-box" id="log-dist" type="number" step="0.01" placeholder="거리(km)">
-        <input class="input-box" id="log-time" placeholder="시간 (예: 25:30)">
-      </div>
-      <input class="input-box" id="log-note" placeholder="오늘의 한 줄 복기 (예: 파워젤 1개 섭취)">
-      <button class="btn-accent" onclick="saveTrainingLog()">오늘의 훈련 저장</button>
-
-      <div id="training-log-list" style="margin-top: 10px;"></div>
+    <button onclick="openIdEdit()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+      <iconify-icon icon="solar:pen-2-linear" class="mr-1 align-[-2px]"></iconify-icon>편집
+    </button>
+  </div>
+  <div class="glass rounded-2xl p-6 flex gap-5 items-start mb-3 max-md:flex-col max-md:items-center max-md:text-center">
+    <img src="2.png" alt="신부장" class="w-[72px] h-[72px] rounded-full object-cover shrink-0 border-2 border-white/10">
+    <div class="min-w-0">
+      <p class="text-base font-bold text-zinc-100" id="idHandle"></p>
+      <p class="text-[13px] text-zinc-400 mt-1 whitespace-pre-line leading-relaxed break-keep" id="idBio"></p>
     </div>
   </div>
+  <div class="grid gap-2.5" id="idFields"></div>
+</section>
 
-  <!-- 💡 대시보드 사용 설명서 모달 (요청하신 문구로 완전 교체) -->
-  <div class="modal-overlay" id="guideModal">
-    <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3 style="font-size: 16px; color: var(--accent-color); font-weight: 800;">💡 대시보드 이용 안내</h3>
-        <span style="cursor: pointer; color: var(--text-sub); font-size: 18px;" onclick="closeGuideModal()">✕</span>
-      </div>
-      <div style="font-size: 13px; line-height: 1.6; color: var(--text-main);">
-        <p style="margin-bottom: 12px;">
-          <b>훈련 기록:</b> 거리/시간을 저장하면 상단 PB, 스퍼트 속도, 누적 거리가 자동 연산됩니다.
-        </p>
-        <p style="margin-bottom: 12px;">
-          <b>식단 & 칼로리:</b> 먹은 음식을 추가하면 순 소모 칼로리가 차감 계산되며 자정(00:00)에 자동 리셋됩니다.
-        </p>
-        <p style="margin-bottom: 14px;">
-          <b>날씨 정보:</b> 위치 기반으로 실시간 기온과 미세먼지가 자동 수신됩니다. (내 위치 정보를 추적하도록 동의해야 현재 있는 지역 기준으로 날씨가 뜹니다, 한번만 허용해도 가능)
-        </p>
-      </div>
-      <button class="btn-accent" onclick="closeGuideModal()">확인 완료</button>
+<!-- 3. GOALS -->
+<section class="reveal">
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Goals</p>
+      <h2 class="text-xl font-bold tracking-tight text-zinc-100">목표 & 성과</h2>
     </div>
+    <button onclick="openGoalEdit()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+      <iconify-icon icon="solar:graph-up-linear" class="mr-1 align-[-2px]"></iconify-icon>수치 업데이트
+    </button>
   </div>
+  <div class="flex gap-1.5 mb-4" id="goalTabs"></div>
+  <div class="grid gap-2.5" id="goalItems"></div>
+</section>
 
-  <!-- 자바스크립트 로직 -->
-  <script>
-    const WEATHER_API_KEY = "30ea52e37b4f41c5b3215127263007";
+<!-- 4. CONTENT -->
+<section class="reveal">
+  <div class="mb-5">
+    <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Content</p>
+    <h2 class="text-xl font-bold tracking-tight text-zinc-100">콘텐츠 계획</h2>
+  </div>
+  <div class="flex gap-1.5 mb-4 flex-wrap" id="catTabs"></div>
+  <div id="ctGrid"></div>
+</section>
 
-    function openGuideModal() {
-      document.getElementById('guideModal').style.display = 'flex';
-    }
-    function closeGuideModal() {
-      document.getElementById('guideModal').style.display = 'none';
-    }
+<!-- 5. BONUS -->
+<section class="reveal">
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Bonus</p>
+      <h2 class="text-xl font-bold tracking-tight text-zinc-100">번외 콘텐츠</h2>
+    </div>
+    <button onclick="openBonusAdd()" class="text-xs font-bold px-4 py-1.5 rounded-lg bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+      <iconify-icon icon="solar:add-circle-bold" class="mr-1 align-[-2px]"></iconify-icon>아이디어
+    </button>
+  </div>
+  <p class="text-xs text-zinc-500 -mt-3 mb-4">"현대차를 판매하는 사람" + "요즘 키워드" = 재미있는 새로운 콘텐츠</p>
+  <div id="bonusList"></div>
+</section>
 
-    const initialLogs = [
-      {
-        type: "🏃‍♂️ 러닝 5K",
-        tag: "조깅",
-        dist: 5,
-        time: "43",
-        note: "예시( 기록을 작성하면 위의 전광판에 자동으로 누적 및 계산 - 삭제 후 시작 하기)",
-        dateDisplay: "7/30",
-        dateKey: new Date().toISOString().split('T')[0],
-        timestamp: new Date().getTime()
-      }
-    ];
+<!-- 6. COMMUNICATION -->
+<section class="reveal">
+  <div class="mb-5">
+    <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Communication</p>
+    <h2 class="text-xl font-bold tracking-tight text-zinc-100">소통공간</h2>
+  </div>
+  <div class="flex gap-2 mb-4 flex-wrap">
+    <select id="noteAuthor" class="text-[13px] px-3 py-2 rounded-xl w-[100px]"><option>대행팀</option><option>신부장</option></select>
+    <input type="text" id="noteInput" class="text-[13px] px-3 py-2 rounded-xl flex-1 min-w-[200px]" placeholder="메모를 입력하세요..." onkeydown="if(event.key==='Enter')addNote()">
+    <button onclick="addNote()" class="text-xs font-bold px-5 py-2 rounded-xl bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">추가</button>
+  </div>
+  <div class="space-y-2" id="noteList"></div>
+</section>
 
-    const initialNutrition = [
-      {
-        name: "오늘 먹은 것 (이름) 과 -> 칼로리 계산해서 넣으면 자동계산",
-        cal: 0,
-        done: false
-      }
-    ];
+<!-- 7. REFERENCE -->
+<section class="reveal">
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Reference</p>
+      <h2 class="text-xl font-bold tracking-tight text-zinc-100">레퍼런스 갤러리</h2>
+    </div>
+    <button onclick="openRefAdd()" class="text-xs font-bold px-4 py-1.5 rounded-lg bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+      <iconify-icon icon="solar:bookmark-linear" class="mr-1 align-[-2px]"></iconify-icon>스크랩
+    </button>
+  </div>
+  <div class="flex gap-1.5 mb-4 flex-wrap" id="refTabs"></div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="refGrid"></div>
+</section>
 
-    function fetchRealtimeWeather(query) {
-      const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(query)}&aqi=yes&lang=ko`;
+</main>
 
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const temp = Math.round(data.current.temp_c);
-          const humidity = data.current.humidity;
-          const pm10 = data.current.air_quality ? data.current.air_quality.pm10 : 20;
+<!-- MODAL -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 items-center justify-center p-5" id="modal" onclick="if(event.target===this)closeModal()">
+  <div id="modalBox" class="glass-strong rounded-2xl max-w-[540px] w-full max-h-[85vh] overflow-y-auto shadow-2xl"></div>
+</div>
 
-          let aqiText = "좋음";
-          if (pm10 > 80) aqiText = "매우나쁨";
-          else if (pm10 > 50) aqiText = "나쁨";
-          else if (pm10 > 30) aqiText = "보통";
+<script>
+const KEY='sinbujang_dash';
+const DAYS=['일','월','화','수','목','금','토'];
+const ID_FIELDS=[
+  {k:'positioning',l:'포지셔닝'},{k:'target',l:'타겟'},{k:'differentiator',l:'차별점'},
+  {k:'tone',l:'톤'},{k:'signature',l:'시그니처'}
+];
+const CAT_CLS={A:{cls:'b-A',name:'내부자 폭로형'},B:{cls:'b-B',name:'손실 경고형'},C:{cls:'b-C',name:'반전 도발형'},D:{cls:'b-D',name:'정보 제공형'},E:{cls:'b-E',name:'타겟 지정형'}};
+const REF_FOLDERS={all:'전체',visual:'비주얼',caption:'자막',tempo:'템포',script:'대본'};
+const REF_F_CLS={visual:'rf-visual',caption:'rf-caption',tempo:'rf-tempo',script:'rf-script'};
+const FMT_CLS=s=>/릴스/.test(s)?'f-reels':'f-car';
+const STATUS={planned:{l:'기획',c:'st-p'},producing:{l:'제작중',c:'st-w'},done:{l:'완료',c:'st-d'}};
+const NEXT_ST={planned:'producing',producing:'done',done:'planned'};
 
-          document.getElementById('realtime-weather').innerText = `${temp}°C / ${aqiText}`;
-          document.getElementById('realtime-weather-sub').innerText = `습도 ${humidity}% · ${humidity > 70 ? '체력소모 주의 💧' : '쾌적함 🏃‍♂️'}`;
+const DEFAULTS={
+  ig:{followers:0,posts:0,weeklyReach:0,engagement:0,embeds:[]},
+  identity:{
+    handle:'@sinbujang_car',
+    bio:'🚘 수입차 17년 딜러의 객관적인 차량 비교\n⚙️ 공학 전공·정비 자격증 기반 팩트 체크\n💸 옵션 낭비 줄이고 금융(할부·리스) 손해 막는 팁\n📩 차량 상담 & 견적 문의: 프로필 링크 / DM',
+    positioning:'수입차 17년 경험을 바탕으로 자동차를 객관적으로 비교하고, 소비자가 자신에게 맞는 차를 선택하도록 도와주는 자동차 영업 전문가.',
+    target:'차량 구입을 고려하는 모든 사람 (신차 첫 구매 ~ 재구매, 개인·법인)',
+    differentiator:'공학 전공 + 정비 자격증 + 수입차 17년 = 구조·원리 기반 팩트 체크',
+    tone:'존댓말 기본, 전문적이되 유머, 솔직한 판정',
+    signature:'차키 탁! → "잠깐만요!" / 엔딩: "신부장이라면 이렇게 선택하겠습니다"'
+  },
+  goals:[
+    {period:'1개월',items:[{l:'팔로워',t:300,c:0},{l:'릴스 평균 도달',t:500,c:0},{l:'DM 상담',t:3,c:0}]},
+    {period:'3개월',items:[{l:'팔로워',t:1000,c:0},{l:'릴스 평균 도달',t:2000,c:0},{l:'월 DM 상담',t:10,c:0},{l:'인스타 경유 계약',t:2,c:0}]},
+    {period:'6개월',items:[{l:'팔로워',t:3000,c:0}]}
+  ],
+  templates:[
+    {id:1,cat:'A',name:'딜러가 절대 안 알려주는',pos:'…근데 저는 알려드릴게요. 이거 하나면 견적 200만원 바뀝니다',neg:'…이유가 있습니다. 알면 그 옵션 안 넣거든요',items:[]},
+    {id:2,cat:'A',name:'솔직히 말할게요!',pos:'이 차 단점 많다고 하는데, 실제로는 체감 안 됩니다',neg:'다들 이 차 좋다고 하죠? 3만km 넘으면 이 부분 문제 생깁니다',items:[]},
+    {id:3,cat:'A',name:'이건 인정합니다!',pos:'경쟁사 이건 잘했어요. 근데 현대차는 여기서 더 갑니다',neg:'이 옵션 좋은 건 인정해요. 근데 가성비로 보면 넣을 이유 없어요',items:[]},
+    {id:4,cat:'A',name:'딜러한테 이 말 하면 안 됩니다',pos:'…안 된다고 했죠? 오히려 하세요. 이 한마디에 할인 나옵니다',neg:'…이 말 들으면 대부분 거절합니다. 왜냐하면…',items:[]},
+    {id:5,cat:'B',name:'이거 안하면 무조건 손해!',pos:'이 서류 하나 챙기면 취등록세 감면받습니다. 수십만원이에요',neg:'이거 놓치면 출고 후에 후회합니다',items:[]},
+    {id:6,cat:'B',name:'계약서 싸인 전에 이거 확인 안하면 끝입니다',pos:'이 항목 하나 체크하면 출고 후 모든 문제가 보장됩니다',neg:'다 좋다고 바로 싸인했죠? 이 조항 때문에 환불 못 하는 분 매달 봅니다',items:[]},
+    {id:7,cat:'B',name:'이거 바가지인거 아셨어요?',pos:'대신 이렇게 구성하면 같은 사양 200만원 저렴합니다',neg:'이 조건으로는 기본입니다',items:[]},
+    {id:8,cat:'B',name:'오히려 손해입니다!',pos:'이 옵션 빼고 그 돈으로 이거 넣으세요. 리세일 때 되찾습니다',neg:'맞아요. 이렇게 하면 손실 줄일 수 있습니다',items:[]},
+    {id:9,cat:'C',name:'이 차 사지 마세요',pos:'…이 할인 확인 안 하고 사면요. 지금 역대급입니다',neg:'좋은 차 맞아요. 근데 유지비 계산해보면 이야기 달라집니다',items:[]},
+    {id:10,cat:'C',name:'후회하는 옵션 1위!',pos:'이거 안 넣어서 후회하는 분 제일 많아요. 이유 보여드릴게요',neg:'다들 넣는 이 옵션, 사실 내년 모델에 기본 포함됩니다',items:[]},
+    {id:11,cat:'C',name:'다 이것 때문이었어요!',pos:'출고 지연? 색상 변경? 이 타이밍에 계약하면 다 해결됩니다',neg:'이것 때문에 다음 계약까지 영향을 받습니다',items:[]},
+    {id:12,cat:'D',name:'OO 실구매가 딱 알려드릴게요',pos:'이 가격이면 정말 이득입니다',neg:'공시가와 실구매가는 이렇게 다릅니다',items:[]},
+    {id:13,cat:'D',name:'이 옵션 하나로 300만원 차이 납니다',pos:'비싸 보이지만 리세일 때 오히려 더 받습니다',neg:'실사용률 보면 1년에 두세 번 씁니다',items:[]},
+    {id:14,cat:'D',name:'지금 현대차 할인 딱 OO가지만 기억하세요',pos:'이 OO가지 다 맞춰야 최저가입니다',neg:'이것 외에는 불가능합니다',items:[]},
+    {id:15,cat:'D',name:'이거요! (제스처)',pos:'바로 이 부분이 중요합니다',neg:'이 부분 때문에 문제가 생깁니다',items:[]},
+    {id:16,cat:'E',name:'첫 차 사는 분, 이것만 보세요',pos:'이거 하나면 후회 없는 첫 차입니다',neg:'첫 차에서 이거 놓치면 나중에 큰일입니다',items:[]},
+    {id:17,cat:'E',name:'지금 OO차 고민 중이라면 30초만 주세요',pos:'이 정보가 당신의 선택을 바꿀 겁니다',neg:'구매 전에 반드시 알아야 할 게 있습니다',items:[]},
+    {id:18,cat:'E',name:'부모님 차 고민하시는 분 이거 보고 가세요',pos:'부모님이 제일 만족하시는 포인트입니다',neg:'부모님 세대는 이 부분을 못 받아줍니다',items:[]},
+    {id:19,cat:'E',name:'다음달 없습니다!',pos:'이번 달 프로모션 이거 하나가 역대급입니다',neg:'정말 다음 달은 없으니 놓치지 마세요',items:[]},
+    {id:20,cat:'E',name:'제발 이것만 해보세요!',pos:'시승 한 번이면 고민 끝납니다. 예외 본 적 없어요',neg:'이거 없이 계약하면 나중에 후회합니다',items:[]}
+  ],
+  bonus:[],notes:[],refs:[],
+  _goalTab:0,_catFilter:'all',_tplOpen:{},_refFilter:'all'
+};
 
-          const logs = JSON.parse(localStorage.getItem('training_logs')) || [];
-          updateDashboardStats(logs);
-        })
-        .catch(err => {
-          console.error("날씨 불러오기 실패:", err);
-          document.getElementById('realtime-weather').innerText = "24°C / 좋음";
-          document.getElementById('realtime-weather-sub').innerText = "습도 55% · 쾌적함 🏃‍♂️";
-        });
-    }
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return JSON.parse(JSON.stringify(DEFAULTS));const d=JSON.parse(r);if(!d.templates)return JSON.parse(JSON.stringify(DEFAULTS));if(!d.refs)d.refs=[];if(!d._refFilter)d._refFilter='all';return d}catch(e){return JSON.parse(JSON.stringify(DEFAULTS))}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
+let D=load();
 
-    // 📍 위치 좌표 기억(저장) 로직 추가
-    function initWeather() {
-      const savedQuery = localStorage.getItem('user_weather_location');
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function fmtDate(ds){const d=new Date(ds+'T00:00:00');return `${d.getMonth()+1}/${d.getDate()} (${DAYS[d.getDay()]})`}
+function fmtNum(n){return(n||0).toLocaleString()}
 
-      if (savedQuery) {
-        // 이미 저장된 위치 좌표가 있으면 브라우저 팝업 요청 없이 바로 호출
-        fetchRealtimeWeather(savedQuery);
-      } else if (navigator.geolocation) {
-        // 처음 방문하여 저장된 정보가 없을 때만 좌표 동의 요청
-        navigator.geolocation.getCurrentPosition(
-          pos => {
-            const query = `${pos.coords.latitude},${pos.coords.longitude}`;
-            localStorage.setItem('user_weather_location', query); // 좌표 저장
-            fetchRealtimeWeather(query);
-          },
-          err => {
-            fetchRealtimeWeather("Seoul");
-          }
-        );
-      } else {
-        fetchRealtimeWeather("Seoul");
-      }
-    }
+/* ---- render ---- */
+function render(){
+  document.getElementById('hdDate').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+  renderIg();renderId();renderGoals();renderCt();renderBonus();renderNotes();renderRefs();
+  initReveal();
+}
 
-    function getTodayKey() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
+function renderIg(){
+  const ig=D.ig;
+  document.getElementById('igStats').innerHTML=[
+    {v:fmtNum(ig.followers),l:'팔로워',icon:'solar:users-group-rounded-linear'},
+    {v:fmtNum(ig.posts),l:'게시물',icon:'solar:gallery-minimalistic-linear'},
+    {v:fmtNum(ig.weeklyReach),l:'이번 주 도달',icon:'solar:eye-linear'},
+    {v:ig.engagement?ig.engagement+'%':'—',l:'참여율',icon:'solar:heart-linear'}
+  ].map(s=>`<div class="glass rounded-2xl p-4 cursor-pointer transition-all duration-300 hover:bg-white/[.08] hover:border-white/[.12] hover:scale-[1.02] active:scale-[0.98]">
+    <div class="flex items-center gap-2 mb-2"><iconify-icon icon="${s.icon}" class="text-emerald-400 text-base"></iconify-icon><span class="text-[11px] font-medium text-zinc-500 tracking-wide">${s.l}</span></div>
+    <div class="text-2xl font-bold text-zinc-100 tabular-nums">${s.v}</div>
+  </div>`).join('');
 
-    function loadData() {
-      if (!localStorage.getItem('training_logs')) {
-        localStorage.setItem('training_logs', JSON.stringify(initialLogs));
-      }
-      if (!localStorage.getItem('nutrition_data')) {
-        localStorage.setItem('nutrition_data', JSON.stringify(initialNutrition));
-      }
+  const emb=ig.embeds||[];
+  if(!emb.length){
+    document.getElementById('igEmbeds').innerHTML=`<div class="glass rounded-2xl flex items-center justify-center min-h-[200px] col-span-full"><div class="text-center py-10 px-5"><iconify-icon icon="solar:camera-linear" class="text-3xl text-zinc-600 mb-2 block mx-auto"></iconify-icon><p class="text-[13px] text-zinc-500">게시물이 올라오면 여기에 표시됩니다</p><p class="text-[11px] text-zinc-600 mt-1">게시물 추가 버튼으로 Instagram URL을 입력하세요</p></div></div>`;
+    return;
+  }
+  document.getElementById('igEmbeds').innerHTML=emb.map((url,i)=>{
+    const code=url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+    if(!code)return '';
+    return `<div class="glass rounded-2xl overflow-hidden relative group"><iframe src="https://www.instagram.com/p/${code[1]}/embed/" scrolling="no" allowtransparency="true" class="w-full border-none min-h-[480px]"></iframe><button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 text-white border-none cursor-pointer text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/80" onclick="rmEmbed(${i})"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>`;
+  }).join('');
+}
 
-      checkNutritionReset();
-      renderNutrition();
-      renderLogs();
-      initWeather();
-    }
+function renderId(){
+  const id=D.identity;
+  document.getElementById('idHandle').textContent=id.handle;
+  document.getElementById('idBio').textContent=id.bio;
+  document.getElementById('idFields').innerHTML=ID_FIELDS.map(f=>
+    `<div class="glass rounded-2xl px-5 py-3.5 flex gap-3 items-baseline max-md:flex-col max-md:gap-1"><span class="text-xs font-semibold text-zinc-500 shrink-0 w-[80px]">${f.l}</span><span class="text-[14px] text-zinc-200 break-keep">${esc(id[f.k])}</span></div>`
+  ).join('');
+}
 
-    function checkNutritionReset() {
-      const lastSavedDate = localStorage.getItem('nutrition_last_date');
-      const today = getTodayKey();
-      if (lastSavedDate && lastSavedDate !== today) {
-        localStorage.setItem('nutrition_data', JSON.stringify([]));
-      }
-      localStorage.setItem('nutrition_last_date', today);
-    }
+function renderGoals(){
+  const gt=D._goalTab||0;
+  document.getElementById('goalTabs').innerHTML=D.goals.map((g,i)=>
+    `<button class="text-xs font-semibold px-4 py-1.5 rounded-full border-none cursor-pointer transition-all duration-300 ${i===gt?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._goalTab=${i};save();renderGoals()">${g.period}</button>`
+  ).join('');
+  const g=D.goals[gt];
+  document.getElementById('goalItems').innerHTML=g.items.map(it=>{
+    const pct=it.t?Math.min(Math.round(it.c/it.t*100),100):0;
+    const over=it.c>=it.t&&it.t>0;
+    return `<div class="glass rounded-2xl px-5 py-4">
+      <div class="flex justify-between items-baseline mb-2"><span class="text-[13px] font-medium text-zinc-400">${esc(it.l)}</span><span class="text-sm font-bold text-zinc-100 tabular-nums"><span class="text-emerald-400">${fmtNum(it.c)}</span> / ${fmtNum(it.t)}</span></div>
+      <div class="h-1.5 bg-white/[.06] rounded-full overflow-hidden"><div class="h-full rounded-full transition-all duration-500 ease-out ${over?'bg-emerald-500':'bg-emerald-400'}" style="width:${pct}%"></div></div>
+      <div class="text-[11px] font-semibold text-zinc-500 mt-1.5 text-right">${pct}%${over?' <iconify-icon icon="solar:check-circle-bold" class="text-emerald-400 align-[-2px]"></iconify-icon>':''}</div>
+    </div>`;
+  }).join('');
+}
 
-    function renderNutrition() {
-      const data = JSON.parse(localStorage.getItem('nutrition_data')) || [];
-      const container = document.getElementById('nutrition-list');
-      
-      if (data.length === 0) {
-        container.innerHTML = `<div class="empty-msg">오늘 등록된 영양/식단이 없습니다.</div>`;
-      } else {
-        container.innerHTML = data.map((item, idx) => `
-          <div class="list-item">
-            <span style="cursor:pointer; flex:1;" onclick="toggleNutrition(${idx})">
-              ${item.done ? '✅' : '☐'} ${item.name} ${item.cal ? '<strong style="color:var(--accent-color); font-size:11px;">(+' + item.cal + 'kcal)</strong>' : ''}
-            </span>
-            <span class="btn-del" onclick="deleteNutrition(${idx})">✕</span>
-          </div>
-        `).join('');
-      }
+function renderCt(){
+  const filter=D._catFilter||'all';
+  const cats=['all','A','B','C','D','E'];
+  const catNames={all:'전체',A:'A. 폭로',B:'B. 경고',C:'C. 도발',D:'D. 정보',E:'E. 타겟'};
+  document.getElementById('catTabs').innerHTML=cats.map(c=>
+    `<button class="text-[11px] font-semibold px-3 py-1 rounded-full border-none cursor-pointer transition-all duration-300 ${c===filter?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._catFilter='${c}';save();renderCt()">${catNames[c]}</button>`
+  ).join('');
+  if(!D._tplOpen)D._tplOpen={};
+  const tpls=filter==='all'?D.templates:D.templates.filter(t=>t.cat===filter);
+  document.getElementById('ctGrid').innerHTML=`<div class="space-y-2">${tpls.map(t=>{
+    const cnt=t.items.length;
+    const cc=CAT_CLS[t.cat];
+    const isOpen=D._tplOpen[t.id];
+    return `<div class="glass rounded-2xl overflow-hidden">
+      <div class="px-5 py-3.5 flex items-center gap-3 cursor-pointer transition-colors hover:bg-white/[.04]" onclick="toggleTpl(${t.id})">
+        <span class="text-[13px] font-extrabold text-zinc-500 w-5 text-center">${t.id}</span>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${cc.cls}">${t.cat}. ${cc.name.slice(0,2)}</span>
+        <span class="text-[14px] font-bold text-zinc-100 flex-1 min-w-0 break-keep">${esc(t.name)}</span>
+        <span class="text-[11px] font-semibold text-zinc-500">${cnt}개</span>
+        <iconify-icon icon="solar:alt-arrow-down-linear" class="text-zinc-500 text-xs transition-transform duration-200 ${isOpen?'rotate-180':''}"></iconify-icon>
+      </div>
+      ${isOpen?`<div class="border-t border-white/[.06] px-5 py-4">
+        <div class="grid gap-1.5 mb-3">
+          <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 shrink-0">긍</span><span>${esc(t.pos)}</span></div>
+          <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 shrink-0">부</span><span>${esc(t.neg)}</span></div>
+        </div>
+        <div class="space-y-1.5 mb-3">${t.items.map(ch=>{
+          const st=STATUS[ch.status]||STATUS.planned;
+          return `<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[.03] cursor-pointer transition-colors hover:bg-white/[.06] text-[13px]" onclick="event.stopPropagation();openChildDetail(${t.id},${ch.id})">
+            ${ch.date?`<span class="text-[11px] text-zinc-500 w-[70px]">${fmtDate(ch.date)}</span>`:'<span class="text-[11px] text-zinc-600 w-[70px]">미정</span>'}
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${FMT_CLS(ch.format)}">${esc(ch.format)}</span>
+            <span class="flex-1 font-medium text-zinc-200 min-w-0">${esc(ch.topic)}</span>
+            <button class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg border-none cursor-pointer ${st.c}" onclick="event.stopPropagation();cycleChildSt(${t.id},${ch.id})">${st.l}</button>
+          </div>`;
+        }).join('')}</div>
+        <button class="w-full py-2 border border-dashed border-white/10 rounded-xl bg-transparent text-zinc-500 text-xs font-medium cursor-pointer transition-all hover:border-emerald-400/30 hover:text-emerald-400" onclick="event.stopPropagation();openChildAdd(${t.id})"><iconify-icon icon="solar:add-circle-linear" class="mr-1 align-[-2px]"></iconify-icon>구체 기획 추가</button>
+      </div>`:''}
+    </div>`;
+  }).join('')}</div>`;
+}
 
-      const logs = JSON.parse(localStorage.getItem('training_logs')) || [];
-      updateDashboardStats(logs);
-    }
+function renderBonus(){
+  const bonus=D.bonus||[];
+  const el=document.getElementById('bonusList');
+  if(!bonus.length){
+    el.innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-10 border-dashed">아이디어를 추가해보세요</div>';
+    return;
+  }
+  el.innerHTML=`<div class="space-y-2">${bonus.map(b=>{
+    const st=STATUS[b.status]||STATUS.planned;
+    return `<div class="glass rounded-2xl px-5 py-3.5 cursor-pointer transition-all duration-300 hover:bg-white/[.06] hover:scale-[1.01] active:scale-[0.99]" onclick="openBonusDetail(${b.id})">
+      <div class="flex justify-between items-center">
+        <div><div class="text-xs font-bold text-emerald-400 mb-1">${esc(b.keyword)}</div><div class="text-[14px] font-medium text-zinc-200 break-keep">${esc(b.idea)}</div></div>
+        <button class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg border-none cursor-pointer shrink-0 ml-3 ${st.c}" onclick="event.stopPropagation();cycleBonusSt(${b.id})">${st.l}</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
 
-    function addNutrition() {
-      const nameInput = document.getElementById('new-nutrition-name');
-      const calInput = document.getElementById('new-nutrition-cal');
-      const name = nameInput.value.trim();
-      const cal = parseInt(calInput.value) || 0;
+function renderNotes(){
+  const notes=[...D.notes].reverse();
+  if(!notes.length){
+    document.getElementById('noteList').innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-8 border-dashed">아직 메모가 없습니다</div>';
+    return;
+  }
+  document.getElementById('noteList').innerHTML=notes.map((n,i)=>
+    `<div class="glass rounded-2xl px-5 py-3.5 relative group"><div class="text-[11px] font-medium text-zinc-500 mb-1"><strong class="text-emerald-400 font-semibold">${esc(n.author)}</strong> · ${esc(n.date)}</div><div class="text-[14px] text-zinc-200 break-keep">${esc(n.text)}</div><button class="absolute top-3 right-3 bg-transparent border-none text-zinc-600 cursor-pointer text-base opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-400" onclick="delNote(${D.notes.length-1-i})"><iconify-icon icon="solar:trash-bin-minimalistic-linear"></iconify-icon></button></div>`
+  ).join('');
+}
 
-      if(!name) return alert('음식 이름 또는 수칙을 입력하세요.');
+/* ---- actions ---- */
+function toggleTpl(id){if(!D._tplOpen)D._tplOpen={};D._tplOpen[id]=!D._tplOpen[id];save();renderCt()}
+function cycleChildSt(tplId,chId){const t=D.templates.find(x=>x.id===tplId);if(!t)return;const ch=t.items.find(x=>x.id===chId);if(!ch)return;ch.status=NEXT_ST[ch.status]||'planned';save();renderCt()}
+function cycleBonusSt(id){const b=(D.bonus||[]).find(x=>x.id===id);if(!b)return;b.status=NEXT_ST[b.status]||'planned';save();renderBonus()}
+function addNote(){
+  const au=document.getElementById('noteAuthor').value;
+  const tx=document.getElementById('noteInput').value.trim();
+  if(!tx)return;
+  D.notes.push({author:au,text:tx,date:new Date().toLocaleDateString('ko-KR')});
+  document.getElementById('noteInput').value='';
+  save();renderNotes();
+}
+function delNote(i){D.notes.splice(i,1);save();renderNotes()}
+function rmEmbed(i){D.ig.embeds.splice(i,1);save();renderIg()}
 
-      const data = JSON.parse(localStorage.getItem('nutrition_data')) || [];
-      data.push({ name, cal, done: false });
-      localStorage.setItem('nutrition_data', JSON.stringify(data));
-      localStorage.setItem('nutrition_last_date', getTodayKey());
-      
-      nameInput.value = ''; calInput.value = '';
-      renderNutrition();
-    }
+/* ---- modals ---- */
+const MC='px-5 py-4 border-b border-white/[.08] flex justify-between items-center';
+const MB='px-5 py-5';
+const MF='px-5 py-3.5 border-t border-white/[.08] flex justify-end gap-2';
+const FD='mb-3.5';
+const FL='block text-xs font-semibold text-zinc-500 mb-1';
+const FI='w-full text-[13px] px-3 py-2 rounded-xl';
+const BTN='text-xs font-semibold px-4 py-2 rounded-xl border border-white/10 bg-white/[.05] text-zinc-400 cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]';
+const BTNP='text-xs font-bold px-4 py-2 rounded-xl border-none bg-emerald-500 text-zinc-950 cursor-pointer transition-all duration-300 hover:bg-emerald-400 hover:scale-[1.02] active:scale-[0.98]';
+const BTND='text-xs font-semibold px-4 py-2 rounded-xl border border-red-500/20 bg-transparent text-red-400 cursor-pointer transition-all duration-300 hover:bg-red-500/10';
 
-    function toggleNutrition(idx) {
-      const data = JSON.parse(localStorage.getItem('nutrition_data')) || [];
-      data[idx].done = !data[idx].done;
-      localStorage.setItem('nutrition_data', JSON.stringify(data));
-      renderNutrition();
-    }
+function openModal(html){document.getElementById('modalBox').innerHTML=html;const m=document.getElementById('modal');m.classList.remove('hidden');m.classList.add('flex')}
+function closeModal(){const m=document.getElementById('modal');m.classList.add('hidden');m.classList.remove('flex')}
 
-    function deleteNutrition(idx) {
-      const data = JSON.parse(localStorage.getItem('nutrition_data')) || [];
-      data.splice(idx, 1);
-      localStorage.setItem('nutrition_data', JSON.stringify(data));
-      renderNutrition();
-    }
+function openStatEdit(){
+  const ig=D.ig;
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">인스타 수치 입력</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">팔로워</label><input type="number" class="${FI}" id="mIgF" value="${ig.followers}"></div>
+      <div class="${FD}"><label class="${FL}">게시물 수</label><input type="number" class="${FI}" id="mIgP" value="${ig.posts}"></div>
+      <div class="${FD}"><label class="${FL}">이번 주 도달</label><input type="number" class="${FI}" id="mIgR" value="${ig.weeklyReach}"></div>
+      <div class="${FD}"><label class="${FL}">참여율 (%)</label><input type="number" step="0.1" class="${FI}" id="mIgE" value="${ig.engagement}"></div>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveStats()">저장</button></div>`);
+}
+function saveStats(){
+  D.ig.followers=+document.getElementById('mIgF').value;
+  D.ig.posts=+document.getElementById('mIgP').value;
+  D.ig.weeklyReach=+document.getElementById('mIgR').value;
+  D.ig.engagement=+document.getElementById('mIgE').value;
+  save();renderIg();closeModal();
+}
 
-    function saveTrainingLog() {
-      const type = document.getElementById('log-type').value;
-      const tag = document.getElementById('log-tag').value;
-      const distInput = document.getElementById('log-dist').value;
-      const dist = parseFloat(distInput);
-      const time = document.getElementById('log-time').value.trim();
-      const note = document.getElementById('log-note').value.trim();
+function openEmbedAdd(){
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">게시물 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">Instagram 게시물 URL</label><input type="url" class="${FI}" id="mEmbUrl" placeholder="https://www.instagram.com/p/..."></div>
+      <p class="text-xs text-zinc-500">Instagram 게시물 또는 릴스 URL을 붙여넣으세요.</p>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveEmbed()">추가</button></div>`);
+}
+function saveEmbed(){
+  const url=document.getElementById('mEmbUrl').value.trim();
+  if(!url||!url.match(/instagram\.com\/(?:p|reel)\//)){alert('올바른 Instagram URL을 입력해주세요.');return}
+  if(!D.ig.embeds)D.ig.embeds=[];
+  D.ig.embeds.push(url);
+  save();renderIg();closeModal();
+}
 
-      if(isNaN(dist) || dist <= 0) return alert('올바른 거리를 입력해주세요.');
+function openIdEdit(){
+  const id=D.identity;
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">채널 아이덴티티 편집</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">인스타 핸들</label><input class="${FI}" id="mIdH" value="${esc(id.handle)}"></div>
+      <div class="${FD}"><label class="${FL}">바이오</label><textarea class="${FI} min-h-[80px] resize-y" id="mIdB" rows="4">${esc(id.bio)}</textarea></div>
+      ${ID_FIELDS.map(f=>`<div class="${FD}"><label class="${FL}">${f.l}</label><textarea class="${FI} min-h-[50px] resize-y" id="mId_${f.k}" rows="2">${esc(id[f.k])}</textarea></div>`).join('')}
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveId()">저장</button></div>`);
+}
+function saveId(){
+  D.identity.handle=document.getElementById('mIdH').value;
+  D.identity.bio=document.getElementById('mIdB').value;
+  ID_FIELDS.forEach(f=>{D.identity[f.k]=document.getElementById('mId_'+f.k).value});
+  save();renderId();closeModal();
+}
 
-      const logs = JSON.parse(localStorage.getItem('training_logs')) || [];
-      const now = new Date();
-      
-      const dateKey = getTodayKey();
-      const dateDisplay = `${now.getMonth() + 1}/${now.getDate()}`;
+function openGoalEdit(){
+  const gt=D._goalTab||0;const g=D.goals[gt];
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">${g.period} 목표 수치 업데이트</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      ${g.items.map((it,i)=>`<div class="${FD}"><label class="${FL}">${esc(it.l)} (목표: ${fmtNum(it.t)})</label><input type="number" class="${FI}" id="mG${i}" value="${it.c}"></div>`).join('')}
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveGoals()">저장</button></div>`);
+}
+function saveGoals(){
+  const gt=D._goalTab||0;const g=D.goals[gt];
+  g.items.forEach((it,i)=>{it.c=+document.getElementById('mG'+i).value});
+  save();renderGoals();closeModal();
+}
 
-      logs.unshift({
-        type, tag, dist, time, note, dateDisplay, dateKey,
-        timestamp: now.getTime()
-      });
+function openChildAdd(tplId){
+  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">"${esc(t.name)}" 기획 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="grid gap-1.5 mb-4 p-3 rounded-xl bg-white/[.03]">
+        <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 shrink-0">긍</span><span>${esc(t.pos)}</span></div>
+        <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 shrink-0">부</span><span>${esc(t.neg)}</span></div>
+      </div>
+      <div class="${FD}"><label class="${FL}">반전 방향</label><select class="${FI}" id="mChDir"><option value="pos">긍정 반전</option><option value="neg">부정 반전</option></select></div>
+      <div class="${FD}"><label class="${FL}">구체 주제</label><input class="${FI}" id="mChTopic" placeholder="예: 아반떼 보험 선택"></div>
+      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mChFmt"><option>릴스 30초</option><option selected>릴스 60초</option><option>릴스 90초</option><option>캐러셀 5장</option><option>캐러셀 6장</option><option>캐러셀 7장</option></select></div>
+      <div class="${FD}"><label class="${FL}">예정일</label><input type="date" class="${FI}" id="mChDate"></div>
+      <div class="${FD}"><label class="${FL}">구체 후킹 카피</label><textarea class="${FI} min-h-[50px] resize-y" id="mChHook" rows="2" placeholder="템플릿 기반으로 구체적인 멘트 작성"></textarea></div>
+      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mChNote" rows="2" placeholder="촬영/편집 관련 메모"></textarea></div>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveChild(${tplId})">추가</button></div>`);
+}
+function saveChild(tplId){
+  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
+  const topic=document.getElementById('mChTopic').value.trim();
+  if(!topic){alert('구체 주제를 입력해주세요.');return}
+  const maxId=t.items.reduce((m,c)=>Math.max(m,c.id),tplId*100);
+  t.items.push({id:maxId+1,direction:document.getElementById('mChDir').value,topic,format:document.getElementById('mChFmt').value,date:document.getElementById('mChDate').value,hook:document.getElementById('mChHook').value.trim(),status:'planned',notes:document.getElementById('mChNote').value.trim()});
+  save();renderCt();closeModal();
+}
+function openChildDetail(tplId,chId){
+  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
+  const ch=t.items.find(x=>x.id===chId);if(!ch)return;
+  const st=STATUS[ch.status]||STATUS.planned;
+  const cc=CAT_CLS[t.cat];
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">콘텐츠 상세</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="flex gap-2 mb-4 items-center"><span class="text-[10px] font-bold px-2 py-0.5 rounded ${cc.cls}">${esc(t.name)}</span><span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg ${st.c} ml-auto">${st.l}</span></div>
+      <div class="${FD}"><label class="${FL}">반전 방향</label><select class="${FI}" id="mDChDir"><option value="pos"${ch.direction==='pos'?' selected':''}>긍정 반전</option><option value="neg"${ch.direction==='neg'?' selected':''}>부정 반전</option></select></div>
+      <div class="${FD}"><label class="${FL}">구체 주제</label><input class="${FI}" id="mDChTopic" value="${esc(ch.topic)}"></div>
+      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mDChFmt">${['릴스 30초','릴스 60초','릴스 90초','캐러셀 5장','캐러셀 6장','캐러셀 7장'].map(f=>`<option${f===ch.format?' selected':''}>${f}</option>`).join('')}</select></div>
+      <div class="${FD}"><label class="${FL}">예정일</label><input type="date" class="${FI}" id="mDChDate" value="${ch.date||''}"></div>
+      <div class="${FD}"><label class="${FL}">구체 후킹 카피</label><textarea class="${FI} min-h-[50px] resize-y" id="mDChHook" rows="2">${esc(ch.hook||'')}</textarea></div>
+      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mDChNote" rows="2">${esc(ch.notes||'')}</textarea></div>
+    </div>
+    <div class="${MF}">
+      <button class="${BTND}" onclick="delChild(${tplId},${chId})"><iconify-icon icon="solar:trash-bin-minimalistic-linear" class="mr-1 align-[-2px]"></iconify-icon>삭제</button>
+      <div class="flex-1"></div>
+      <button class="${BTN}" onclick="closeModal()">취소</button>
+      <button class="${BTNP}" onclick="updateChild(${tplId},${chId})">저장</button>
+    </div>`);
+}
+function updateChild(tplId,chId){
+  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
+  const ch=t.items.find(x=>x.id===chId);if(!ch)return;
+  ch.direction=document.getElementById('mDChDir').value;ch.topic=document.getElementById('mDChTopic').value;
+  ch.format=document.getElementById('mDChFmt').value;ch.date=document.getElementById('mDChDate').value;
+  ch.hook=document.getElementById('mDChHook').value;ch.notes=document.getElementById('mDChNote').value;
+  save();renderCt();closeModal();
+}
+function delChild(tplId,chId){
+  if(!confirm('이 콘텐츠를 삭제할까요?'))return;
+  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
+  t.items=t.items.filter(x=>x.id!==chId);save();renderCt();closeModal();
+}
 
-      localStorage.setItem('training_logs', JSON.stringify(logs));
+function openBonusAdd(){
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">번외 아이디어 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">요즘 키워드 / 트렌드</label><input class="${FI}" id="mBnKw" placeholder="예: 밈, 드라마, 이슈"></div>
+      <div class="${FD}"><label class="${FL}">콘텐츠 아이디어</label><textarea class="${FI} min-h-[50px] resize-y" id="mBnIdea" rows="2" placeholder="현대차 딜러 + 이 키워드 = ?"></textarea></div>
+      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mBnFmt"><option>릴스 30초</option><option selected>릴스 60초</option><option>릴스 90초</option><option>캐러셀</option></select></div>
+      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mBnNote" rows="2" placeholder="참고 링크, 레퍼런스 등"></textarea></div>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveBonus()">추가</button></div>`);
+}
+function saveBonus(){
+  const kw=document.getElementById('mBnKw').value.trim();
+  const idea=document.getElementById('mBnIdea').value.trim();
+  if(!kw||!idea){alert('키워드와 아이디어를 입력해주세요.');return}
+  if(!D.bonus)D.bonus=[];
+  const maxId=D.bonus.reduce((m,b)=>Math.max(m,b.id),0);
+  D.bonus.push({id:maxId+1,keyword:kw,idea,format:document.getElementById('mBnFmt').value,notes:document.getElementById('mBnNote').value.trim(),status:'planned'});
+  save();renderBonus();closeModal();
+}
+function openBonusDetail(id){
+  const b=(D.bonus||[]).find(x=>x.id===id);if(!b)return;
+  const st=STATUS[b.status]||STATUS.planned;
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">번외 콘텐츠 상세</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">키워드</label><input class="${FI}" id="mDBnKw" value="${esc(b.keyword)}"></div>
+      <div class="${FD}"><label class="${FL}">아이디어</label><textarea class="${FI} min-h-[50px] resize-y" id="mDBnIdea" rows="2">${esc(b.idea)}</textarea></div>
+      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mDBnFmt">${['릴스 30초','릴스 60초','릴스 90초','캐러셀'].map(f=>`<option${f===b.format?' selected':''}>${f}</option>`).join('')}</select></div>
+      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mDBnNote" rows="2">${esc(b.notes||'')}</textarea></div>
+    </div>
+    <div class="${MF}">
+      <button class="${BTND}" onclick="delBonus(${b.id})"><iconify-icon icon="solar:trash-bin-minimalistic-linear" class="mr-1 align-[-2px]"></iconify-icon>삭제</button>
+      <div class="flex-1"></div>
+      <button class="${BTN}" onclick="closeModal()">취소</button>
+      <button class="${BTNP}" onclick="updateBonus(${b.id})">저장</button>
+    </div>`);
+}
+function updateBonus(id){
+  const b=(D.bonus||[]).find(x=>x.id===id);if(!b)return;
+  b.keyword=document.getElementById('mDBnKw').value;b.idea=document.getElementById('mDBnIdea').value;
+  b.format=document.getElementById('mDBnFmt').value;b.notes=document.getElementById('mDBnNote').value;
+  save();renderBonus();closeModal();
+}
+function delBonus(id){if(!confirm('삭제할까요?'))return;D.bonus=D.bonus.filter(x=>x.id!==id);save();renderBonus();closeModal()}
 
-      document.getElementById('log-dist').value = '';
-      document.getElementById('log-time').value = '';
-      document.getElementById('log-note').value = '';
-      
-      renderLogs();
-    }
+/* ---- refs ---- */
+function refEmbed(url){
+  const m=url.match(/instagram\.com\/(?:p|reel|reels)\/([A-Za-z0-9_-]+)/);
+  return m?`https://www.instagram.com/p/${m[1]}/embed/`:null;
+}
+function renderRefs(){
+  const filter=D._refFilter||'all';
+  const folders=Object.keys(REF_FOLDERS);
+  document.getElementById('refTabs').innerHTML=folders.map(f=>
+    `<button class="text-[11px] font-semibold px-3 py-1 rounded-full border-none cursor-pointer transition-all duration-300 ${f===filter?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._refFilter='${f}';save();renderRefs()">${REF_FOLDERS[f]}</button>`
+  ).join('');
+  const refs=filter==='all'?D.refs:D.refs.filter(r=>r.folder===filter);
+  if(!refs.length){
+    document.getElementById('refGrid').innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-10 border-dashed col-span-full">Instagram 게시물을 스크랩해서 레퍼런스를 모아보세요</div>';
+    return;
+  }
+  document.getElementById('refGrid').innerHTML=refs.map(r=>{
+    const embedUrl=refEmbed(r.url);
+    const fcls=REF_F_CLS[r.folder]||'rf-visual';
+    return `<div class="glass rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/[.06]">
+      ${embedUrl?`<iframe src="${embedUrl}" scrolling="no" allowtransparency="true" loading="lazy" class="w-full border-none h-[420px] block"></iframe>`:`<div class="py-10 text-center text-zinc-500 text-sm">임베드 불가</div>`}
+      <div class="flex items-start gap-2 px-3.5 py-2.5">
+        <div class="flex-1 min-w-0">
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded inline-block mb-1 ${fcls}">${REF_FOLDERS[r.folder]||r.folder}</span>
+          ${r.memo?`<div class="text-xs text-zinc-400 mt-0.5 leading-relaxed break-keep">${esc(r.memo)}</div>`:''}
+        </div>
+        <button class="w-7 h-7 rounded-lg bg-transparent border border-white/10 text-zinc-500 cursor-pointer text-sm flex items-center justify-center shrink-0 transition-all hover:border-red-400 hover:text-red-400 hover:bg-red-500/10" onclick="delRef(${r.id})"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openRefAdd(){
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">레퍼런스 스크랩</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">Instagram URL</label><input type="url" class="${FI}" id="mRefUrl" placeholder="https://www.instagram.com/reel/..."></div>
+      <div class="${FD}"><label class="${FL}">폴더</label><select class="${FI}" id="mRefFolder"><option value="visual">비주얼</option><option value="caption">자막</option><option value="tempo">템포</option><option value="script">대본</option></select></div>
+      <div class="${FD}"><label class="${FL}">메모 (선택)</label><textarea class="${FI} min-h-[50px] resize-y" id="mRefMemo" rows="2" placeholder="참고할 포인트, 벤치마크 이유 등"></textarea></div>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveRef()">스크랩</button></div>`);
+}
+function saveRef(){
+  const url=document.getElementById('mRefUrl').value.trim();
+  if(!url||!url.match(/instagram\.com\/(?:p|reel|reels)\//)){alert('올바른 Instagram URL을 입력해주세요.');return}
+  const maxId=D.refs.reduce((m,r)=>Math.max(m,r.id),0);
+  D.refs.push({id:maxId+1,url,folder:document.getElementById('mRefFolder').value,memo:document.getElementById('mRefMemo').value.trim(),date:new Date().toLocaleDateString('ko-KR')});
+  save();renderRefs();closeModal();
+}
+function delRef(id){if(!confirm('이 레퍼런스를 삭제할까요?'))return;D.refs=D.refs.filter(r=>r.id!==id);save();renderRefs()}
 
-    function getTagStyle(tag) {
-      if (tag === '인터벌') return 'tag-badge tag-interval';
-      if (tag === 'LSD') return 'tag-badge tag-lsd';
-      return 'tag-badge tag-jogging';
-    }
+/* ---- scroll reveal ---- */
+function initReveal(){
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){e.target.style.animationDelay=`${i*80}ms`;e.target.classList.add('visible');obs.unobserve(e.target)}})
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
 
-    function renderLogs() {
-      const logs = JSON.parse(localStorage.getItem('training_logs')) || [];
-      const container = document.getElementById('training-log-list');
-
-      if (logs.length === 0) {
-        container.innerHTML = `<div class="empty-msg">저장된 훈련 기록이 없습니다.</div>`;
-      } else {
-        container.innerHTML = logs.map((log, idx) => `
-          <div class="list-item">
-            <div style="flex:1;">
-              <div>
-                <span class="${getTagStyle(log.tag || '조깅')}">${log.tag || '조깅'}</span>
-                <strong>${log.type} | ${log.dist}km ${log.time ? '(' + log.time + ')' : ''}</strong>
-              </div>
-              <div style="font-size:11px; color:#a0a0a0; margin-top:4px;">${log.note || ''}</div>
-            </div>
-            <div style="display:flex; align-items:center;">
-              <span style="color:#a0a0a0; font-size:12px;">${log.dateDisplay || ''}</span>
-              <span class="btn-del" onclick="deleteLog(${idx})">✕</span>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      updateDashboardStats(logs);
-    }
-
-    function deleteLog(idx) {
-      const logs = JSON.parse(localStorage.getItem('training_logs')) || [];
-      logs.splice(idx, 1);
-      localStorage.setItem('training_logs', JSON.stringify(logs));
-      renderLogs();
-    }
-
-    function parseTimeToSeconds(timeStr) {
-      if (!timeStr) return 0;
-      if (timeStr.includes(':')) {
-        const parts = timeStr.split(':');
-        return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-      }
-      return parseFloat(timeStr) * 60;
-    }
-
-    function updateDashboardStats(logs) {
-      const nutritionData = JSON.parse(localStorage.getItem('nutrition_data')) || [];
-      const consumedCalories = nutritionData.reduce((acc, cur) => acc + (cur.cal || 0), 0);
-
-      if (!logs || logs.length === 0) {
-        document.getElementById('total-year-badge').innerText = `🔥 올해 누적: 0.0km`;
-        document.getElementById('today-dist-text').innerText = '0.00';
-        document.getElementById('diff-dist-text').innerText = '기록을 입력해보세요!';
-        document.getElementById('today-bar-label').innerText = '0.00 km';
-        document.getElementById('yesterday-bar-label').innerText = '0.00 km';
-        document.getElementById('bar-today').style.width = '0%';
-        document.getElementById('bar-yesterday').style.width = '0%';
-        document.getElementById('growth-badge').innerText = '0% UP';
-        document.getElementById('monthly-cal').innerHTML = `-${consumedCalories} <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">kcal</span>`;
-        document.getElementById('pb-5k').innerText = '--:--'; document.getElementById('pb-5k').style.color = '#555';
-        document.getElementById('best-spurt').innerHTML = `--.- <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">초</span>`;
-        document.getElementById('monthly-streak').innerHTML = `0 <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">회 완료</span>`;
-        return;
-      }
-
-      const totalDist = logs.reduce((acc, cur) => acc + (parseFloat(cur.dist) || 0), 0);
-      document.getElementById('total-year-badge').innerText = `🔥 올해 누적: ${totalDist.toFixed(1)}km`;
-
-      const now = new Date();
-      const formatDate = (d) => {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${day}`;
-      };
-
-      const todayKey = formatDate(now);
-      const yesterdayObj = new Date(); yesterdayObj.setDate(now.getDate() - 1);
-      const yesterdayKey = formatDate(yesterdayObj);
-
-      const todayDist = logs.filter(l => l.dateKey === todayKey).reduce((acc, cur) => acc + (parseFloat(cur.dist) || 0), 0);
-      const yesterdayDist = logs.filter(l => l.dateKey === yesterdayKey).reduce((acc, cur) => acc + (parseFloat(cur.dist) || 0), 0);
-
-      document.getElementById('today-dist-text').innerText = todayDist.toFixed(2);
-      document.getElementById('today-bar-label').innerText = `${todayDist.toFixed(2)} km`;
-      document.getElementById('yesterday-bar-label').innerText = `${yesterdayDist.toFixed(2)} km`;
-
-      const diff = todayDist - yesterdayDist;
-      document.getElementById('diff-dist-text').innerHTML = diff >= 0 
-        ? `어제보다 <strong style="color:#fff;">+${diff.toFixed(1)}km</strong> 더 달림`
-        : `어제보다 <strong style="color:#fff;">${diff.toFixed(1)}km</strong>`;
-
-      let growthRate = 0;
-      if (yesterdayDist > 0) growthRate = Math.round(((todayDist - yesterdayDist) / yesterdayDist) * 100);
-      else if (todayDist > 0) growthRate = 100;
-      document.getElementById('growth-badge').innerText = `${growthRate >= 0 ? '+' : ''}${growthRate}% ${growthRate >= 0 ? 'UP ⬆' : 'DOWN ⬇'}`;
-
-      const maxDist = Math.max(todayDist, yesterdayDist) || 1;
-      document.getElementById('bar-today').style.width = `${(todayDist / maxDist) * 100}%`;
-      document.getElementById('bar-yesterday').style.width = `${(yesterdayDist / maxDist) * 100}%`;
-
-      let minSpurtSec = Infinity;
-      logs.forEach(l => {
-        const totalSec = parseTimeToSeconds(l.time);
-        const dist = parseFloat(l.dist);
-        if (totalSec > 0 && dist > 0) {
-          const spurtSec = (totalSec / dist) / 10;
-          if (spurtSec < minSpurtSec) minSpurtSec = spurtSec;
-        }
-      });
-
-      if (minSpurtSec !== Infinity) {
-        document.getElementById('best-spurt').innerHTML = `${minSpurtSec.toFixed(1)} <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">초</span>`;
-        document.getElementById('best-spurt').style.color = 'var(--accent-color)';
-      }
-
-      const currentYearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      const monthlyLogs = logs.filter(l => l.dateKey && l.dateKey.startsWith(currentYearMonth));
-      const monthlyCount = monthlyLogs.length;
-
-      document.getElementById('monthly-streak').innerHTML = `${monthlyCount} <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">회 완료</span>`;
-      document.getElementById('streak-sub').innerText = `${now.getMonth() + 1}월 누적 횟수🏃‍♂️`;
-
-      const burnedCalories = Math.round(totalDist * 60);
-      const netCalories = burnedCalories - consumedCalories;
-      document.getElementById('monthly-cal').innerHTML = `${netCalories.toLocaleString()} <span style="font-size: 10px; font-weight: normal; color: var(--text-sub);">kcal</span>`;
-
-      const k5Logs = logs.filter(l => l.type.includes('5K') && l.time);
-      if (k5Logs.length > 0) {
-        document.getElementById('pb-5k').innerText = k5Logs[0].time;
-        document.getElementById('pb-5k').style.color = 'var(--accent-color)';
-        document.getElementById('pb-5k-sub').innerText = `${k5Logs[0].dateDisplay} (${k5Logs[0].dist}km)`;
-      }
-
-      document.getElementById('feedback-text').innerHTML = `💡 <strong>훈련 & 영양 피드백:</strong> 이번 달 총 <b>${monthlyCount}회</b> 출석! 100m 환산 최고 스퍼트는 <b>${minSpurtSec !== Infinity ? minSpurtSec.toFixed(1) + '초' : '-'}</b> 입니다. 🏃‍♂️🔥`;
-    }
-
-    window.addEventListener('DOMContentLoaded', loadData);
-  </script>
-</body>
-</html>
+render();
+</script>
