@@ -20,6 +20,8 @@ tailwind.config={theme:{extend:{fontFamily:{sans:['Pretendard','-apple-system','
 .st-w{color:#fbbf24;background:rgba(251,191,36,.12)}.st-d{color:#34d399;background:rgba(52,211,153,.12)}
 .rf-visual{color:#60a5fa;background:rgba(96,165,250,.15)}.rf-caption{color:#fbbf24;background:rgba(251,191,36,.15)}
 .rf-tempo{color:#a78bfa;background:rgba(167,139,250,.15)}.rf-script{color:#34d399;background:rgba(52,211,153,.15)}
+.bm-car{color:#60a5fa;background:rgba(96,165,250,.12)}.bm-realestate{color:#2dd4bf;background:rgba(45,212,191,.12)}
+.bm-sales{color:#c084fc;background:rgba(192,132,252,.12)}.bm-brand{color:#fbbf24;background:rgba(251,191,36,.12)}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
 body{background:#0a0a0a}
@@ -40,7 +42,12 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,15
         <p class="text-[11px] text-zinc-500 mt-1">채널 운영판 · 대행-클라이언트 협력 도구</p>
       </div>
     </div>
-    <span class="text-xs font-medium text-zinc-500" id="hdDate"></span>
+    <div class="flex items-center gap-3">
+      <a href="benchmark.html" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-400/20 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] no-underline inline-flex items-center">
+        <iconify-icon icon="solar:chart-2-linear" class="mr-1 align-[-2px]"></iconify-icon>벤치마킹
+      </a>
+      <span class="text-xs font-medium text-zinc-500" id="hdDate"></span>
+    </div>
   </div>
 </nav>
 
@@ -216,6 +223,38 @@ const DEFAULTS={
     {id:20,cat:'E',name:'제발 이것만 해보세요!',pos:'시승 한 번이면 고민 끝납니다. 예외 본 적 없어요',neg:'이거 없이 계약하면 나중에 후회합니다',items:[]}
   ],
   bonus:[],notes:[],refs:[],
+  bm:{rounds:[{id:1,date:'2026-08-26',label:'8월 4주차',entries:[
+    {id:1,handle:'@supercarblondie',link:'https://instagram.com/supercarblondie/',followers:'11.7M',cat:'car',desc:'슈퍼카 시승·리뷰. 포스트당 42만 좋아요',why:'체험형 콘텐츠 + 여성 슈퍼카 포지셔닝. 와우 포인트 집중 → 공유 극대화',eng:'4.1%'},
+    {id:2,handle:'@carlifestyle',link:'https://instagram.com/carlifestyle/',followers:'4.2M',cat:'car',desc:'자동차 사진·영상 큐레이션. UGC 허브 모델',why:'직접 제작 부담 제로. 팬 참여 → 태그 바이럴 루프. 일관된 시네마틱 톤',eng:''},
+    {id:3,handle:'@vanguardmotors',link:'https://instagram.com/vanguardmotors/',followers:'4M',cat:'car',desc:'미국 기반 차량 딜러. 팔로워 수 1위 딜러 계정',why:'딜러가 아닌 라이프스타일 브랜드로 포지셔닝. 차보다 삶의 이미지를 판매',eng:'0.26%'},
+    {id:4,handle:'@adam_lz',link:'https://instagram.com/adam_lz/',followers:'1.5M',cat:'car',desc:'레이스카 제작·드리프팅. YouTube 300만 연동',why:'빌드→파괴→재건 서사. 시리즈 구조가 충성도 생성. 결과 공개편에 조회수 집중',eng:''},
+    {id:5,handle:'@tjhunt_',link:'https://instagram.com/tjhunt_/',followers:'1M',cat:'car',desc:'드리프팅·자동차 이벤트·커스텀. YouTube 200만',why:'이벤트 현장감 + 높은 에너지. 릴스=하이라이트 30초 → 유튜브 풀영상 깔때기',eng:''},
+    {id:6,handle:'@angi_elhaj',link:'https://instagram.com/angi_elhaj/',followers:'745K',cat:'car',desc:'미국 딜러 인플루언서. 차량 인도·고객 반응 쇼케이스',why:'고객 감정 순간(서프라이즈 인도, 첫 차) 포착. 감성+스토리=공유 욕구',eng:''},
+    {id:7,handle:'@mr.gurvz',link:'https://instagram.com/mr.gurvz/',followers:'740K',cat:'car',desc:'영국 딜러. 참여율 1.87% — 대형 딜러 중 상위',why:'인격 브랜딩 + 차량 리뷰 결합. "이 사람에게 사고 싶다" 신뢰감. 딜러=전문가',eng:'1.87%'},
+    {id:8,handle:'@mansory_cz',link:'https://instagram.com/mansory_cz/',followers:'709K',cat:'car',desc:'체코 럭셔리 딜러. Mansory 튜닝카 전문',why:'극단적 비주얼(골드 람보 등). "이런 차가 존재해?" 반응 → 저장·공유 유발',eng:''},
+    {id:9,handle:'@luckylopez',link:'https://instagram.com/luckylopez/',followers:'473K',cat:'car',desc:'라스베가스 자동차 전문가/저널리스트. YouTube 53.5만',why:'소비자 관점 "속지 않는 법". 딜러 트릭 폭로, 시장 분석 → 저장율 높음',eng:''},
+    {id:10,handle:'@rhino_autosales',link:'https://instagram.com/rhino_autosales/',followers:'461K',cat:'car',desc:'마이애미 중고차 딜러. 도매가 이하 가격 서프라이즈',why:'"이 차가 이 가격?" 가격 마지막 공개 훅 → 완료율 극대화',eng:'0.19%'},
+    {id:11,handle:'@itslifeofannie',link:'https://instagram.com/itslifeofannie/',followers:'329K',cat:'car',desc:'여성 차량 커스텀/모디파이. Audi·Nissan·GTR',why:'여성이 직접 튜닝하는 의외성. Before/after → 완료율 높음, 댓글 논쟁이 부스트',eng:''},
+    {id:12,handle:'@carljwoods',link:'https://instagram.com/carljwoods/',followers:'214K',cat:'car',desc:'영국 1위 셀럽 카 딜러. 연예인 고객 납품 장면',why:'유명인+럭셔리카=검색·공유 강함. 셀럽 팬덤이 자연 유입 채널',eng:'1.36%'},
+    {id:13,handle:'@goblinvette',link:'https://instagram.com/goblinvette/',followers:'175K',cat:'car',desc:'Tamir. 레인보우 디자인 + GTA 스타일 영상. TikTok 440만',why:'게임(GTA) 레퍼런스 = Z세대 공감. 차량 콘텐츠의 새 소비층 개척',eng:''},
+    {id:14,handle:'@e_whitehead365',link:'https://instagram.com/e_whitehead365/',followers:'143K',cat:'car',desc:'NYC 딜러. 도시 감성 + 스트릿 문화 결합',why:'뉴욕 스트릿씬 + 차량 = 로컬 커뮤니티. 지역 밀착이 글로벌 호기심 유발',eng:'1.96%'},
+    {id:15,handle:'@t_reex01',link:'https://instagram.com/t_reex01/',followers:'142K',cat:'car',desc:'참여율 8.04% — 전체 리스트 최고. 커뮤니티 밀도 극히 높음',why:'14만에 8% 참여율 = 모든 포스트가 대화. 댓글 응답·DM 소통이 핵심',eng:'8.04%'},
+    {id:16,handle:'@raitisrides',link:'https://instagram.com/raitisrides/',followers:'130K',cat:'car',desc:'F1·Corvette·Porsche 전문. YouTube 95.7만',why:'전문가 딥리뷰. 인스타에선 핵심 30초만 릴스화 → 유튜브 유도. 깔때기 교과서',eng:''},
+    {id:17,handle:'@cardealershipguy',link:'https://instagram.com/cardealershipguy/',followers:'37K',cat:'car',desc:'자동차 업계 뉴스·인사이트. Car Business Cheatsheet',why:'B2B 인사이트인데 B2C 화법. 업계 내부를 재미있게 풀어 영향력 극대',eng:''},
+    {id:18,handle:'@dealer_car_sales',link:'https://instagram.com/dealer_car_sales/',followers:'31K',cat:'car',desc:'호주 Mobeast. 카세일즈의 미스터비스트',why:'MrBeast식 포맷(도전·서프라이즈·기부)을 차 판매에 적용. 포맷 복제 가능',eng:''},
+    {id:19,handle:'@ryanserhant',link:'https://instagram.com/ryanserhant/',followers:'2.3M',cat:'realestate',desc:'Million Dollar Listing. 부동산 에이전트 셀럽화 원조',why:'본인이 곧 브랜드. 매물 투어를 영화 트레일러로 편집. "이 집 얼마?" 훅',eng:''},
+    {id:20,handle:'Daniel Heider',link:'',followers:'TikTok 3.7M',cat:'realestate',desc:'워싱턴DC 부동산. 누적 6100만 뷰. 교통 마비 바이럴',why:'스피드 투어 — 집을 달리며 소개. 에너지가 훅, 온라인→오프라인 방문자 폭증',eng:''},
+    {id:21,handle:'Trent Miller',link:'',followers:'릴스 220만 뷰',cat:'realestate',desc:'부동산 에이전트. 판매자 매물 스피드 투어 릴스',why:'빠른 컷+높은 에너지. 시작~끝 템포 유지 → 완료율이 곧 바이럴. 워크어라운드에 적용 가능',eng:''},
+    {id:22,handle:'Katherine Kranenburg',link:'',followers:'보스턴',cat:'realestate',desc:'부동산+인플루언서. 바이어 풀 80% 성장. Boston Globe 보도',why:'주 3회 릴스, 대부분 5000뷰 이하지만 연 11건 거래 직결. 전환율 집중 전략',eng:''},
+    {id:23,handle:'현대오토에버',link:'https://instagram.com/hyundai_autoever/',followers:'첫 릴스 509만 뷰',cat:'brand',desc:'현대차 IT 계열사. 3개월 만에 릴스 맛집. 밈·동물 활용',why:'B2B인데 B2C 화법(밈+유머). "담당자 누구야?" 반응 → 기업 계정 인격화. 한국 사례',eng:''},
+    {id:24,handle:'@cio0061',link:'https://instagram.com/cio0061/',followers:'릴스 3.36억 뷰',cat:'sales',desc:'트럭 운전사 립싱크. 2026.08 인스타 월간 최고 조회수',why:'로우 프로덕션 싱글테이크가 폴리시 압도. 2026 트렌드 상징. 누구나 따라할 수 있음',eng:''},
+    {id:25,handle:'Doug Townson',link:'',followers:'인플루언서 전환',cat:'sales',desc:'중고차 세일즈맨→인스타 인플루언서. 카리스마+세일즈 콘텐츠화',why:'진짜 세일즈맨의 날것. 판매 기술 자체가 엔터. 딜러가 인플루언서가 될 수 있는 증거',eng:''},
+    {id:26,handle:'Metro Honda 세일즈맨',link:'',followers:'릴스 1000만+ 뷰',cat:'sales',desc:'캘리포니아. 고객에게 데이트 제안 영상 바이럴',why:'논란=바이럴 연료. 감정 반응 강한 콘텐츠는 댓글·공유 폭증 (리스크 있음)',eng:''},
+    {id:27,handle:'The Woobles',link:'',followers:'브랜드',cat:'brand',desc:'뜨개질 키트. 밈을 자사 제품(뜨개 인형)으로 재현 릴스 바이럴',why:'트렌드 포맷+자사 제품 결합. 세일즈 같지 않은 세일즈. 제품이 밈의 주인공',eng:''},
+    {id:28,handle:'Vegas Auto Gallery',link:'https://instagram.com/vegasautogallery/',followers:'릴스 전환 후 10x',cat:'car',desc:'라스베가스 딜러십. 릴스 전환 후 일반 포스트 대비 10배',why:'피드→릴스 포맷 전환만으로 10x. 같은 차 같은 팀, 포맷만 변경. 릴스 퍼스트 증거',eng:''},
+    {id:29,handle:'DC Title Guy',link:'',followers:'릴스 300만 뷰',cat:'sales',desc:'부동산 타이틀 영업사원. 한 릴스로 전국+해외 유입',why:'니치 업종에서 바이럴은 시장 자체를 확장. 지역→전국구. 릴스 하나로 판 뒤집기',eng:''},
+    {id:30,handle:'자영업 사장 (Insight)',link:'',followers:'릴스 150만 뷰',cat:'sales',desc:'한국 자영업자. 릴스 하나로 매장 웨이팅. 비용 0원',why:'사장 직접 등장+가게 일상=진정성. 비용 제로 마케팅 최강 사례. 1인 계정 직접 적용 가능',eng:''}
+  ]}],_bmRound:0,_bmCat:'all'},
   _goalTab:0,_catFilter:'all',_tplOpen:{},_refFilter:'all'
 };
 
@@ -251,10 +290,12 @@ function renderIg(){
     document.getElementById('igEmbeds').innerHTML=`<div class="glass rounded-2xl flex items-center justify-center min-h-[200px] col-span-full"><div class="text-center py-10 px-5"><iconify-icon icon="solar:camera-linear" class="text-3xl text-zinc-600 mb-2 block mx-auto"></iconify-icon><p class="text-[13px] text-zinc-500">게시물이 올라오면 여기에 표시됩니다</p><p class="text-[11px] text-zinc-600 mt-1">게시물 추가 버튼으로 Instagram URL을 입력하세요</p></div></div>`;
     return;
   }
-  document.getElementById('igEmbeds').innerHTML=emb.map((url,i)=>{
+  const recent=emb.slice(-3);
+  const offset=emb.length-recent.length;
+  document.getElementById('igEmbeds').innerHTML=recent.map((url,i)=>{const ri=offset+i;
     const code=url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
     if(!code)return '';
-    return `<div class="glass rounded-2xl overflow-hidden relative group"><iframe src="https://www.instagram.com/p/${code[1]}/embed/" scrolling="no" allowtransparency="true" class="w-full border-none min-h-[480px]"></iframe><button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 text-white border-none cursor-pointer text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/80" onclick="rmEmbed(${i})"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>`;
+    return `<div class="glass rounded-2xl overflow-hidden relative group"><iframe src="https://www.instagram.com/p/${code[1]}/embed/" scrolling="no" allowtransparency="true" class="w-full border-none min-h-[480px]"></iframe><button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 text-white border-none cursor-pointer text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/80" onclick="rmEmbed(${ri})"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>`;
   }).join('');
 }
 
