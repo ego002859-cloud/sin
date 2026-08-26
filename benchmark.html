@@ -1,0 +1,277 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>신부장 · 바이럴 벤치마킹</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Pretendard','-apple-system','BlinkMacSystemFont','system-ui','sans-serif']}}}}
+</script>
+<style>
+@keyframes fadeInUp{from{opacity:0;transform:translateY(1.5rem)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(1.5rem)}.reveal.visible{animation:fadeInUp .6s cubic-bezier(.16,1,.3,1) forwards}
+.bm-car{color:#60a5fa;background:rgba(96,165,250,.12)}.bm-realestate{color:#2dd4bf;background:rgba(45,212,191,.12)}
+.bm-sales{color:#c084fc;background:rgba(192,132,252,.12)}.bm-brand{color:#fbbf24;background:rgba(251,191,36,.12)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+body{background:#0a0a0a}
+.glass{background:rgba(255,255,255,.04);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.08)}
+.glass-strong{background:rgba(255,255,255,.06);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.1)}
+.glass-nav{background:rgba(24,24,27,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+input,textarea,select{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important;color:#e4e4e7!important}
+input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,153,.4)!important;box-shadow:0 0 0 2px rgba(52,211,153,.1)}
+</style>
+
+<nav class="glass-nav sticky top-0 z-40 px-5 py-5">
+  <div class="max-w-5xl mx-auto flex items-center justify-between flex-wrap gap-3">
+    <div class="flex items-center gap-4">
+      <a href="index.html" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 no-underline">
+        <iconify-icon icon="solar:arrow-left-linear" class="mr-1 align-[-2px]"></iconify-icon>운영판
+      </a>
+      <div>
+        <span class="text-2xl font-extrabold tracking-tight text-zinc-100">벤치마킹</span>
+        <p class="text-[11px] text-zinc-500 mt-1">바이럴 벤치마킹 · 라운드별 데이터 누적</p>
+      </div>
+    </div>
+    <span class="text-xs font-medium text-zinc-500" id="hdDate"></span>
+  </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-5 pb-24 mt-4">
+<section class="reveal">
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Benchmark</p>
+      <h2 class="text-xl font-bold tracking-tight text-zinc-100">바이럴 벤치마킹</h2>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="document.getElementById('bmImportFile').click()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-400/20 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+        <iconify-icon icon="solar:import-linear" class="mr-1 align-[-2px]"></iconify-icon>가져오기
+      </button>
+      <input type="file" id="bmImportFile" accept=".json" class="hidden" onchange="importBmJSON(this)">
+      <button onclick="openBmEntryAdd()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+        <iconify-icon icon="solar:add-circle-linear" class="mr-1 align-[-2px]"></iconify-icon>계정 추가
+      </button>
+      <button onclick="openBmRoundAdd()" class="text-xs font-bold px-4 py-1.5 rounded-lg bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+        <iconify-icon icon="solar:calendar-add-linear" class="mr-1 align-[-2px]"></iconify-icon>새 라운드
+      </button>
+    </div>
+  </div>
+  <div class="flex gap-1.5 mb-2 flex-wrap" id="bmRoundTabs"></div>
+  <div class="flex gap-1.5 mb-4 flex-wrap" id="bmCatTabs"></div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4" id="bmStats"></div>
+  <div class="space-y-2" id="bmList"></div>
+</section>
+</main>
+
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 items-center justify-center p-5" id="modal" onclick="if(event.target===this)closeModal()">
+  <div id="modalBox" class="glass-strong rounded-2xl max-w-[540px] w-full max-h-[85vh] overflow-y-auto shadow-2xl"></div>
+</div>
+
+<script>
+const KEY='sinbujang_dash';
+const DAYS=['일','월','화','수','목','금','토'];
+
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return null;return JSON.parse(r)}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
+let D=load()||{};
+if(!D.bm){D.bm={rounds:[],_bmRound:0,_bmCat:'all'};save()}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+const MC='px-5 py-4 border-b border-white/[.08] flex justify-between items-center';
+const MB='px-5 py-5';
+const MF='px-5 py-3.5 border-t border-white/[.08] flex justify-end gap-2';
+const FD='mb-3.5';
+const FL='block text-xs font-semibold text-zinc-500 mb-1';
+const FI='w-full text-[13px] px-3 py-2 rounded-xl';
+const BTN='text-xs font-semibold px-4 py-2 rounded-xl border border-white/10 bg-white/[.05] text-zinc-400 cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]';
+const BTNP='text-xs font-bold px-4 py-2 rounded-xl border-none bg-emerald-500 text-zinc-950 cursor-pointer transition-all duration-300 hover:bg-emerald-400 hover:scale-[1.02] active:scale-[0.98]';
+const BTND='text-xs font-semibold px-4 py-2 rounded-xl border border-red-500/20 bg-transparent text-red-400 cursor-pointer transition-all duration-300 hover:bg-red-500/10';
+
+function openModal(html){document.getElementById('modalBox').innerHTML=html;const m=document.getElementById('modal');m.classList.remove('hidden');m.classList.add('flex')}
+function closeModal(){const m=document.getElementById('modal');m.classList.add('hidden');m.classList.remove('flex')}
+
+const BM_CATS={all:'전체',car:'자동차·딜러',realestate:'부동산',sales:'판매 업종',brand:'브랜드'};
+const BM_CAT_CLS={car:'bm-car',realestate:'bm-realestate',sales:'bm-sales',brand:'bm-brand'};
+
+function renderBm(){
+  if(!D.bm||!D.bm.rounds||!D.bm.rounds.length){
+    document.getElementById('bmRoundTabs').innerHTML='';
+    document.getElementById('bmCatTabs').innerHTML='';
+    document.getElementById('bmStats').innerHTML='';
+    document.getElementById('bmList').innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-10 border-dashed">새 라운드를 추가해서 벤치마킹을 시작하세요</div>';
+    return;
+  }
+  const ri=D._bmRound||0;
+  document.getElementById('bmRoundTabs').innerHTML=D.bm.rounds.map((r,i)=>
+    `<button class="text-xs font-semibold px-4 py-1.5 rounded-full border-none cursor-pointer transition-all duration-300 ${i===ri?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._bmRound=${i};save();renderBm()">${esc(r.label)} <span class="text-[10px] opacity-60">${r.date}</span></button>`
+  ).join('');
+  const cf=D._bmCat||'all';
+  document.getElementById('bmCatTabs').innerHTML=Object.keys(BM_CATS).map(c=>
+    `<button class="text-[11px] font-semibold px-3 py-1 rounded-full border-none cursor-pointer transition-all duration-300 ${c===cf?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._bmCat='${c}';save();renderBm()">${BM_CATS[c]}</button>`
+  ).join('');
+  const round=D.bm.rounds[ri];
+  const entries=cf==='all'?round.entries:round.entries.filter(e=>e.cat===cf);
+  const allE=round.entries;
+  const topEng=allE.reduce((m,e)=>{const v=parseFloat(e.eng);return v>m?v:m},0);
+  document.getElementById('bmStats').innerHTML=[
+    {v:allE.length,l:'수집 계정',icon:'solar:users-group-rounded-linear'},
+    {v:round.date,l:'조사 일자',icon:'solar:calendar-linear'},
+    {v:topEng?topEng+'%':'—',l:'최고 참여율',icon:'solar:heart-linear'},
+    {v:D.bm.rounds.length,l:'누적 라운드',icon:'solar:layers-linear'}
+  ].map(s=>`<div class="glass rounded-2xl p-4"><div class="flex items-center gap-2 mb-2"><iconify-icon icon="${s.icon}" class="text-emerald-400 text-base"></iconify-icon><span class="text-[11px] font-medium text-zinc-500 tracking-wide">${s.l}</span></div><div class="text-lg font-bold text-zinc-100 tabular-nums">${s.v}</div></div>`).join('');
+  if(!entries.length){
+    document.getElementById('bmList').innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-8 border-dashed">이 카테고리에 해당하는 항목이 없습니다</div>';
+    return;
+  }
+  document.getElementById('bmList').innerHTML=entries.map((e,i)=>{
+    const ccls=BM_CAT_CLS[e.cat]||'bm-car';
+    return `<div class="glass rounded-2xl px-5 py-3.5 cursor-pointer transition-all duration-300 hover:bg-white/[.06] hover:scale-[1.005] active:scale-[0.998]" onclick="openBmDetail(${round.id},${e.id})">
+      <div class="flex items-center gap-3 mb-1.5">
+        <span class="text-[13px] font-extrabold text-zinc-500 w-5 text-center tabular-nums">${i+1}</span>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${ccls}">${BM_CATS[e.cat]||e.cat}</span>
+        ${e.link?`<a href="${esc(e.link)}" target="_blank" rel="noopener" class="text-[14px] font-bold text-zinc-100 hover:text-emerald-400 transition-colors" onclick="event.stopPropagation()">${esc(e.handle)}</a>`:`<span class="text-[14px] font-bold text-zinc-100">${esc(e.handle)}</span>`}
+        <span class="text-[11px] text-zinc-500 ml-auto shrink-0 tabular-nums">${esc(e.followers)}</span>
+        ${e.eng?`<span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 shrink-0">${esc(e.eng)}</span>`:''}
+      </div>
+      <div class="ml-8 text-[13px] text-zinc-400 leading-relaxed break-keep">${esc(e.desc)}</div>
+      <div class="ml-8 mt-1.5 text-[12px] text-zinc-500 border-l-2 border-emerald-400/40 pl-2.5 leading-relaxed break-keep"><span class="text-emerald-400 font-bold">왜 터졌나:</span> ${esc(e.why)}</div>
+    </div>`;
+  }).join('');
+}
+
+function openBmRoundAdd(){
+  const today=new Date();const ds=today.toISOString().slice(0,10);
+  const wk=Math.ceil(today.getDate()/7);const mon=today.getMonth()+1;
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">새 벤치마킹 라운드</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">라운드 이름</label><input class="${FI}" id="mBmRL" value="${mon}월 ${wk}주차"></div>
+      <div class="${FD}"><label class="${FL}">조사 날짜</label><input type="date" class="${FI}" id="mBmRD" value="${ds}"></div>
+      <p class="text-xs text-zinc-500 mt-2">새 라운드를 만들면 이전 라운드 데이터는 그대로 유지됩니다.</p>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveBmRound()">생성</button></div>`);
+}
+function saveBmRound(){
+  const label=document.getElementById('mBmRL').value.trim();
+  const date=document.getElementById('mBmRD').value;
+  if(!label){alert('라운드 이름을 입력해주세요.');return}
+  if(!D.bm)D.bm={rounds:[],_bmRound:0,_bmCat:'all'};
+  const maxId=D.bm.rounds.reduce((m,r)=>Math.max(m,r.id),0);
+  D.bm.rounds.push({id:maxId+1,date,label,entries:[]});
+  D._bmRound=D.bm.rounds.length-1;
+  save();renderBm();closeModal();
+}
+
+function openBmEntryAdd(){
+  if(!D.bm||!D.bm.rounds.length){alert('먼저 라운드를 생성해주세요.');return}
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">벤치마크 계정 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="${FD}"><label class="${FL}">계정 (@핸들 또는 이름)</label><input class="${FI}" id="mBmH" placeholder="@example"></div>
+      <div class="${FD}"><label class="${FL}">Instagram 프로필 링크 (선택)</label><input type="url" class="${FI}" id="mBmL" placeholder="https://instagram.com/..."></div>
+      <div class="${FD}"><label class="${FL}">팔로워 수</label><input class="${FI}" id="mBmF" placeholder="예: 142K, 1.5M"></div>
+      <div class="${FD}"><label class="${FL}">카테고리</label><select class="${FI}" id="mBmC"><option value="car">자동차·딜러</option><option value="realestate">부동산</option><option value="sales">판매 업종</option><option value="brand">브랜드</option></select></div>
+      <div class="${FD}"><label class="${FL}">콘텐츠 설명</label><textarea class="${FI} min-h-[50px] resize-y" id="mBmD" rows="2"></textarea></div>
+      <div class="${FD}"><label class="${FL}">왜 터졌나 (분석)</label><textarea class="${FI} min-h-[50px] resize-y" id="mBmW" rows="2"></textarea></div>
+      <div class="${FD}"><label class="${FL}">참여율 (선택)</label><input class="${FI}" id="mBmE" placeholder="예: 4.1%"></div>
+    </div>
+    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveBmEntry()">추가</button></div>`);
+}
+function saveBmEntry(){
+  const h=document.getElementById('mBmH').value.trim();
+  if(!h){alert('계정명을 입력해주세요.');return}
+  const ri=D._bmRound||0;const round=D.bm.rounds[ri];
+  const maxId=round.entries.reduce((m,e)=>Math.max(m,e.id),0);
+  round.entries.push({id:maxId+1,handle:h,link:document.getElementById('mBmL').value.trim(),followers:document.getElementById('mBmF').value.trim(),cat:document.getElementById('mBmC').value,desc:document.getElementById('mBmD').value.trim(),why:document.getElementById('mBmW').value.trim(),eng:document.getElementById('mBmE').value.trim()});
+  save();renderBm();closeModal();
+}
+
+function openBmDetail(roundId,entryId){
+  const round=D.bm.rounds.find(r=>r.id===roundId);if(!round)return;
+  const e=round.entries.find(x=>x.id===entryId);if(!e)return;
+  const ccls=BM_CAT_CLS[e.cat]||'bm-car';
+  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">벤치마크 상세</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+    <div class="${MB}">
+      <div class="flex gap-2 mb-4"><span class="text-[10px] font-bold px-2 py-0.5 rounded ${ccls}">${BM_CATS[e.cat]}</span>${e.eng?`<span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">${esc(e.eng)}</span>`:''}</div>
+      <div class="${FD}"><label class="${FL}">계정</label><input class="${FI}" id="mDBmH" value="${esc(e.handle)}"></div>
+      <div class="${FD}"><label class="${FL}">프로필 링크</label><input type="url" class="${FI}" id="mDBmL" value="${esc(e.link||'')}"></div>
+      <div class="${FD}"><label class="${FL}">팔로워</label><input class="${FI}" id="mDBmF" value="${esc(e.followers)}"></div>
+      <div class="${FD}"><label class="${FL}">카테고리</label><select class="${FI}" id="mDBmC">${Object.entries(BM_CATS).filter(([k])=>k!=='all').map(([k,v])=>`<option value="${k}"${k===e.cat?' selected':''}>${v}</option>`).join('')}</select></div>
+      <div class="${FD}"><label class="${FL}">설명</label><textarea class="${FI} min-h-[50px] resize-y" id="mDBmD" rows="2">${esc(e.desc)}</textarea></div>
+      <div class="${FD}"><label class="${FL}">왜 터졌나</label><textarea class="${FI} min-h-[50px] resize-y" id="mDBmW" rows="2">${esc(e.why)}</textarea></div>
+      <div class="${FD}"><label class="${FL}">참여율</label><input class="${FI}" id="mDBmE" value="${esc(e.eng||'')}"></div>
+    </div>
+    <div class="${MF}">
+      <button class="${BTND}" onclick="delBmEntry(${roundId},${entryId})"><iconify-icon icon="solar:trash-bin-minimalistic-linear" class="mr-1 align-[-2px]"></iconify-icon>삭제</button>
+      <div class="flex-1"></div>
+      <button class="${BTN}" onclick="closeModal()">취소</button>
+      <button class="${BTNP}" onclick="updateBmEntry(${roundId},${entryId})">저장</button>
+    </div>`);
+}
+function updateBmEntry(roundId,entryId){
+  const round=D.bm.rounds.find(r=>r.id===roundId);if(!round)return;
+  const e=round.entries.find(x=>x.id===entryId);if(!e)return;
+  e.handle=document.getElementById('mDBmH').value;e.link=document.getElementById('mDBmL').value;
+  e.followers=document.getElementById('mDBmF').value;e.cat=document.getElementById('mDBmC').value;
+  e.desc=document.getElementById('mDBmD').value;e.why=document.getElementById('mDBmW').value;
+  e.eng=document.getElementById('mDBmE').value;
+  save();renderBm();closeModal();
+}
+function delBmEntry(roundId,entryId){
+  if(!confirm('이 항목을 삭제할까요?'))return;
+  const round=D.bm.rounds.find(r=>r.id===roundId);if(!round)return;
+  round.entries=round.entries.filter(x=>x.id!==entryId);
+  save();renderBm();closeModal();
+}
+
+function initReveal(){
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){e.target.style.animationDelay=`${i*80}ms`;e.target.classList.add('visible');obs.unobserve(e.target)}})
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+function importBmJSON(input){
+  const f=input.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.label||!data.entries||!Array.isArray(data.entries)){alert('올바른 벤치마킹 JSON이 아닙니다.');return}
+      if(!D.bm)D.bm={rounds:[],_bmRound:0,_bmCat:'all'};
+      const maxId=D.bm.rounds.reduce((m,r)=>Math.max(m,r.id),0);
+      const eMaxId=data.entries.reduce((m,_,i)=>i+1,0);
+      const round={id:maxId+1,date:data.date||new Date().toISOString().slice(0,10),label:data.label,entries:data.entries.map((e,i)=>({id:i+1,handle:e.handle||'',link:e.link||'',followers:e.followers||'',cat:e.cat||'car',desc:e.desc||'',why:e.why||'',eng:e.eng||''}))};
+      D.bm.rounds.push(round);
+      D._bmRound=D.bm.rounds.length-1;
+      save();renderBm();
+      alert(`"${data.label}" 라운드 가져오기 완료! (${round.entries.length}개 계정)`);
+    }catch(err){alert('JSON 파싱 오류: '+err.message)}
+  };
+  reader.readAsText(f);
+  input.value='';
+}
+
+function autoImportBm(){
+  fetch('bm_import.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(arr=>{
+    if(!Array.isArray(arr))arr=[arr];
+    if(!D.bm)D.bm={rounds:[],_bmRound:0,_bmCat:'all'};
+    const existing=new Set(D.bm.rounds.map(r=>r.label+'|'+r.date));
+    let added=0;
+    arr.forEach(data=>{
+      if(!data.label||!data.entries)return;
+      if(existing.has(data.label+'|'+data.date))return;
+      const maxId=D.bm.rounds.reduce((m,r)=>Math.max(m,r.id),0);
+      D.bm.rounds.push({id:maxId+1,date:data.date||new Date().toISOString().slice(0,10),label:data.label,
+        entries:data.entries.map((e,i)=>({id:i+1,handle:e.handle||'',link:e.link||'',followers:e.followers||'',cat:e.cat||'car',desc:e.desc||'',why:e.why||'',eng:e.eng||''}))});
+      added++;
+    });
+    if(added){D._bmRound=D.bm.rounds.length-1;save();renderBm()}
+  }).catch(()=>{});
+}
+
+document.getElementById('hdDate').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+renderBm();
+autoImportBm();
+initReveal();
+</script>
