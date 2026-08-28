@@ -1,656 +1,564 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>신부장 채널 운영판</title>
+<title>신부장 콘텐츠 스튜디오</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
 <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
-<script>
-tailwind.config={theme:{extend:{fontFamily:{sans:['Pretendard','-apple-system','BlinkMacSystemFont','system-ui','sans-serif']}}}}
-</script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Pretendard','-apple-system','system-ui','sans-serif']}}}}</script>
 <style>
-@keyframes fadeInUp{from{opacity:0;transform:translateY(1.5rem)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(1.5rem)}.reveal.visible{animation:fadeInUp .6s cubic-bezier(.16,1,.3,1) forwards}
-.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.b-A{color:#fb7185;background:rgba(251,113,133,.1)}.b-B{color:#fbbf24;background:rgba(251,191,36,.1)}
-.b-C{color:#a78bfa;background:rgba(167,139,250,.1)}.b-D{color:#38bdf8;background:rgba(56,189,248,.1)}
-.b-E{color:#34d399;background:rgba(52,211,153,.1)}
-.f-reels{color:#fb7185;background:rgba(251,113,133,.1)}.f-car{color:#38bdf8;background:rgba(56,189,248,.1)}
-.st-p{color:rgba(255,255,255,.35);background:rgba(255,255,255,.06)}
-.st-w{color:#fbbf24;background:rgba(251,191,36,.12)}.st-d{color:#34d399;background:rgba(52,211,153,.12)}
-.rf-visual{color:#60a5fa;background:rgba(96,165,250,.15)}.rf-caption{color:#fbbf24;background:rgba(251,191,36,.15)}
-.rf-tempo{color:#a78bfa;background:rgba(167,139,250,.15)}.rf-script{color:#34d399;background:rgba(52,211,153,.15)}
-.bm-car{color:#60a5fa;background:rgba(96,165,250,.12)}.bm-realestate{color:#2dd4bf;background:rgba(45,212,191,.12)}
-.bm-sales{color:#c084fc;background:rgba(192,132,252,.12)}.bm-brand{color:#fbbf24;background:rgba(251,191,36,.12)}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
-body{background:#0a0a0a}
-.glass{background:rgba(255,255,255,.04);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.08)}
-.glass-strong{background:rgba(255,255,255,.06);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid rgba(255,255,255,.1)}
-.glass-nav{background:rgba(24,24,27,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
-input,textarea,select{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important;color:#e4e4e7!important}
-input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,153,.4)!important;box-shadow:0 0 0 2px rgba(52,211,153,.1)}
+body{background:#0a0a0a;color:#e4e4e7}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+.glass{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.glass-strong{background:rgba(24,24,27,.92);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(20px)}
+input,textarea,select{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important;color:#e4e4e7!important;border-radius:.6rem;padding:.5rem .7rem;font-size:13px;width:100%}
+input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,153,.45)!important}
+.ring-ig{background:conic-gradient(from 180deg,#f59e0b,#ef4444,#d946ef,#8b5cf6,#f59e0b)}
+.cell:hover .ov{opacity:1}.ov{opacity:0;transition:.2s}
 </style>
 
-<!-- NAV -->
-<nav class="glass-nav sticky top-0 z-40 px-5 py-5">
-  <div class="max-w-5xl mx-auto flex items-center justify-between flex-wrap gap-3">
-    <div class="flex items-center gap-4">
-      <span class="text-2xl font-extrabold tracking-tight text-zinc-100">신부장</span>
-      <div>
-        <span class="text-xs font-semibold text-zinc-400 bg-white/[.06] px-3 py-1 rounded-full">@sinbujang_car</span>
-        <p class="text-[11px] text-zinc-500 mt-1">채널 운영판 · 대행-클라이언트 협력 도구</p>
+<div class="max-w-4xl mx-auto px-4 pb-24">
+
+<header class="pt-8 pb-5">
+  <div class="flex items-center gap-6 sm:gap-10">
+    <div class="ring-ig p-[3px] rounded-full shrink-0">
+      <img src="data:image/jpeg;base64,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" alt="신부장" class="w-20 h-20 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-black">
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <span class="text-lg font-semibold text-zinc-100" id="hHandle"></span>
+        <button id="syncBtn" onclick="syncIG(1)" oncontextmenu="openSync();return false" title="우클릭 = 주소 설정" class="text-xs font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 px-3 py-1.5 rounded-lg">동기화</button>
+        <button onclick="openStats()" class="text-xs font-semibold bg-white/[.08] hover:bg-white/[.14] px-3 py-1.5 rounded-lg">수치 입력</button>
+        <button onclick="D.tab='base';save();render()" class="text-xs font-semibold bg-white/[.08] hover:bg-white/[.14] px-3 py-1.5 rounded-lg">채널 기준</button>
+        <button onclick="exportJSON()" class="text-xs font-semibold bg-white/[.08] hover:bg-white/[.14] px-3 py-1.5 rounded-lg">백업</button>
+        <label class="text-xs font-semibold bg-white/[.08] hover:bg-white/[.14] px-3 py-1.5 rounded-lg cursor-pointer">복원<input type="file" accept=".json" class="hidden" onchange="importJSON(this)"></label>
+        <button onclick="resetAll()" class="text-xs font-semibold bg-white/[.04] hover:bg-rose-500/20 hover:text-rose-400 text-zinc-600 px-3 py-1.5 rounded-lg">초기화</button>
       </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="benchmark.html" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-400/20 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] no-underline inline-flex items-center">
-        <iconify-icon icon="solar:chart-2-linear" class="mr-1 align-[-2px]"></iconify-icon>벤치마킹
-      </a>
-      <span class="text-xs font-medium text-zinc-500" id="hdDate"></span>
+      <div class="flex gap-6 sm:gap-7 mt-4 text-sm flex-wrap" id="stats"></div>
     </div>
   </div>
-</nav>
+  <div class="mt-4 text-[13px] leading-relaxed text-zinc-300 whitespace-pre-line" id="bio"></div>
+</header>
 
-<main class="max-w-5xl mx-auto px-5 pb-24 space-y-16 mt-4">
+<div class="flex gap-4 sm:gap-6 overflow-x-auto py-4 border-b border-white/[.07]" id="pipe"></div>
 
-<!-- 1. INSTAGRAM -->
-<section class="reveal">
-  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
-    <div>
-      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Instagram</p>
-      <h2 class="text-xl font-bold tracking-tight text-zinc-100">인스타 현황판</h2>
-    </div>
-    <div class="flex gap-2">
-      <button onclick="openStatEdit()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-        <iconify-icon icon="solar:pen-2-linear" class="mr-1 align-[-2px]"></iconify-icon>수치 입력
-      </button>
-      <button onclick="openEmbedAdd()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-        <iconify-icon icon="solar:add-circle-linear" class="mr-1 align-[-2px]"></iconify-icon>게시물 추가
-      </button>
-    </div>
+<div class="py-4 border-b border-white/[.07]">
+  <div class="flex items-center justify-between mb-2.5">
+    <span class="text-[11px] font-bold text-zinc-500">카테고리 배분 <span class="text-zinc-700">· 발행 기준 / 운영서 목표 대비</span></span>
+    <span class="text-[11px] text-zinc-600" id="mixTotal"></span>
   </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="igStats"></div>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3" id="igEmbeds"></div>
-</section>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="mix"></div>
+</div>
 
-<!-- 2. IDENTITY -->
-<section class="reveal">
-  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
-    <div>
-      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Identity</p>
-      <h2 class="text-xl font-bold tracking-tight text-zinc-100">채널 아이덴티티</h2>
-    </div>
-    <button onclick="openIdEdit()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-      <iconify-icon icon="solar:pen-2-linear" class="mr-1 align-[-2px]"></iconify-icon>편집
-    </button>
-  </div>
-  <div class="glass rounded-2xl p-6 flex gap-5 items-start mb-3 max-md:flex-col max-md:items-center max-md:text-center">
-    <img src="data:image/jpeg;base64,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" alt="신부장" class="w-[72px] h-[72px] rounded-full object-cover shrink-0 border-2 border-white/10">
-    <div class="min-w-0">
-      <p class="text-base font-bold text-zinc-100" id="idHandle"></p>
-      <p class="text-[13px] text-zinc-400 mt-1 whitespace-pre-line leading-relaxed break-keep" id="idBio"></p>
-    </div>
-  </div>
-  <div class="grid gap-2.5" id="idFields"></div>
-</section>
+<div class="flex items-center justify-between gap-3 py-3.5 border-b border-white/[.07]" id="crumb"></div>
+<div id="view" class="pt-4"></div>
+</div>
 
-<!-- 3. GOALS -->
-<section class="reveal">
-  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
-    <div>
-      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Goals</p>
-      <h2 class="text-xl font-bold tracking-tight text-zinc-100">목표 & 성과</h2>
-    </div>
-    <button onclick="openGoalEdit()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] border border-white/10 text-zinc-400 hover:text-emerald-400 hover:border-emerald-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-      <iconify-icon icon="solar:graph-up-linear" class="mr-1 align-[-2px]"></iconify-icon>수치 업데이트
-    </button>
-  </div>
-  <div class="flex gap-1.5 mb-4" id="goalTabs"></div>
-  <div class="grid gap-2.5" id="goalItems"></div>
-</section>
+<button onclick="newPost()" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black shadow-xl flex items-center justify-center text-2xl font-light">+</button>
 
-<!-- 4. CONTENT -->
-<section class="reveal">
-  <div class="mb-5">
-    <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Content</p>
-    <h2 class="text-xl font-bold tracking-tight text-zinc-100">콘텐츠 계획</h2>
-  </div>
-  <div class="flex gap-1.5 mb-4 flex-wrap" id="catTabs"></div>
-  <div id="ctGrid"></div>
-</section>
-
-<!-- 5. BONUS -->
-<section class="reveal">
-  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
-    <div>
-      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Bonus</p>
-      <h2 class="text-xl font-bold tracking-tight text-zinc-100">번외 콘텐츠</h2>
-    </div>
-    <button onclick="openBonusAdd()" class="text-xs font-bold px-4 py-1.5 rounded-lg bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-      <iconify-icon icon="solar:add-circle-bold" class="mr-1 align-[-2px]"></iconify-icon>아이디어
-    </button>
-  </div>
-  <p class="text-xs text-zinc-500 -mt-3 mb-4">"현대차를 판매하는 사람" + "요즘 키워드" = 재미있는 새로운 콘텐츠</p>
-  <div id="bonusList"></div>
-</section>
-
-<!-- 6. COMMUNICATION -->
-<section class="reveal">
-  <div class="mb-5">
-    <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Communication</p>
-    <h2 class="text-xl font-bold tracking-tight text-zinc-100">소통공간</h2>
-  </div>
-  <div class="flex gap-2 mb-4 flex-wrap">
-    <select id="noteAuthor" class="text-[13px] px-3 py-2 rounded-xl w-[100px]"><option>대행팀</option><option>신부장</option></select>
-    <input type="text" id="noteInput" class="text-[13px] px-3 py-2 rounded-xl flex-1 min-w-[200px]" placeholder="메모를 입력하세요..." onkeydown="if(event.key==='Enter')addNote()">
-    <button onclick="addNote()" class="text-xs font-bold px-5 py-2 rounded-xl bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">추가</button>
-  </div>
-  <div class="space-y-2" id="noteList"></div>
-</section>
-
-<!-- 7. REFERENCE -->
-<section class="reveal">
-  <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
-    <div>
-      <p class="text-[10px] font-semibold tracking-widest uppercase text-emerald-400 mb-1">Reference</p>
-      <h2 class="text-xl font-bold tracking-tight text-zinc-100">레퍼런스 갤러리</h2>
-    </div>
-    <button onclick="openRefAdd()" class="text-xs font-bold px-4 py-1.5 rounded-lg bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-      <iconify-icon icon="solar:bookmark-linear" class="mr-1 align-[-2px]"></iconify-icon>스크랩
-    </button>
-  </div>
-  <div class="flex gap-1.5 mb-4 flex-wrap" id="refTabs"></div>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="refGrid"></div>
-</section>
-
-</main>
-
-<!-- MODAL -->
-<div class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 items-center justify-center p-5" id="modal" onclick="if(event.target===this)closeModal()">
-  <div id="modalBox" class="glass-strong rounded-2xl max-w-[540px] w-full max-h-[85vh] overflow-y-auto shadow-2xl"></div>
+<div class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 items-center justify-center p-4" id="modal" onclick="if(event.target===this)closeModal()">
+  <div id="mbox" class="glass-strong rounded-2xl max-w-[560px] w-full max-h-[88vh] overflow-y-auto"></div>
 </div>
 
 <script>
-const KEY='sinbujang_dash';
-const DAYS=['일','월','화','수','목','금','토'];
-const ID_FIELDS=[
-  {k:'positioning',l:'포지셔닝'},{k:'target',l:'타겟'},{k:'differentiator',l:'차별점'},
-  {k:'tone',l:'톤'},{k:'signature',l:'시그니처'}
+const KEY='sbj_studio';
+
+/* ═══ 기준: ~/content-planning/신차장/channel_operations.md v1.0 ═══
+   값이 어긋나면 운영서가 맞다. 여기를 고친다. */
+const CATS={
+  diet  :{n:'다이어트',t:35,c:'#34d399',g:'from-emerald-500/25 to-emerald-900/10',role:'가치 제공'},
+  quote :{n:'현실견적',t:30,c:'#38bdf8',g:'from-sky-500/25 to-sky-900/10',    role:'가치 제공'},
+  escape:{n:'호구탈출',t:20,c:'#fbbf24',g:'from-amber-500/25 to-amber-900/10',role:'신뢰 확보'},
+  hidden:{n:'숨은기능',t:15,c:'#a78bfa',g:'from-violet-500/25 to-violet-900/10',role:'조회수용 · 상한 고정'}
+};
+const HOOKS={A:'폭로',B:'경고',C:'도발',D:'정보',E:'타겟'};
+const HOOK_FULL={A:'내부자 폭로형',B:'손실 경고형',C:'반전 도발형',D:'정보 제공형',E:'타겟 지정형'};
+const HOOK_C={A:'#fb7185',B:'#fbbf24',C:'#a78bfa',D:'#38bdf8',E:'#34d399'};
+const TPLS=[{"id":1,"cat":"A","name":"딜러가 절대 안 알려주는","pos":"…근데 저는 알려드릴게요. 이거 하나면 견적 200만원 바뀝니다","neg":"…이유가 있습니다. 알면 그 옵션 안 넣거든요"},{"id":2,"cat":"A","name":"솔직히 말할게요!","pos":"이 차 단점 많다고 하는데, 실제로는 체감 안 됩니다","neg":"다들 이 차 좋다고 하죠? 3만km 넘으면 이 부분 문제 생깁니다"},{"id":3,"cat":"A","name":"이건 인정합니다!","pos":"경쟁사 이건 잘했어요. 근데 현대차는 여기서 더 갑니다","neg":"이 옵션 좋은 건 인정해요. 근데 가성비로 보면 넣을 이유 없어요"},{"id":4,"cat":"A","name":"딜러한테 이 말 하면 안 됩니다","pos":"…안 된다고 했죠? 오히려 하세요. 이 한마디에 할인 나옵니다","neg":"…이 말 들으면 대부분 거절합니다. 왜냐하면…"},{"id":5,"cat":"B","name":"이거 안하면 무조건 손해!","pos":"이 서류 하나 챙기면 취등록세 감면받습니다. 수십만원이에요","neg":"이거 놓치면 출고 후에 후회합니다"},{"id":6,"cat":"B","name":"계약서 싸인 전에 이거 확인 안하면 끝입니다","pos":"이 항목 하나 체크하면 출고 후 모든 문제가 보장됩니다","neg":"다 좋다고 바로 싸인했죠? 이 조항 때문에 환불 못 하는 분 매달 봅니다"},{"id":7,"cat":"B","name":"이거 바가지인거 아셨어요?","pos":"대신 이렇게 구성하면 같은 사양 200만원 저렴합니다","neg":"이 조건으로는 기본입니다"},{"id":8,"cat":"B","name":"오히려 손해입니다!","pos":"이 옵션 빼고 그 돈으로 이거 넣으세요. 리세일 때 되찾습니다","neg":"맞아요. 이렇게 하면 손실 줄일 수 있습니다"},{"id":9,"cat":"C","name":"이 차 사지 마세요","pos":"…이 할인 확인 안 하고 사면요. 지금 역대급입니다","neg":"좋은 차 맞아요. 근데 유지비 계산해보면 이야기 달라집니다"},{"id":10,"cat":"C","name":"후회하는 옵션 1위!","pos":"이거 안 넣어서 후회하는 분 제일 많아요. 이유 보여드릴게요","neg":"다들 넣는 이 옵션, 사실 내년 모델에 기본 포함됩니다"},{"id":11,"cat":"C","name":"다 이것 때문이었어요!","pos":"출고 지연? 색상 변경? 이 타이밍에 계약하면 다 해결됩니다","neg":"이것 때문에 다음 계약까지 영향을 받습니다"},{"id":12,"cat":"D","name":"OO 실구매가 딱 알려드릴게요","pos":"이 가격이면 정말 이득입니다","neg":"공시가와 실구매가는 이렇게 다릅니다"},{"id":13,"cat":"D","name":"이 옵션 하나로 300만원 차이 납니다","pos":"비싸 보이지만 리세일 때 오히려 더 받습니다","neg":"실사용률 보면 1년에 두세 번 씁니다"},{"id":14,"cat":"D","name":"지금 현대차 할인 딱 OO가지만 기억하세요","pos":"이 OO가지 다 맞춰야 최저가입니다","neg":"이것 외에는 불가능합니다"},{"id":15,"cat":"D","name":"이거요! (제스처)","pos":"바로 이 부분이 중요합니다","neg":"이 부분 때문에 문제가 생깁니다"},{"id":16,"cat":"E","name":"첫 차 사는 분, 이것만 보세요","pos":"이거 하나면 후회 없는 첫 차입니다","neg":"첫 차에서 이거 놓치면 나중에 큰일입니다"},{"id":17,"cat":"E","name":"지금 OO차 고민 중이라면 30초만 주세요","pos":"이 정보가 당신의 선택을 바꿀 겁니다","neg":"구매 전에 반드시 알아야 할 게 있습니다"},{"id":18,"cat":"E","name":"부모님 차 고민하시는 분 이거 보고 가세요","pos":"부모님이 제일 만족하시는 포인트입니다","neg":"부모님 세대는 이 부분을 못 받아줍니다"},{"id":19,"cat":"E","name":"다음달 없습니다!","pos":"이번 달 프로모션 이거 하나가 역대급입니다","neg":"정말 다음 달은 없으니 놓치지 마세요"},{"id":20,"cat":"E","name":"제발 이것만 해보세요!","pos":"시승 한 번이면 고민 끝납니다. 예외 본 적 없어요","neg":"이거 없이 계약하면 나중에 후회합니다"}];
+
+const STAGES=[
+  {k:'ref',    n:'레퍼런스',ic:'solar:magnifer-linear',       c:'#94a3b8'},
+  {k:'insight',n:'적용점',  ic:'solar:lightbulb-bolt-linear', c:'#f472b6'},
+  {k:'plan',   n:'기획',    ic:'solar:pen-new-square-linear', c:'#fbbf24'},
+  {k:'publish',n:'발행',    ic:'solar:play-circle-linear',    c:'#38bdf8'},
+  {k:'review', n:'피드백',  ic:'solar:chart-square-linear',   c:'#34d399'}
 ];
-const CAT_CLS={A:{cls:'b-A',name:'내부자 폭로형'},B:{cls:'b-B',name:'손실 경고형'},C:{cls:'b-C',name:'반전 도발형'},D:{cls:'b-D',name:'정보 제공형'},E:{cls:'b-E',name:'타겟 지정형'}};
-const REF_FOLDERS={all:'전체',visual:'비주얼',caption:'자막',tempo:'템포',script:'대본'};
-const REF_F_CLS={visual:'rf-visual',caption:'rf-caption',tempo:'rf-tempo',script:'rf-script'};
-const FMT_CLS=s=>/릴스/.test(s)?'f-reels':'f-car';
-const STATUS={planned:{l:'기획',c:'st-p'},producing:{l:'제작중',c:'st-w'},done:{l:'완료',c:'st-d'}};
-const NEXT_ST={planned:'producing',producing:'done',done:'planned'};
+const SIDX=k=>STAGES.findIndex(s=>s.k===k);
+const NEXT={insight:'plan',plan:'publish',publish:'review',review:'review'};
+const RCAT={car:'자동차',realestate:'부동산',sales:'세일즈',brand:'브랜드',scrap:'스크랩'};
+const FOLDER={visual:'비주얼',caption:'자막',tempo:'템포',script:'대본'};
 
 const DEFAULTS={
-  ig:{followers:0,posts:0,weeklyReach:0,engagement:0,embeds:[]},
+  ig:{followers:0,dm:0,comments:0},
   identity:{
-    handle:'@sinbujang_car',
-    bio:'🚘 수입차 17년 딜러의 객관적인 차량 비교\n⚙️ 공학 전공·정비 자격증 기반 팩트 체크\n💸 옵션 낭비 줄이고 금융(할부·리스) 손해 막는 팁\n📩 차량 상담 & 견적 문의: 프로필 링크 / DM',
-    positioning:'수입차 17년 경험을 바탕으로 자동차를 객관적으로 비교하고, 소비자가 자신에게 맞는 차를 선택하도록 도와주는 자동차 영업 전문가.',
-    target:'차량 구입을 고려하는 모든 사람 (신차 첫 구매 ~ 재구매, 개인·법인)',
-    differentiator:'공학 전공 + 정비 자격증 + 수입차 17년 = 구조·원리 기반 팩트 체크',
-    tone:'존댓말 기본, 전문적이되 유머, 솔직한 판정',
-    signature:'차키 탁! → "잠깐만요!" / 엔딩: "신부장이라면 이렇게 선택하겠습니다"'
+    handle:'@shinbujang_car',
+    bio:'신부장 · 현대자동차\n17년차 | 벤츠·포르쉐 거쳐 현대로\n공학 전공 + 정비 자격증 + 금융 설계\n전국 출고 · 상담은 DM으로\n↓ 카톡 오픈채팅',
+    positioning:'차 많이 판다가 아니라, 진짜 필요한 사람이 사는 것. 차와 관련된 모든 문제를 한 사람에게 연락하면 해결되는 "비서"가 된다.',
+    target:'현대차 구매를 고민 중인 사람 / 할부·리스·렌트를 모르는 금융 지식 부족층 / 누구에게 사야 할지 모르는 사람',
+    differentiator:'수입차 17년 + 공학 전공·정비 자격증 + 금융 실전. 셋을 동시에 가진 3중 전문성',
+    tone:'임팩트(첫 3초 훅) · 담백(과장 없는 팩트) · 신뢰(경력의 무게) · 웃음(포인트 유머)',
+    signature:'인트로: 차키 탁! → "잠깐만요!"   /   엔딩: "신부장이라면 이렇게 선택하겠습니다"'
   },
   goals:[
     {period:'1개월',items:[{l:'팔로워',t:300,c:0},{l:'릴스 평균 도달',t:500,c:0},{l:'DM 상담',t:3,c:0}]},
     {period:'3개월',items:[{l:'팔로워',t:1000,c:0},{l:'릴스 평균 도달',t:2000,c:0},{l:'월 DM 상담',t:10,c:0},{l:'인스타 경유 계약',t:2,c:0}]},
     {period:'6개월',items:[{l:'팔로워',t:3000,c:0}]}
   ],
-  templates:[
-    {id:1,cat:'A',name:'딜러가 절대 안 알려주는',pos:'…근데 저는 알려드릴게요. 이거 하나면 견적 200만원 바뀝니다',neg:'…이유가 있습니다. 알면 그 옵션 안 넣거든요',items:[]},
-    {id:2,cat:'A',name:'솔직히 말할게요!',pos:'이 차 단점 많다고 하는데, 실제로는 체감 안 됩니다',neg:'다들 이 차 좋다고 하죠? 3만km 넘으면 이 부분 문제 생깁니다',items:[]},
-    {id:3,cat:'A',name:'이건 인정합니다!',pos:'경쟁사 이건 잘했어요. 근데 현대차는 여기서 더 갑니다',neg:'이 옵션 좋은 건 인정해요. 근데 가성비로 보면 넣을 이유 없어요',items:[]},
-    {id:4,cat:'A',name:'딜러한테 이 말 하면 안 됩니다',pos:'…안 된다고 했죠? 오히려 하세요. 이 한마디에 할인 나옵니다',neg:'…이 말 들으면 대부분 거절합니다. 왜냐하면…',items:[]},
-    {id:5,cat:'B',name:'이거 안하면 무조건 손해!',pos:'이 서류 하나 챙기면 취등록세 감면받습니다. 수십만원이에요',neg:'이거 놓치면 출고 후에 후회합니다',items:[]},
-    {id:6,cat:'B',name:'계약서 싸인 전에 이거 확인 안하면 끝입니다',pos:'이 항목 하나 체크하면 출고 후 모든 문제가 보장됩니다',neg:'다 좋다고 바로 싸인했죠? 이 조항 때문에 환불 못 하는 분 매달 봅니다',items:[]},
-    {id:7,cat:'B',name:'이거 바가지인거 아셨어요?',pos:'대신 이렇게 구성하면 같은 사양 200만원 저렴합니다',neg:'이 조건으로는 기본입니다',items:[]},
-    {id:8,cat:'B',name:'오히려 손해입니다!',pos:'이 옵션 빼고 그 돈으로 이거 넣으세요. 리세일 때 되찾습니다',neg:'맞아요. 이렇게 하면 손실 줄일 수 있습니다',items:[]},
-    {id:9,cat:'C',name:'이 차 사지 마세요',pos:'…이 할인 확인 안 하고 사면요. 지금 역대급입니다',neg:'좋은 차 맞아요. 근데 유지비 계산해보면 이야기 달라집니다',items:[]},
-    {id:10,cat:'C',name:'후회하는 옵션 1위!',pos:'이거 안 넣어서 후회하는 분 제일 많아요. 이유 보여드릴게요',neg:'다들 넣는 이 옵션, 사실 내년 모델에 기본 포함됩니다',items:[]},
-    {id:11,cat:'C',name:'다 이것 때문이었어요!',pos:'출고 지연? 색상 변경? 이 타이밍에 계약하면 다 해결됩니다',neg:'이것 때문에 다음 계약까지 영향을 받습니다',items:[]},
-    {id:12,cat:'D',name:'OO 실구매가 딱 알려드릴게요',pos:'이 가격이면 정말 이득입니다',neg:'공시가와 실구매가는 이렇게 다릅니다',items:[]},
-    {id:13,cat:'D',name:'이 옵션 하나로 300만원 차이 납니다',pos:'비싸 보이지만 리세일 때 오히려 더 받습니다',neg:'실사용률 보면 1년에 두세 번 씁니다',items:[]},
-    {id:14,cat:'D',name:'지금 현대차 할인 딱 OO가지만 기억하세요',pos:'이 OO가지 다 맞춰야 최저가입니다',neg:'이것 외에는 불가능합니다',items:[]},
-    {id:15,cat:'D',name:'이거요! (제스처)',pos:'바로 이 부분이 중요합니다',neg:'이 부분 때문에 문제가 생깁니다',items:[]},
-    {id:16,cat:'E',name:'첫 차 사는 분, 이것만 보세요',pos:'이거 하나면 후회 없는 첫 차입니다',neg:'첫 차에서 이거 놓치면 나중에 큰일입니다',items:[]},
-    {id:17,cat:'E',name:'지금 OO차 고민 중이라면 30초만 주세요',pos:'이 정보가 당신의 선택을 바꿀 겁니다',neg:'구매 전에 반드시 알아야 할 게 있습니다',items:[]},
-    {id:18,cat:'E',name:'부모님 차 고민하시는 분 이거 보고 가세요',pos:'부모님이 제일 만족하시는 포인트입니다',neg:'부모님 세대는 이 부분을 못 받아줍니다',items:[]},
-    {id:19,cat:'E',name:'다음달 없습니다!',pos:'이번 달 프로모션 이거 하나가 역대급입니다',neg:'정말 다음 달은 없으니 놓치지 마세요',items:[]},
-    {id:20,cat:'E',name:'제발 이것만 해보세요!',pos:'시승 한 번이면 고민 끝납니다. 예외 본 적 없어요',neg:'이거 없이 계약하면 나중에 후회합니다',items:[]}
-  ],
-  bonus:[],notes:[],refs:[],
-  bm:{rounds:[{id:1,date:'2026-08-26',label:'8월 4주차',entries:[
-    {id:1,handle:'@supercarblondie',link:'https://instagram.com/supercarblondie/',followers:'11.7M',cat:'car',desc:'슈퍼카 시승·리뷰. 포스트당 42만 좋아요',why:'체험형 콘텐츠 + 여성 슈퍼카 포지셔닝. 와우 포인트 집중 → 공유 극대화',eng:'4.1%'},
-    {id:2,handle:'@carlifestyle',link:'https://instagram.com/carlifestyle/',followers:'4.2M',cat:'car',desc:'자동차 사진·영상 큐레이션. UGC 허브 모델',why:'직접 제작 부담 제로. 팬 참여 → 태그 바이럴 루프. 일관된 시네마틱 톤',eng:''},
-    {id:3,handle:'@vanguardmotors',link:'https://instagram.com/vanguardmotors/',followers:'4M',cat:'car',desc:'미국 기반 차량 딜러. 팔로워 수 1위 딜러 계정',why:'딜러가 아닌 라이프스타일 브랜드로 포지셔닝. 차보다 삶의 이미지를 판매',eng:'0.26%'},
-    {id:4,handle:'@adam_lz',link:'https://instagram.com/adam_lz/',followers:'1.5M',cat:'car',desc:'레이스카 제작·드리프팅. YouTube 300만 연동',why:'빌드→파괴→재건 서사. 시리즈 구조가 충성도 생성. 결과 공개편에 조회수 집중',eng:''},
-    {id:5,handle:'@tjhunt_',link:'https://instagram.com/tjhunt_/',followers:'1M',cat:'car',desc:'드리프팅·자동차 이벤트·커스텀. YouTube 200만',why:'이벤트 현장감 + 높은 에너지. 릴스=하이라이트 30초 → 유튜브 풀영상 깔때기',eng:''},
-    {id:6,handle:'@angi_elhaj',link:'https://instagram.com/angi_elhaj/',followers:'745K',cat:'car',desc:'미국 딜러 인플루언서. 차량 인도·고객 반응 쇼케이스',why:'고객 감정 순간(서프라이즈 인도, 첫 차) 포착. 감성+스토리=공유 욕구',eng:''},
-    {id:7,handle:'@mr.gurvz',link:'https://instagram.com/mr.gurvz/',followers:'740K',cat:'car',desc:'영국 딜러. 참여율 1.87% — 대형 딜러 중 상위',why:'인격 브랜딩 + 차량 리뷰 결합. "이 사람에게 사고 싶다" 신뢰감. 딜러=전문가',eng:'1.87%'},
-    {id:8,handle:'@mansory_cz',link:'https://instagram.com/mansory_cz/',followers:'709K',cat:'car',desc:'체코 럭셔리 딜러. Mansory 튜닝카 전문',why:'극단적 비주얼(골드 람보 등). "이런 차가 존재해?" 반응 → 저장·공유 유발',eng:''},
-    {id:9,handle:'@luckylopez',link:'https://instagram.com/luckylopez/',followers:'473K',cat:'car',desc:'라스베가스 자동차 전문가/저널리스트. YouTube 53.5만',why:'소비자 관점 "속지 않는 법". 딜러 트릭 폭로, 시장 분석 → 저장율 높음',eng:''},
-    {id:10,handle:'@rhino_autosales',link:'https://instagram.com/rhino_autosales/',followers:'461K',cat:'car',desc:'마이애미 중고차 딜러. 도매가 이하 가격 서프라이즈',why:'"이 차가 이 가격?" 가격 마지막 공개 훅 → 완료율 극대화',eng:'0.19%'},
-    {id:11,handle:'@itslifeofannie',link:'https://instagram.com/itslifeofannie/',followers:'329K',cat:'car',desc:'여성 차량 커스텀/모디파이. Audi·Nissan·GTR',why:'여성이 직접 튜닝하는 의외성. Before/after → 완료율 높음, 댓글 논쟁이 부스트',eng:''},
-    {id:12,handle:'@carljwoods',link:'https://instagram.com/carljwoods/',followers:'214K',cat:'car',desc:'영국 1위 셀럽 카 딜러. 연예인 고객 납품 장면',why:'유명인+럭셔리카=검색·공유 강함. 셀럽 팬덤이 자연 유입 채널',eng:'1.36%'},
-    {id:13,handle:'@goblinvette',link:'https://instagram.com/goblinvette/',followers:'175K',cat:'car',desc:'Tamir. 레인보우 디자인 + GTA 스타일 영상. TikTok 440만',why:'게임(GTA) 레퍼런스 = Z세대 공감. 차량 콘텐츠의 새 소비층 개척',eng:''},
-    {id:14,handle:'@e_whitehead365',link:'https://instagram.com/e_whitehead365/',followers:'143K',cat:'car',desc:'NYC 딜러. 도시 감성 + 스트릿 문화 결합',why:'뉴욕 스트릿씬 + 차량 = 로컬 커뮤니티. 지역 밀착이 글로벌 호기심 유발',eng:'1.96%'},
-    {id:15,handle:'@t_reex01',link:'https://instagram.com/t_reex01/',followers:'142K',cat:'car',desc:'참여율 8.04% — 전체 리스트 최고. 커뮤니티 밀도 극히 높음',why:'14만에 8% 참여율 = 모든 포스트가 대화. 댓글 응답·DM 소통이 핵심',eng:'8.04%'},
-    {id:16,handle:'@raitisrides',link:'https://instagram.com/raitisrides/',followers:'130K',cat:'car',desc:'F1·Corvette·Porsche 전문. YouTube 95.7만',why:'전문가 딥리뷰. 인스타에선 핵심 30초만 릴스화 → 유튜브 유도. 깔때기 교과서',eng:''},
-    {id:17,handle:'@cardealershipguy',link:'https://instagram.com/cardealershipguy/',followers:'37K',cat:'car',desc:'자동차 업계 뉴스·인사이트. Car Business Cheatsheet',why:'B2B 인사이트인데 B2C 화법. 업계 내부를 재미있게 풀어 영향력 극대',eng:''},
-    {id:18,handle:'@dealer_car_sales',link:'https://instagram.com/dealer_car_sales/',followers:'31K',cat:'car',desc:'호주 Mobeast. 카세일즈의 미스터비스트',why:'MrBeast식 포맷(도전·서프라이즈·기부)을 차 판매에 적용. 포맷 복제 가능',eng:''},
-    {id:19,handle:'@ryanserhant',link:'https://instagram.com/ryanserhant/',followers:'2.3M',cat:'realestate',desc:'Million Dollar Listing. 부동산 에이전트 셀럽화 원조',why:'본인이 곧 브랜드. 매물 투어를 영화 트레일러로 편집. "이 집 얼마?" 훅',eng:''},
-    {id:20,handle:'Daniel Heider',link:'',followers:'TikTok 3.7M',cat:'realestate',desc:'워싱턴DC 부동산. 누적 6100만 뷰. 교통 마비 바이럴',why:'스피드 투어 — 집을 달리며 소개. 에너지가 훅, 온라인→오프라인 방문자 폭증',eng:''},
-    {id:21,handle:'Trent Miller',link:'',followers:'릴스 220만 뷰',cat:'realestate',desc:'부동산 에이전트. 판매자 매물 스피드 투어 릴스',why:'빠른 컷+높은 에너지. 시작~끝 템포 유지 → 완료율이 곧 바이럴. 워크어라운드에 적용 가능',eng:''},
-    {id:22,handle:'Katherine Kranenburg',link:'',followers:'보스턴',cat:'realestate',desc:'부동산+인플루언서. 바이어 풀 80% 성장. Boston Globe 보도',why:'주 3회 릴스, 대부분 5000뷰 이하지만 연 11건 거래 직결. 전환율 집중 전략',eng:''},
-    {id:23,handle:'현대오토에버',link:'https://instagram.com/hyundai_autoever/',followers:'첫 릴스 509만 뷰',cat:'brand',desc:'현대차 IT 계열사. 3개월 만에 릴스 맛집. 밈·동물 활용',why:'B2B인데 B2C 화법(밈+유머). "담당자 누구야?" 반응 → 기업 계정 인격화. 한국 사례',eng:''},
-    {id:24,handle:'@cio0061',link:'https://instagram.com/cio0061/',followers:'릴스 3.36억 뷰',cat:'sales',desc:'트럭 운전사 립싱크. 2026.08 인스타 월간 최고 조회수',why:'로우 프로덕션 싱글테이크가 폴리시 압도. 2026 트렌드 상징. 누구나 따라할 수 있음',eng:''},
-    {id:25,handle:'Doug Townson',link:'',followers:'인플루언서 전환',cat:'sales',desc:'중고차 세일즈맨→인스타 인플루언서. 카리스마+세일즈 콘텐츠화',why:'진짜 세일즈맨의 날것. 판매 기술 자체가 엔터. 딜러가 인플루언서가 될 수 있는 증거',eng:''},
-    {id:26,handle:'Metro Honda 세일즈맨',link:'',followers:'릴스 1000만+ 뷰',cat:'sales',desc:'캘리포니아. 고객에게 데이트 제안 영상 바이럴',why:'논란=바이럴 연료. 감정 반응 강한 콘텐츠는 댓글·공유 폭증 (리스크 있음)',eng:''},
-    {id:27,handle:'The Woobles',link:'',followers:'브랜드',cat:'brand',desc:'뜨개질 키트. 밈을 자사 제품(뜨개 인형)으로 재현 릴스 바이럴',why:'트렌드 포맷+자사 제품 결합. 세일즈 같지 않은 세일즈. 제품이 밈의 주인공',eng:''},
-    {id:28,handle:'Vegas Auto Gallery',link:'https://instagram.com/vegasautogallery/',followers:'릴스 전환 후 10x',cat:'car',desc:'라스베가스 딜러십. 릴스 전환 후 일반 포스트 대비 10배',why:'피드→릴스 포맷 전환만으로 10x. 같은 차 같은 팀, 포맷만 변경. 릴스 퍼스트 증거',eng:''},
-    {id:29,handle:'DC Title Guy',link:'',followers:'릴스 300만 뷰',cat:'sales',desc:'부동산 타이틀 영업사원. 한 릴스로 전국+해외 유입',why:'니치 업종에서 바이럴은 시장 자체를 확장. 지역→전국구. 릴스 하나로 판 뒤집기',eng:''},
-    {id:30,handle:'자영업 사장 (Insight)',link:'',followers:'릴스 150만 뷰',cat:'sales',desc:'한국 자영업자. 릴스 하나로 매장 웨이팅. 비용 0원',why:'사장 직접 등장+가게 일상=진정성. 비용 제로 마케팅 최강 사례. 1인 계정 직접 적용 가능',eng:''}
-  ]}],_bmRound:0,_bmCat:'all'},
-  _goalTab:0,_catFilter:'all',_tplOpen:{},_refFilter:'all'
+  refs:[
+    {"handle": "@motorsjason", "link": "https://instagram.com/motorsjason/", "followers": "114K", "cat": "car", "tags": "매일신차 커뮤니티연계 굿즈", "desc": "[남자들의 자동차 - 남차카페]. bio가 \"매일 신차소개\". 네이버 카페로 트래픽을 보내고 방향제·텀블러 굿즈까지 판다.", "why": "국내 자동차 개인계정 최상위권. 매일 같은 포맷을 반복해 11.4만. 신부장의 카톡 오픈채팅이 남차카페 자리다.", "eng": "", "ver": "2026-08-28 실측"},
+    {"handle": "@carseoyoung", "link": "https://instagram.com/carseoyoung/", "followers": "19.8K", "cat": "car", "tags": "기자출신 쉽게풀기 여성포지션", "desc": "차봤서영. \"자동차 쉽게 풀어주는 여자\", 자동차 기자 출신 크리에이터. 유튜브 구독 10만.", "why": "전문성을 \"쉽게 풀어준다\"로 번역한 한 줄. 신부장의 공학 전공·정비 자격증도 같은 번역이 필요하다.", "eng": "", "ver": "2026-08-28 실측"},
+    {"handle": "@mocar_official", "link": "https://instagram.com/mocar_official/", "followers": "10.9K", "cat": "car", "tags": "유튜브격차 기자출신 게시물99", "desc": "김한용의 MOCAR 공식. 유튜브 구독 119만인데 인스타는 1.09만, 게시물 99개.", "why": "국내 1위급 자동차 유튜버의 인스타가 1만이다. 국내 자동차 인스타판이 비어 있다는 가장 선명한 증거.", "eng": "", "ver": "2026-08-28 실측"},
+    {"handle": "@hyundai_kor", "link": "https://instagram.com/hyundai_kor/", "followers": "410K", "cat": "brand", "tags": "공식 차종별 구매혜택", "desc": "현대자동차 공식. 아반떼·그랜저·스타리아·아이오닉·팰리세이드 차종별 하이라이트와 구매 혜택.", "why": "신부장이 파는 차의 공식 메시지. 공식이 절대 안 하는 말(실구매가·할인 조합)이 신부장의 자리다.", "eng": "", "ver": "2026-08-28 실측"},
+    {"handle": "@motorweekend_kr", "link": "https://instagram.com/motorweekend_kr/", "followers": "42.6K", "cat": "car", "tags": "매거진 라이프스타일 성장중", "desc": "자동차 라이프스타일 웹매거진 모터위켄드. 국내 자동차 문화 큐레이션.", "why": "국내 자동차 콘텐츠 톤의 기준점. 8/27 4.0만 → 8/28 4.26만으로 늘고 있다.", "eng": "", "ver": "2026-08-28 실측"},
+    {"handle": "@heydealer", "link": "https://instagram.com/heydealer/", "followers": "25.9K", "cat": "car", "tags": "플랫폼 중고차 판이빈증거", "desc": "중고차 플랫폼 헤이딜러 공식. \"중고차, 이제 보이는 게 다야\".", "why": "업계 상위 사업자 공식 계정이 2.6만이다. 국내 자동차 인스타가 아직 안 익었다는 두 번째 증거.", "eng": "", "ver": "2026-08-28 실측"}
+  ].map((r,i)=>({id:i+1,folder:'',insights:[],...r})),
+  posts:[],notes:[],
+  /* tab = 파이프라인 단계 키 그대로. 'all'=전체 피드, 'base'=채널 기준(단계 아님) */
+  tab:'all',refCat:'all',refTag:'',goalTab:0,tplCat:'all',tplOpen:{},
+  syncUrl:'',syncAt:''  /* 내 계정 자동 동기화. 레퍼런스는 수동이 맞다 — 남의 계정은 API로 안 열린다 */
 };
 
-function load(){try{const r=localStorage.getItem(KEY);if(!r)return JSON.parse(JSON.stringify(DEFAULTS));const d=JSON.parse(r);if(!d.templates)return JSON.parse(JSON.stringify(DEFAULTS));if(!d.refs)d.refs=[];if(!d._refFilter)d._refFilter='all';return d}catch(e){return JSON.parse(JSON.stringify(DEFAULTS))}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
-let D=load();
+let D=load(),warned=0;
+function clone(o){return JSON.parse(JSON.stringify(o))}
+const OLD_TAB={feed:'all',reels:'review',refs:'ref'};/* 탭 4개 → 파이프라인 단일 네비 전환 */
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return clone(DEFAULTS);
+  const d={...clone(DEFAULTS),...JSON.parse(r)};d.tab=OLD_TAB[d.tab]||d.tab;delete d.filter;return d}catch(e){return clone(DEFAULTS)}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){if(!warned++)alert('저장 실패 — 브라우저 저장 공간이 가득 찼거나 차단됐습니다. 백업 버튼으로 내보내세요.')}}
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
+function uid(){return Date.now()+Math.floor(Math.random()*1000)}
+function n(v){return(+v||0).toLocaleString()}
+const pub=()=>D.posts.filter(p=>p.stage==='publish'||p.stage==='review');
+const v=id=>document.getElementById(id).value;
 
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-function fmtDate(ds){const d=new Date(ds+'T00:00:00');return `${d.getMonth()+1}/${d.getDate()} (${DAYS[d.getDay()]})`}
-function fmtNum(n){return(n||0).toLocaleString()}
-
-/* ---- render ---- */
+/* ═══ 렌더 ═══ */
 function render(){
-  document.getElementById('hdDate').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-  renderIg();renderId();renderGoals();renderCt();renderBonus();renderNotes();renderRefs();
-  initReveal();
+  document.getElementById('hHandle').textContent=D.identity.handle.replace('@','');
+  document.getElementById('bio').textContent=D.identity.bio;
+  renderStats();renderPipe();renderMix();renderCrumb();
+  document.getElementById('view').innerHTML=VIEW[D.tab]();
 }
-
-function renderIg(){
-  const ig=D.ig;
-  document.getElementById('igStats').innerHTML=[
-    {v:fmtNum(ig.followers),l:'팔로워',icon:'solar:users-group-rounded-linear'},
-    {v:fmtNum(ig.posts),l:'게시물',icon:'solar:gallery-minimalistic-linear'},
-    {v:fmtNum(ig.weeklyReach),l:'이번 주 도달',icon:'solar:eye-linear'},
-    {v:ig.engagement?ig.engagement+'%':'—',l:'참여율',icon:'solar:heart-linear'}
-  ].map(s=>`<div class="glass rounded-2xl p-4 cursor-pointer transition-all duration-300 hover:bg-white/[.08] hover:border-white/[.12] hover:scale-[1.02] active:scale-[0.98]">
-    <div class="flex items-center gap-2 mb-2"><iconify-icon icon="${s.icon}" class="text-emerald-400 text-base"></iconify-icon><span class="text-[11px] font-medium text-zinc-500 tracking-wide">${s.l}</span></div>
-    <div class="text-2xl font-bold text-zinc-100 tabular-nums">${s.v}</div>
-  </div>`).join('');
-
-  const emb=ig.embeds||[];
-  if(!emb.length){
-    document.getElementById('igEmbeds').innerHTML=`<div class="glass rounded-2xl flex items-center justify-center min-h-[200px] col-span-full"><div class="text-center py-10 px-5"><iconify-icon icon="solar:camera-linear" class="text-3xl text-zinc-600 mb-2 block mx-auto"></iconify-icon><p class="text-[13px] text-zinc-500">게시물이 올라오면 여기에 표시됩니다</p><p class="text-[11px] text-zinc-600 mt-1">게시물 추가 버튼으로 Instagram URL을 입력하세요</p></div></div>`;
-    return;
-  }
-  const recent=emb.slice(-3);
-  const offset=emb.length-recent.length;
-  document.getElementById('igEmbeds').innerHTML=recent.map((url,i)=>{const ri=offset+i;
-    const code=url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
-    if(!code)return '';
-    return `<div class="glass rounded-2xl overflow-hidden relative group"><iframe src="https://www.instagram.com/p/${code[1]}/embed/" scrolling="no" allowtransparency="true" class="w-full border-none min-h-[480px]"></iframe><button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 text-white border-none cursor-pointer text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/80" onclick="rmEmbed(${ri})"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>`;
-  }).join('');
+/* 화면은 파이프라인 단계와 1:1. 같은 것이 두 곳에 있으면 안 된다. */
+const VIEW={
+  ref    :()=>refsHTML(),
+  insight:()=>gridHTML('insight'),
+  plan   :()=>gridHTML('plan'),
+  publish:()=>perfHTML('publish'),
+  review :()=>perfHTML('review'),
+  all    :()=>gridHTML('all'),
+  base   :()=>baseHTML()
+};
+const CRUMB={ref:['1. 레퍼런스','벤치마킹 계정과 스크랩한 릴스. 여기서 적용점을 뽑는다'],
+  insight:['2. 적용점','레퍼런스에서 뽑은 한 줄. 아직 기획이 아니다'],
+  plan:['3. 기획','주제·훅·대본·캡션을 채우는 단계'],
+  publish:['4. 발행','올렸지만 성과를 아직 안 적은 콘텐츠'],
+  review:['5. 피드백','성과를 기록하고 다음 레퍼런스 조사에 반영한다'],
+  all:['전체 피드','모든 단계의 기획을 한눈에'],
+  base:['채널 기준','아이덴티티 · 훅 템플릿 20 · 메모 (작업 단계 아님)']};
+function renderCrumb(){
+  const [t,s]=CRUMB[D.tab];
+  document.getElementById('crumb').innerHTML=
+    `<div class="min-w-0"><div class="text-[13px] font-bold text-zinc-100">${t}</div>
+       <div class="text-[11px] text-zinc-600 truncate">${s}</div></div>
+     <div class="flex items-center gap-2 shrink-0">
+     ${(D._orphan||[]).length?`<button onclick="importOrphans()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400">인스타 ${D._orphan.length}건 가져오기</button>`:''}
+     ${D.syncAt?`<span class="text-[10px] text-zinc-700">${new Date(D.syncAt).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})} 동기화</span>`:''}
+     ${D.tab==='all'?'':`<button onclick="D.tab='all';save();render()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] text-zinc-400">전체 피드</button>`}</div>`;
 }
-
-function renderId(){
-  const id=D.identity;
-  document.getElementById('idHandle').textContent=id.handle;
-  document.getElementById('idBio').textContent=id.bio;
-  document.getElementById('idFields').innerHTML=ID_FIELDS.map(f=>
-    `<div class="glass rounded-2xl px-5 py-3.5 flex gap-3 items-baseline max-md:flex-col max-md:gap-1"><span class="text-xs font-semibold text-zinc-500 shrink-0 w-[80px]">${f.l}</span><span class="text-[14px] text-zinc-200 break-keep">${esc(id[f.k])}</span></div>`
-  ).join('');
+function renderStats(){
+  document.getElementById('stats').innerHTML=[['게시물',pub().length],['팔로워',D.ig.followers],['DM 문의',D.ig.dm],['댓글',D.ig.comments]]
+    .map(([l,x])=>`<span><b class="font-bold text-zinc-100">${n(x)}</b> <span class="text-zinc-500">${l}</span></span>`).join('');
 }
-
-function renderGoals(){
-  const gt=D._goalTab||0;
-  document.getElementById('goalTabs').innerHTML=D.goals.map((g,i)=>
-    `<button class="text-xs font-semibold px-4 py-1.5 rounded-full border-none cursor-pointer transition-all duration-300 ${i===gt?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._goalTab=${i};save();renderGoals()">${g.period}</button>`
-  ).join('');
-  const g=D.goals[gt];
-  document.getElementById('goalItems').innerHTML=g.items.map(it=>{
-    const pct=it.t?Math.min(Math.round(it.c/it.t*100),100):0;
-    const over=it.c>=it.t&&it.t>0;
-    return `<div class="glass rounded-2xl px-5 py-4">
-      <div class="flex justify-between items-baseline mb-2"><span class="text-[13px] font-medium text-zinc-400">${esc(it.l)}</span><span class="text-sm font-bold text-zinc-100 tabular-nums"><span class="text-emerald-400">${fmtNum(it.c)}</span> / ${fmtNum(it.t)}</span></div>
-      <div class="h-1.5 bg-white/[.06] rounded-full overflow-hidden"><div class="h-full rounded-full transition-all duration-500 ease-out ${over?'bg-emerald-500':'bg-emerald-400'}" style="width:${pct}%"></div></div>
-      <div class="text-[11px] font-semibold text-zinc-500 mt-1.5 text-right">${pct}%${over?' <iconify-icon icon="solar:check-circle-bold" class="text-emerald-400 align-[-2px]"></iconify-icon>':''}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderCt(){
-  const filter=D._catFilter||'all';
-  const cats=['all','A','B','C','D','E'];
-  const catNames={all:'전체',A:'A. 폭로',B:'B. 경고',C:'C. 도발',D:'D. 정보',E:'E. 타겟'};
-  document.getElementById('catTabs').innerHTML=cats.map(c=>
-    `<button class="text-[11px] font-semibold px-3 py-1 rounded-full border-none cursor-pointer transition-all duration-300 ${c===filter?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._catFilter='${c}';save();renderCt()">${catNames[c]}</button>`
-  ).join('');
-  if(!D._tplOpen)D._tplOpen={};
-  const tpls=filter==='all'?D.templates:D.templates.filter(t=>t.cat===filter);
-  document.getElementById('ctGrid').innerHTML=`<div class="space-y-2">${tpls.map(t=>{
-    const cnt=t.items.length;
-    const cc=CAT_CLS[t.cat];
-    const isOpen=D._tplOpen[t.id];
-    return `<div class="glass rounded-2xl overflow-hidden">
-      <div class="px-5 py-3.5 flex items-center gap-3 cursor-pointer transition-colors hover:bg-white/[.04]" onclick="toggleTpl(${t.id})">
-        <span class="text-[13px] font-extrabold text-zinc-500 w-5 text-center">${t.id}</span>
-        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${cc.cls}">${t.cat}. ${cc.name.slice(0,2)}</span>
-        <span class="text-[14px] font-bold text-zinc-100 flex-1 min-w-0 break-keep">${esc(t.name)}</span>
-        <span class="text-[11px] font-semibold text-zinc-500">${cnt}개</span>
-        <iconify-icon icon="solar:alt-arrow-down-linear" class="text-zinc-500 text-xs transition-transform duration-200 ${isOpen?'rotate-180':''}"></iconify-icon>
+function renderPipe(){
+  const cnt=k=>k==='ref'?D.refs.length:D.posts.filter(p=>p.stage===k).length;
+  document.getElementById('pipe').innerHTML=STAGES.map((s,i)=>{
+    const on=D.tab===s.k;
+    return `<button onclick="D.tab=D.tab==='${s.k}'?'all':'${s.k}';save();render()" class="flex flex-col items-center gap-1.5 shrink-0 w-[72px]">
+      <div class="w-16 h-16 rounded-full flex items-center justify-center relative" style="border:2px solid ${on?s.c:'rgba(255,255,255,.13)'};background:${on?s.c+'18':'rgba(255,255,255,.03)'}">
+        <iconify-icon icon="${s.ic}" class="text-2xl" style="color:${s.c}"></iconify-icon>
+        ${cnt(s.k)?`<span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full text-[10px] font-bold flex items-center justify-center text-black" style="background:${s.c}">${cnt(s.k)}</span>`:''}
       </div>
-      ${isOpen?`<div class="border-t border-white/[.06] px-5 py-4">
-        <div class="grid gap-1.5 mb-3">
-          <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 shrink-0">긍</span><span>${esc(t.pos)}</span></div>
-          <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 shrink-0">부</span><span>${esc(t.neg)}</span></div>
+      <span class="text-[11px] ${on?'text-zinc-100 font-semibold':'text-zinc-500'}">${i+1}. ${s.n}</span>
+    </button>`}).join('')
+   +`<div class="flex items-center text-zinc-700 text-[11px] shrink-0 pl-1">↺<br>반복</div>`;
+}
+function renderMix(){
+  const P=pub(),tot=P.length;
+  document.getElementById('mixTotal').textContent=tot?`발행 ${tot}편`:'발행 전 — 목표만 표시';
+  document.getElementById('mix').innerHTML=Object.entries(CATS).map(([k,c])=>{
+    const cn=P.filter(p=>p.cat===k).length,pc=tot?Math.round(cn/tot*100):0,over=tot&&k==='hidden'&&pc>15;
+    return `<div class="glass rounded-xl p-3">
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-[12px] font-bold" style="color:${c.c}">${c.n}</span>
+        <span class="text-[11px] ${over?'text-rose-400 font-bold':'text-zinc-500'}">${pc}% <span class="text-zinc-700">/ ${c.t}%</span></span>
+      </div>
+      <div class="h-1.5 rounded-full bg-white/[.06] overflow-hidden relative">
+        <div class="h-full rounded-full" style="width:${Math.min(pc,100)}%;background:${c.c}"></div>
+        <div class="absolute top-0 h-full w-px bg-white/40" style="left:${c.t}%"></div>
+      </div>
+      <div class="text-[10px] text-zinc-600 mt-1.5">${cn}편 · ${over?'⚠ 상한 초과':c.role}</div>
+    </div>`}).join('');
+}
+const empty=(t,s)=>`<div class="py-20 text-center"><div class="text-sm font-semibold text-zinc-400">${t}</div><div class="text-[12px] text-zinc-600 mt-1.5">${s}</div></div>`;
+
+/* ─── 적용점 · 기획 · 전체 피드 (그리드) ─── */
+const EMPTY_G={insight:['적용점이 없습니다','1. 레퍼런스에서 "적용점 뽑아 기획으로"를 누르세요'],
+  plan:['기획 중인 콘텐츠가 없습니다','적용점을 기획 단계로 넘기거나, 채널 기준의 훅 템플릿으로 시작하세요'],
+  all:['기획이 없습니다','레퍼런스에서 적용점을 뽑거나, 채널 기준의 훅 템플릿으로 시작하세요']};
+function gridHTML(stage){
+  let ps=D.posts.slice().sort((a,b)=>SIDX(a.stage)-SIDX(b.stage)||b.id-a.id);
+  if(stage!=='all')ps=ps.filter(p=>p.stage===stage);
+  if(!ps.length)return empty(...EMPTY_G[stage]);
+  return `<div class="grid grid-cols-3 gap-1 sm:gap-1.5">${ps.map(cell).join('')}</div>`;
+}
+function cell(p){
+  const c=CATS[p.cat]||CATS.diet,st=STAGES[SIDX(p.stage)],done=p.stage==='publish'||p.stage==='review';
+  return `<button onclick="openPost(${p.id})" class="cell relative aspect-square rounded-md overflow-hidden bg-gradient-to-br ${c.g} border border-white/[.07] text-left p-2.5 flex flex-col justify-between">
+    <div class="flex items-start justify-between gap-1">
+      <span class="text-[9px] font-bold px-1.5 py-0.5 rounded" style="color:${c.c};background:${c.c}1f">${c.n}</span>
+      <span class="w-2 h-2 rounded-full shrink-0 mt-1" style="background:${st.c}"></span>
+    </div>
+    <div class="text-[11px] leading-snug font-semibold text-zinc-100 line-clamp-3">${esc(p.hook||p.topic||p.insight||'제목 없음')}</div>
+    <div class="flex items-center justify-between text-[9px] text-zinc-400">
+      <span>${p.tpl!=null?HOOK_FULL[TPLS[p.tpl].cat]:st.n}</span>
+      ${done&&p.m?`<span class="font-bold text-zinc-200">▶ ${n(p.m.v)}</span>`:p.date?`<span>${p.date.slice(5)}</span>`:''}
+    </div>
+    <div class="ov absolute inset-0 bg-black/55 flex items-center justify-center text-[11px] font-semibold">${st.n} → 열기</div>
+  </button>`;
+}
+
+/* ─── 발행 · 피드백 (성과 목록) ─── */
+function perfHTML(stage){
+  const P=D.posts.filter(p=>p.stage===stage).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const g=D.goals[D.goalTab];
+  const goalBox=`<div class="flex items-center justify-between mb-2.5 mt-6">
+      <span class="text-[11px] font-bold text-zinc-500">목표 진행률</span>
+      <div class="flex gap-1.5">${D.goals.map((x,i)=>`<button onclick="D.goalTab=${i};save();render()" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg ${i===D.goalTab?'bg-white/[.14] text-zinc-100':'bg-white/[.05] text-zinc-500'}">${x.period}</button>`).join('')}
+      <button onclick="openGoals()" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/[.05] text-zinc-400">수정</button></div></div>
+    <div class="grid sm:grid-cols-2 gap-2.5">${g.items.map(it=>{
+      const pc=Math.min(Math.round(it.c/it.t*100),100);
+      return `<div class="glass rounded-xl p-3">
+        <div class="flex justify-between text-[12px] mb-1.5"><span class="text-zinc-300 font-semibold">${esc(it.l)}</span><span class="text-zinc-500">${n(it.c)} <span class="text-zinc-700">/ ${n(it.t)}</span></span></div>
+        <div class="h-1.5 rounded-full bg-white/[.06] overflow-hidden"><div class="h-full rounded-full bg-emerald-400" style="width:${pc}%"></div></div>
+      </div>`}).join('')}</div>`;
+
+  const rv=stage==='review';
+  if(!P.length)return empty(rv?'피드백을 기록한 콘텐츠가 없습니다':'발행한 콘텐츠가 없습니다',
+    rv?'발행한 콘텐츠에 성과를 입력하면 여기로 넘어옵니다':'기획을 발행 단계로 넘기면 여기에 쌓입니다')+(rv?goalBox:'');
+
+  /* KPI는 발행된 전체(발행+피드백) 기준. 단계별로 숫자가 갈리면 판단이 흐려진다. */
+  const A=pub(),sum=k=>A.reduce((s,p)=>s+(+(p.m?.[k])||0),0),avg=k=>Math.round(sum(k)/A.length);
+  const kpi=[['평균 조회수',avg('v'),300,'20편 시점 300 미만 → 훅 재검토'],['누적 DM',sum('dm'),5,'누적 5건 미만 → 전환 동선 재설계'],
+             ['평균 댓글',avg('c'),3,'Phase 1 기준 3'],['평균 저장',avg('s'),0,'']];
+  return `${rv?`<div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-4">${kpi.map(([l,x,t,h])=>{
+      const bad=t&&x<t&&A.length>=20;
+      return `<div class="glass rounded-xl p-3"><div class="text-[10px] text-zinc-500">${l}</div>
+        <div class="text-xl font-bold ${bad?'text-rose-400':'text-zinc-100'} mt-0.5">${n(x)}</div>
+        ${t?`<div class="text-[9px] text-zinc-600 mt-1">기준 ${t} · ${h}</div>`:''}</div>`}).join('')}</div>
+    <div class="text-[11px] text-zinc-600 mb-3">릴스 ${A.length}/20편 — 20편 시점에 실패 기준으로 평가합니다</div>`
+    :`<div class="text-[11px] text-zinc-600 mb-3">성과를 입력하면 5. 피드백 단계로 넘어갑니다</div>`}
+    <div class="space-y-2">${P.map(p=>{
+      const c=CATS[p.cat],m=p.m||{};
+      return `<button onclick="openPost(${p.id})" class="w-full glass rounded-xl p-3.5 flex items-center gap-3.5 text-left hover:bg-white/[.07]">
+        <div class="w-14 h-14 shrink-0 rounded-lg bg-gradient-to-br ${c.g} flex items-center justify-center text-[10px] font-bold" style="color:${c.c}">${c.n}</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[13px] font-semibold text-zinc-100 truncate">${esc(p.hook||p.topic)}</div>
+          <div class="text-[11px] text-zinc-500 mt-0.5">${p.date||'날짜 미정'} · ${p.tpl!=null?esc(TPLS[p.tpl].name):'훅 미지정'}</div>
         </div>
-        <div class="space-y-1.5 mb-3">${t.items.map(ch=>{
-          const st=STATUS[ch.status]||STATUS.planned;
-          return `<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[.03] cursor-pointer transition-colors hover:bg-white/[.06] text-[13px]" onclick="event.stopPropagation();openChildDetail(${t.id},${ch.id})">
-            ${ch.date?`<span class="text-[11px] text-zinc-500 w-[70px]">${fmtDate(ch.date)}</span>`:'<span class="text-[11px] text-zinc-600 w-[70px]">미정</span>'}
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${FMT_CLS(ch.format)}">${esc(ch.format)}</span>
-            <span class="flex-1 font-medium text-zinc-200 min-w-0">${esc(ch.topic)}</span>
-            <button class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg border-none cursor-pointer ${st.c}" onclick="event.stopPropagation();cycleChildSt(${t.id},${ch.id})">${st.l}</button>
-          </div>`;
-        }).join('')}</div>
-        <button class="w-full py-2 border border-dashed border-white/10 rounded-xl bg-transparent text-zinc-500 text-xs font-medium cursor-pointer transition-all hover:border-emerald-400/30 hover:text-emerald-400" onclick="event.stopPropagation();openChildAdd(${t.id})"><iconify-icon icon="solar:add-circle-linear" class="mr-1 align-[-2px]"></iconify-icon>구체 기획 추가</button>
-      </div>`:''}
-    </div>`;
-  }).join('')}</div>`;
+        <div class="flex gap-3 text-[11px] shrink-0">${[['조회',m.v],['좋아요',m.l],['댓글',m.c],['DM',m.dm]].map(([l,x])=>
+          `<div class="text-center"><div class="font-bold text-zinc-200">${n(x)}</div><div class="text-[9px] text-zinc-600">${l}</div></div>`).join('')}</div>
+        ${rv?'':'<span class="text-[10px] font-bold text-sky-400 shrink-0">성과 입력 대기</span>'}
+      </button>`}).join('')}</div>${rv?goalBox:''}`;
 }
 
-function renderBonus(){
-  const bonus=D.bonus||[];
-  const el=document.getElementById('bonusList');
-  if(!bonus.length){
-    el.innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-10 border-dashed">아이디어를 추가해보세요</div>';
-    return;
-  }
-  el.innerHTML=`<div class="space-y-2">${bonus.map(b=>{
-    const st=STATUS[b.status]||STATUS.planned;
-    return `<div class="glass rounded-2xl px-5 py-3.5 cursor-pointer transition-all duration-300 hover:bg-white/[.06] hover:scale-[1.01] active:scale-[0.99]" onclick="openBonusDetail(${b.id})">
-      <div class="flex justify-between items-center">
-        <div><div class="text-xs font-bold text-emerald-400 mb-1">${esc(b.keyword)}</div><div class="text-[14px] font-medium text-zinc-200 break-keep">${esc(b.idea)}</div></div>
-        <button class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg border-none cursor-pointer shrink-0 ml-3 ${st.c}" onclick="event.stopPropagation();cycleBonusSt(${b.id})">${st.l}</button>
+/* ─── 레퍼런스 ─── */
+/* 공개 게시물만 임베드된다. 비공개·삭제된 링크는 iframe이 빈 상태로 뜬다. */
+const IG_RE=/instagram\.com\/(?:p|reel|reels|tv)\/([A-Za-z0-9_-]+)/;
+const igCode=u=>{const m=(u||'').match(IG_RE);return m?m[1]:''};
+const igEmbed=u=>{const c=igCode(u);return c?`https://www.instagram.com/p/${c}/embed/`:''};
+const tagsOf=r=>(r.tags||'').split(/[,#\s]+/).filter(Boolean);
+function showEmbed(btn,url){btn.outerHTML=`<iframe src="${url}" scrolling="no" loading="lazy" class="w-full h-[420px] mt-2.5 rounded-lg border-none bg-black"></iframe>`}
+function tagClick(rid,i){const t=tagsOf(D.refs.find(r=>r.id===rid))[i];D.refTag=D.refTag===t?'':t;save();render()}
+
+function refsHTML(){
+  let rs=D.refCat==='all'?D.refs:D.refs.filter(r=>r.cat===D.refCat);
+  if(D.refTag)rs=rs.filter(r=>tagsOf(r).includes(D.refTag));
+  return `<div class="flex gap-1.5 mb-4 flex-wrap items-center">
+    ${['all',...Object.keys(RCAT).filter(c=>D.refs.some(r=>r.cat===c))].map(c=>`<button onclick="D.refCat='${c}';save();render()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg ${D.refCat===c?'bg-white/[.14] text-zinc-100':'bg-white/[.05] text-zinc-500'}">${c==='all'?'전체':RCAT[c]}</button>`).join('')}
+    ${D.refTag?`<button onclick="D.refTag='';save();render()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-pink-500/15 text-pink-300">#${esc(D.refTag)} ✕</button>`:''}
+    <button onclick="openRefAdd()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 ml-auto">+ 추가</button></div>
+  ${rs.length?'':empty('해당하는 레퍼런스가 없습니다','필터를 지우거나 새 레퍼런스를 추가하세요')}
+  <div class="grid sm:grid-cols-2 gap-2.5">${rs.map(r=>`
+    <div class="glass rounded-xl p-3.5">
+      <div class="flex items-start justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-[13px] font-bold text-zinc-100 truncate">${r.link?`<a href="${esc(r.link)}" target="_blank" rel="noopener" class="hover:underline">${esc(r.handle)}</a>`:esc(r.handle)}</div>
+          <div class="text-[10px] text-zinc-500">${esc(r.followers)}${r.eng?` · 참여율 ${esc(r.eng)}`:''}</div>
+        </div>
+        <div class="flex gap-1 shrink-0">
+          ${r.folder?`<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-400">${FOLDER[r.folder]}</span>`:''}
+          <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/[.07] text-zinc-400">${RCAT[r.cat]||r.cat}</span>
+        </div>
       </div>
-    </div>`;
-  }).join('')}</div>`;
+      ${r.desc?`<p class="text-[11px] text-zinc-400 mt-2 leading-relaxed">${esc(r.desc)}</p>`:''}
+      ${r.why?`<p class="text-[11px] text-zinc-300 mt-1.5 leading-relaxed"><span class="text-zinc-600">왜 —</span> ${esc(r.why)}</p>`:''}
+      ${tagsOf(r).length?`<div class="flex gap-1 flex-wrap mt-2">${tagsOf(r).map((t,i)=>
+        `<button onclick="tagClick(${r.id},${i})" class="text-[10px] font-semibold px-1.5 py-0.5 rounded ${D.refTag===t?'bg-pink-500/25 text-pink-200':'bg-white/[.06] text-zinc-400 hover:text-zinc-200'}">#${esc(t)}</button>`).join('')}</div>`:''}
+      ${(r.insights||[]).length?`<div class="mt-2.5 space-y-1">${r.insights.map(i=>
+        `<div class="text-[11px] text-pink-300 bg-pink-500/10 rounded-lg px-2.5 py-1.5 flex gap-1.5"><span class="shrink-0">→</span><span>${esc(i)}</span></div>`).join('')}</div>`:''}
+      ${igEmbed(r.link)?`<button onclick="showEmbed(this,'${igEmbed(r.link)}')" class="w-full mt-2.5 py-2 rounded-lg bg-white/[.05] hover:bg-white/[.1] text-[11px] font-semibold text-zinc-300">▶ 영상 보기</button>`:''}
+      <div class="flex gap-1.5 mt-2.5">
+        <button onclick="openInsight(${r.id})" class="flex-1 text-[11px] font-semibold py-2 rounded-lg bg-white/[.05] hover:bg-white/[.1] text-zinc-300">적용점 뽑기 →</button>
+        <button onclick="delRef(${r.id})" class="px-2.5 rounded-lg bg-white/[.04] text-zinc-600 hover:text-rose-400 text-xs">✕</button>
+      </div>
+    </div>`).join('')}</div>`;
 }
 
-function renderNotes(){
-  const notes=[...D.notes].reverse();
-  if(!notes.length){
-    document.getElementById('noteList').innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-8 border-dashed">아직 메모가 없습니다</div>';
-    return;
-  }
-  document.getElementById('noteList').innerHTML=notes.map((n,i)=>
-    `<div class="glass rounded-2xl px-5 py-3.5 relative group"><div class="text-[11px] font-medium text-zinc-500 mb-1"><strong class="text-emerald-400 font-semibold">${esc(n.author)}</strong> · ${esc(n.date)}</div><div class="text-[14px] text-zinc-200 break-keep">${esc(n.text)}</div><button class="absolute top-3 right-3 bg-transparent border-none text-zinc-600 cursor-pointer text-base opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-400" onclick="delNote(${D.notes.length-1-i})"><iconify-icon icon="solar:trash-bin-minimalistic-linear"></iconify-icon></button></div>`
-  ).join('');
-}
+/* ─── 채널 기준 — 단계가 아닌 참고 문서 (아이덴티티 · 훅 템플릿 20 · 메모) ─── */
+const ID_F=[['positioning','포지셔닝'],['target','타겟'],['differentiator','차별점'],['tone','톤'],['signature','시그니처']];
+function baseHTML(){
+  const cats=['all','A','B','C','D','E'];
+  const tp=D.tplCat==='all'?TPLS:TPLS.filter(t=>t.cat===D.tplCat);
+  return `<div class="flex items-center justify-between mb-2.5">
+      <span class="text-[11px] font-bold text-zinc-500">채널 아이덴티티 <span class="text-zinc-700">· 기준은 운영서(channel_operations.md)</span></span>
+      <button onclick="openId()" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/[.05] text-zinc-400">편집</button></div>
+    <div class="grid gap-2 mb-8">${ID_F.map(([k,l])=>`<div class="glass rounded-xl p-3.5">
+      <div class="text-[10px] font-bold text-emerald-400 mb-1">${l}</div>
+      <div class="text-[12px] text-zinc-300 leading-relaxed break-keep">${esc(D.identity[k])}</div></div>`).join('')}</div>
 
-/* ---- actions ---- */
-function toggleTpl(id){if(!D._tplOpen)D._tplOpen={};D._tplOpen[id]=!D._tplOpen[id];save();renderCt()}
-function cycleChildSt(tplId,chId){const t=D.templates.find(x=>x.id===tplId);if(!t)return;const ch=t.items.find(x=>x.id===chId);if(!ch)return;ch.status=NEXT_ST[ch.status]||'planned';save();renderCt()}
-function cycleBonusSt(id){const b=(D.bonus||[]).find(x=>x.id===id);if(!b)return;b.status=NEXT_ST[b.status]||'planned';save();renderBonus()}
+    <div class="flex items-center justify-between mb-2.5">
+      <span class="text-[11px] font-bold text-zinc-500">훅 템플릿 20 <span class="text-zinc-700">· 카테고리(무엇을) × 훅유형(어떻게 시작)은 곱해서 쓴다</span></span></div>
+    <div class="flex gap-1.5 mb-3 flex-wrap">${cats.map(c=>
+      `<button onclick="D.tplCat='${c}';save();render()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg ${D.tplCat===c?'bg-white/[.14] text-zinc-100':'bg-white/[.05] text-zinc-500'}">${c==='all'?'전체':c+'. '+HOOKS[c]}</button>`).join('')}</div>
+    <div class="space-y-1.5 mb-8">${tp.map(t=>{
+      const i=TPLS.indexOf(t),open=D.tplOpen[t.id];
+      return `<div class="glass rounded-xl overflow-hidden">
+        <div class="px-4 py-3 flex items-center gap-2.5 cursor-pointer hover:bg-white/[.04]" onclick="D.tplOpen[${t.id}]=!D.tplOpen[${t.id}];save();render()">
+          <span class="text-[12px] font-extrabold text-zinc-600 w-5 text-center">${t.id}</span>
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0" style="color:${HOOK_C[t.cat]};background:${HOOK_C[t.cat]}1a">${t.cat}. ${HOOKS[t.cat]}</span>
+          <span class="text-[13px] font-bold text-zinc-100 flex-1 min-w-0 break-keep">${esc(t.name)}</span>
+          <span class="text-zinc-600 text-xs">${open?'▲':'▼'}</span>
+        </div>
+        ${open?`<div class="border-t border-white/[.06] px-4 py-3.5 space-y-1.5">
+          <div class="flex gap-2 text-[12px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 shrink-0 h-fit">긍</span><span class="break-keep">${esc(t.pos)}</span></div>
+          <div class="flex gap-2 text-[12px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 shrink-0 h-fit">부</span><span class="break-keep">${esc(t.neg)}</span></div>
+          <button onclick="newPost(${i})" class="w-full mt-2 py-2 rounded-lg bg-emerald-500/15 text-emerald-400 text-[11px] font-semibold">이 훅으로 기획 시작 →</button>
+        </div>`:''}
+      </div>`}).join('')}</div>
+
+    <div class="text-[11px] font-bold text-zinc-500 mb-1">작업 메모</div>
+    <p class="text-[11px] text-zinc-600 mb-2.5">이 브라우저에만 저장되는 개인 메모입니다. 신부장님께 전달되지 않습니다.</p>
+    <div class="flex gap-2 mb-3">
+      <input id="noteIn" placeholder="메모 입력 후 Enter" onkeydown="if(event.key==='Enter')addNote()">
+      <button onclick="addNote()" class="text-xs font-bold px-4 rounded-xl bg-white/[.08] shrink-0">추가</button></div>
+    <div class="space-y-1.5">${D.notes.slice().reverse().map((x,i)=>
+      `<div class="glass rounded-xl px-4 py-2.5 flex items-start gap-2">
+        <div class="flex-1"><div class="text-[10px] text-zinc-600">${x.date}</div><div class="text-[13px] text-zinc-200 break-keep">${esc(x.text)}</div></div>
+        <button onclick="D.notes.splice(${D.notes.length-1-i},1);save();render()" class="text-zinc-700 hover:text-rose-400 text-xs">✕</button></div>`).join('')||
+      '<div class="text-[12px] text-zinc-600 text-center py-6">메모가 없습니다</div>'}</div>`;
+}
 function addNote(){
-  const au=document.getElementById('noteAuthor').value;
-  const tx=document.getElementById('noteInput').value.trim();
-  if(!tx)return;
-  D.notes.push({author:au,text:tx,date:new Date().toLocaleDateString('ko-KR')});
-  document.getElementById('noteInput').value='';
-  save();renderNotes();
+  const t=v('noteIn').trim();if(!t)return;
+  D.notes.push({text:t,date:new Date().toLocaleDateString('ko-KR')});save();render();
 }
-function delNote(i){D.notes.splice(i,1);save();renderNotes()}
-function rmEmbed(i){D.ig.embeds.splice(i,1);save();renderIg()}
 
-/* ---- modals ---- */
-const MC='px-5 py-4 border-b border-white/[.08] flex justify-between items-center';
-const MB='px-5 py-5';
-const MF='px-5 py-3.5 border-t border-white/[.08] flex justify-end gap-2';
-const FD='mb-3.5';
-const FL='block text-xs font-semibold text-zinc-500 mb-1';
-const FI='w-full text-[13px] px-3 py-2 rounded-xl';
-const BTN='text-xs font-semibold px-4 py-2 rounded-xl border border-white/10 bg-white/[.05] text-zinc-400 cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]';
-const BTNP='text-xs font-bold px-4 py-2 rounded-xl border-none bg-emerald-500 text-zinc-950 cursor-pointer transition-all duration-300 hover:bg-emerald-400 hover:scale-[1.02] active:scale-[0.98]';
-const BTND='text-xs font-semibold px-4 py-2 rounded-xl border border-red-500/20 bg-transparent text-red-400 cursor-pointer transition-all duration-300 hover:bg-red-500/10';
-
-function openModal(html){document.getElementById('modalBox').innerHTML=html;const m=document.getElementById('modal');m.classList.remove('hidden');m.classList.add('flex')}
+/* ═══ 모달 ═══ */
+const M=(t,body,foot='')=>`<div class="flex items-center justify-between px-5 py-4 border-b border-white/[.08] sticky top-0 glass-strong z-10">
+  <h3 class="text-[15px] font-bold text-zinc-100">${t}</h3>
+  <button onclick="closeModal()" class="text-zinc-500 hover:text-zinc-200 text-xl leading-none">×</button></div>
+  <div class="p-5 space-y-3">${body}</div>${foot?`<div class="px-5 pb-5 flex gap-2">${foot}</div>`:''}`;
+const F=(l,el)=>`<div><label class="text-[11px] font-semibold text-zinc-500 block mb-1.5">${l}</label>${el}</div>`;
+const BTN=(t,fn,cls='bg-emerald-500 text-black')=>`<button onclick="${fn}" class="flex-1 py-2.5 rounded-xl text-[13px] font-bold ${cls}">${t}</button>`;
+function openModal(h){document.getElementById('mbox').innerHTML=h;const m=document.getElementById('modal');m.classList.remove('hidden');m.classList.add('flex')}
 function closeModal(){const m=document.getElementById('modal');m.classList.add('hidden');m.classList.remove('flex')}
 
-function openStatEdit(){
-  const ig=D.ig;
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">인스타 수치 입력</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="${FD}"><label class="${FL}">팔로워</label><input type="number" class="${FI}" id="mIgF" value="${ig.followers}"></div>
-      <div class="${FD}"><label class="${FL}">게시물 수</label><input type="number" class="${FI}" id="mIgP" value="${ig.posts}"></div>
-      <div class="${FD}"><label class="${FL}">이번 주 도달</label><input type="number" class="${FI}" id="mIgR" value="${ig.weeklyReach}"></div>
-      <div class="${FD}"><label class="${FL}">참여율 (%)</label><input type="number" step="0.1" class="${FI}" id="mIgE" value="${ig.engagement}"></div>
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveStats()">저장</button></div>`);
+function openStats(){
+  openModal(M('인스타 수치 입력',
+    [['팔로워','followers'],['DM 문의 (누적)','dm'],['댓글 (누적)','comments']].map(([l,k])=>F(l,`<input type="number" id="s_${k}" value="${D.ig[k]}">`)).join('')
+    +`<p class="text-[11px] text-zinc-600 leading-relaxed">KPI는 팔로워가 아니라 DM·댓글입니다. Phase 1 기준 = 월 DM 5건, 릴스당 댓글 3개.</p>`,
+    BTN('저장','saveStats()')));
 }
-function saveStats(){
-  D.ig.followers=+document.getElementById('mIgF').value;
-  D.ig.posts=+document.getElementById('mIgP').value;
-  D.ig.weeklyReach=+document.getElementById('mIgR').value;
-  D.ig.engagement=+document.getElementById('mIgE').value;
-  save();renderIg();closeModal();
-}
+function saveStats(){D.ig={followers:+v('s_followers'),dm:+v('s_dm'),comments:+v('s_comments')};save();closeModal();render()}
 
-function openEmbedAdd(){
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">게시물 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="${FD}"><label class="${FL}">Instagram 게시물 URL</label><input type="url" class="${FI}" id="mEmbUrl" placeholder="https://www.instagram.com/p/..."></div>
-      <p class="text-xs text-zinc-500">Instagram 게시물 또는 릴스 URL을 붙여넣으세요.</p>
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveEmbed()">추가</button></div>`);
+function openGoals(){
+  const g=D.goals[D.goalTab];
+  openModal(M(`${g.period} 목표 — 현재 수치`,
+    g.items.map((it,i)=>F(`${esc(it.l)} (목표 ${n(it.t)})`,`<input type="number" id="g_${i}" value="${it.c}">`)).join(''),
+    BTN('저장','saveGoals()')));
 }
-function saveEmbed(){
-  const url=document.getElementById('mEmbUrl').value.trim();
-  if(!url||!url.match(/instagram\.com\/(?:p|reel)\//)){alert('올바른 Instagram URL을 입력해주세요.');return}
-  if(!D.ig.embeds)D.ig.embeds=[];
-  D.ig.embeds.push(url);
-  save();renderIg();closeModal();
-}
+function saveGoals(){D.goals[D.goalTab].items.forEach((it,i)=>it.c=+v('g_'+i));save();closeModal();render()}
 
-function openIdEdit(){
-  const id=D.identity;
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">채널 아이덴티티 편집</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="${FD}"><label class="${FL}">인스타 핸들</label><input class="${FI}" id="mIdH" value="${esc(id.handle)}"></div>
-      <div class="${FD}"><label class="${FL}">바이오</label><textarea class="${FI} min-h-[80px] resize-y" id="mIdB" rows="4">${esc(id.bio)}</textarea></div>
-      ${ID_FIELDS.map(f=>`<div class="${FD}"><label class="${FL}">${f.l}</label><textarea class="${FI} min-h-[50px] resize-y" id="mId_${f.k}" rows="2">${esc(id[f.k])}</textarea></div>`).join('')}
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveId()">저장</button></div>`);
+function openId(){
+  openModal(M('채널 아이덴티티 편집',
+    F('핸들',`<input id="id_handle" value="${esc(D.identity.handle)}">`)
+    +F('바이오',`<textarea id="id_bio" rows="5">${esc(D.identity.bio)}</textarea>`)
+    +ID_F.map(([k,l])=>F(l,`<textarea id="id_${k}" rows="2">${esc(D.identity[k])}</textarea>`)).join('')
+    +`<p class="text-[11px] text-zinc-600">기준 문서는 운영서입니다. 값이 어긋나면 운영서를 먼저 확인하세요.</p>`,
+    BTN('저장','saveId()')));
 }
 function saveId(){
-  D.identity.handle=document.getElementById('mIdH').value;
-  D.identity.bio=document.getElementById('mIdB').value;
-  ID_FIELDS.forEach(f=>{D.identity[f.k]=document.getElementById('mId_'+f.k).value});
-  save();renderId();closeModal();
+  D.identity.handle=v('id_handle');D.identity.bio=v('id_bio');
+  ID_F.forEach(([k])=>D.identity[k]=v('id_'+k));save();closeModal();render();
 }
 
-function openGoalEdit(){
-  const gt=D._goalTab||0;const g=D.goals[gt];
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">${g.period} 목표 수치 업데이트</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      ${g.items.map((it,i)=>`<div class="${FD}"><label class="${FL}">${esc(it.l)} (목표: ${fmtNum(it.t)})</label><input type="number" class="${FI}" id="mG${i}" value="${it.c}"></div>`).join('')}
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveGoals()">저장</button></div>`);
+function openInsight(rid){
+  const r=D.refs.find(x=>x.id===rid);
+  openModal(M(`적용점 — ${esc(r.handle)}`,
+    (r.why?`<div class="glass rounded-xl p-3 text-[11px] text-zinc-400 leading-relaxed">${esc(r.why)}</div>`:'')
+    +F('이 레퍼런스에서 신부장 채널에 가져올 것 (한 줄)',`<textarea id="i_txt" rows="3" placeholder="예: 가격을 마지막에 공개하는 훅 → 현실견적에 그대로 적용"></textarea>`)
+    +F('바로 기획으로 넘길 카테고리',`<select id="i_cat">${Object.entries(CATS).map(([k,c])=>`<option value="${k}">${c.n} (${c.t}%)</option>`).join('')}</select>`),
+    BTN('저장 → 2. 적용점으로',`saveInsight(${rid})`)));
 }
-function saveGoals(){
-  const gt=D._goalTab||0;const g=D.goals[gt];
-  g.items.forEach((it,i)=>{it.c=+document.getElementById('mG'+i).value});
-  save();renderGoals();closeModal();
+function saveInsight(rid){
+  const t=v('i_txt').trim();if(!t)return alert('적용점을 입력하세요');
+  const r=D.refs.find(x=>x.id===rid);r.insights.push(t);
+  D.posts.push(blank({refId:rid,refHandle:r.handle,insight:t,cat:v('i_cat')}));
+  save();closeModal();D.tab='insight';render();
 }
-
-function openChildAdd(tplId){
-  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">"${esc(t.name)}" 기획 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="grid gap-1.5 mb-4 p-3 rounded-xl bg-white/[.03]">
-        <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 shrink-0">긍</span><span>${esc(t.pos)}</span></div>
-        <div class="flex gap-2 items-baseline text-[13px] text-zinc-400"><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 shrink-0">부</span><span>${esc(t.neg)}</span></div>
-      </div>
-      <div class="${FD}"><label class="${FL}">반전 방향</label><select class="${FI}" id="mChDir"><option value="pos">긍정 반전</option><option value="neg">부정 반전</option></select></div>
-      <div class="${FD}"><label class="${FL}">구체 주제</label><input class="${FI}" id="mChTopic" placeholder="예: 아반떼 보험 선택"></div>
-      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mChFmt"><option>릴스 30초</option><option selected>릴스 60초</option><option>릴스 90초</option><option>캐러셀 5장</option><option>캐러셀 6장</option><option>캐러셀 7장</option></select></div>
-      <div class="${FD}"><label class="${FL}">예정일</label><input type="date" class="${FI}" id="mChDate"></div>
-      <div class="${FD}"><label class="${FL}">구체 후킹 카피</label><textarea class="${FI} min-h-[50px] resize-y" id="mChHook" rows="2" placeholder="템플릿 기반으로 구체적인 멘트 작성"></textarea></div>
-      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mChNote" rows="2" placeholder="촬영/편집 관련 메모"></textarea></div>
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveChild(${tplId})">추가</button></div>`);
-}
-function saveChild(tplId){
-  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
-  const topic=document.getElementById('mChTopic').value.trim();
-  if(!topic){alert('구체 주제를 입력해주세요.');return}
-  const maxId=t.items.reduce((m,c)=>Math.max(m,c.id),tplId*100);
-  t.items.push({id:maxId+1,direction:document.getElementById('mChDir').value,topic,format:document.getElementById('mChFmt').value,date:document.getElementById('mChDate').value,hook:document.getElementById('mChHook').value.trim(),status:'planned',notes:document.getElementById('mChNote').value.trim()});
-  save();renderCt();closeModal();
-}
-function openChildDetail(tplId,chId){
-  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
-  const ch=t.items.find(x=>x.id===chId);if(!ch)return;
-  const st=STATUS[ch.status]||STATUS.planned;
-  const cc=CAT_CLS[t.cat];
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">콘텐츠 상세</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="flex gap-2 mb-4 items-center"><span class="text-[10px] font-bold px-2 py-0.5 rounded ${cc.cls}">${esc(t.name)}</span><span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg ${st.c} ml-auto">${st.l}</span></div>
-      <div class="${FD}"><label class="${FL}">반전 방향</label><select class="${FI}" id="mDChDir"><option value="pos"${ch.direction==='pos'?' selected':''}>긍정 반전</option><option value="neg"${ch.direction==='neg'?' selected':''}>부정 반전</option></select></div>
-      <div class="${FD}"><label class="${FL}">구체 주제</label><input class="${FI}" id="mDChTopic" value="${esc(ch.topic)}"></div>
-      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mDChFmt">${['릴스 30초','릴스 60초','릴스 90초','캐러셀 5장','캐러셀 6장','캐러셀 7장'].map(f=>`<option${f===ch.format?' selected':''}>${f}</option>`).join('')}</select></div>
-      <div class="${FD}"><label class="${FL}">예정일</label><input type="date" class="${FI}" id="mDChDate" value="${ch.date||''}"></div>
-      <div class="${FD}"><label class="${FL}">구체 후킹 카피</label><textarea class="${FI} min-h-[50px] resize-y" id="mDChHook" rows="2">${esc(ch.hook||'')}</textarea></div>
-      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mDChNote" rows="2">${esc(ch.notes||'')}</textarea></div>
-    </div>
-    <div class="${MF}">
-      <button class="${BTND}" onclick="delChild(${tplId},${chId})"><iconify-icon icon="solar:trash-bin-minimalistic-linear" class="mr-1 align-[-2px]"></iconify-icon>삭제</button>
-      <div class="flex-1"></div>
-      <button class="${BTN}" onclick="closeModal()">취소</button>
-      <button class="${BTNP}" onclick="updateChild(${tplId},${chId})">저장</button>
-    </div>`);
-}
-function updateChild(tplId,chId){
-  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
-  const ch=t.items.find(x=>x.id===chId);if(!ch)return;
-  ch.direction=document.getElementById('mDChDir').value;ch.topic=document.getElementById('mDChTopic').value;
-  ch.format=document.getElementById('mDChFmt').value;ch.date=document.getElementById('mDChDate').value;
-  ch.hook=document.getElementById('mDChHook').value;ch.notes=document.getElementById('mDChNote').value;
-  save();renderCt();closeModal();
-}
-function delChild(tplId,chId){
-  if(!confirm('이 콘텐츠를 삭제할까요?'))return;
-  const t=D.templates.find(x=>x.id===tplId);if(!t)return;
-  t.items=t.items.filter(x=>x.id!==chId);save();renderCt();closeModal();
+function blank(o){return{id:uid(),stage:'insight',refId:null,refHandle:'',insight:'',cat:'diet',tpl:null,topic:'',hook:'',script:'',caption:'',tags:'',date:'',link:'',m:{v:0,l:0,c:0,s:0,dm:0},lesson:'',...o}}
+function newPost(tplIdx){
+  const p=blank(tplIdx!=null?{tpl:tplIdx,stage:'plan'}:{});
+  D.posts.push(p);save();D.tab=p.stage;render();openPost(p.id);
 }
 
-function openBonusAdd(){
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">번외 아이디어 추가</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="${FD}"><label class="${FL}">요즘 키워드 / 트렌드</label><input class="${FI}" id="mBnKw" placeholder="예: 밈, 드라마, 이슈"></div>
-      <div class="${FD}"><label class="${FL}">콘텐츠 아이디어</label><textarea class="${FI} min-h-[50px] resize-y" id="mBnIdea" rows="2" placeholder="현대차 딜러 + 이 키워드 = ?"></textarea></div>
-      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mBnFmt"><option>릴스 30초</option><option selected>릴스 60초</option><option>릴스 90초</option><option>캐러셀</option></select></div>
-      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mBnNote" rows="2" placeholder="참고 링크, 레퍼런스 등"></textarea></div>
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveBonus()">추가</button></div>`);
-}
-function saveBonus(){
-  const kw=document.getElementById('mBnKw').value.trim();
-  const idea=document.getElementById('mBnIdea').value.trim();
-  if(!kw||!idea){alert('키워드와 아이디어를 입력해주세요.');return}
-  if(!D.bonus)D.bonus=[];
-  const maxId=D.bonus.reduce((m,b)=>Math.max(m,b.id),0);
-  D.bonus.push({id:maxId+1,keyword:kw,idea,format:document.getElementById('mBnFmt').value,notes:document.getElementById('mBnNote').value.trim(),status:'planned'});
-  save();renderBonus();closeModal();
-}
-function openBonusDetail(id){
-  const b=(D.bonus||[]).find(x=>x.id===id);if(!b)return;
-  const st=STATUS[b.status]||STATUS.planned;
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">번외 콘텐츠 상세</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="${FD}"><label class="${FL}">키워드</label><input class="${FI}" id="mDBnKw" value="${esc(b.keyword)}"></div>
-      <div class="${FD}"><label class="${FL}">아이디어</label><textarea class="${FI} min-h-[50px] resize-y" id="mDBnIdea" rows="2">${esc(b.idea)}</textarea></div>
-      <div class="${FD}"><label class="${FL}">포맷</label><select class="${FI}" id="mDBnFmt">${['릴스 30초','릴스 60초','릴스 90초','캐러셀'].map(f=>`<option${f===b.format?' selected':''}>${f}</option>`).join('')}</select></div>
-      <div class="${FD}"><label class="${FL}">메모</label><textarea class="${FI} min-h-[50px] resize-y" id="mDBnNote" rows="2">${esc(b.notes||'')}</textarea></div>
-    </div>
-    <div class="${MF}">
-      <button class="${BTND}" onclick="delBonus(${b.id})"><iconify-icon icon="solar:trash-bin-minimalistic-linear" class="mr-1 align-[-2px]"></iconify-icon>삭제</button>
-      <div class="flex-1"></div>
-      <button class="${BTN}" onclick="closeModal()">취소</button>
-      <button class="${BTNP}" onclick="updateBonus(${b.id})">저장</button>
-    </div>`);
-}
-function updateBonus(id){
-  const b=(D.bonus||[]).find(x=>x.id===id);if(!b)return;
-  b.keyword=document.getElementById('mDBnKw').value;b.idea=document.getElementById('mDBnIdea').value;
-  b.format=document.getElementById('mDBnFmt').value;b.notes=document.getElementById('mDBnNote').value;
-  save();renderBonus();closeModal();
-}
-function delBonus(id){if(!confirm('삭제할까요?'))return;D.bonus=D.bonus.filter(x=>x.id!==id);save();renderBonus();closeModal()}
-
-/* ---- refs ---- */
-function refEmbed(url){
-  const m=url.match(/instagram\.com\/(?:p|reel|reels)\/([A-Za-z0-9_-]+)/);
-  return m?`https://www.instagram.com/p/${m[1]}/embed/`:null;
-}
-function renderRefs(){
-  const filter=D._refFilter||'all';
-  const folders=Object.keys(REF_FOLDERS);
-  document.getElementById('refTabs').innerHTML=folders.map(f=>
-    `<button class="text-[11px] font-semibold px-3 py-1 rounded-full border-none cursor-pointer transition-all duration-300 ${f===filter?'bg-emerald-500 text-zinc-950 font-bold':'bg-white/[.05] text-zinc-500 hover:text-zinc-300'}" onclick="D._refFilter='${f}';save();renderRefs()">${REF_FOLDERS[f]}</button>`
-  ).join('');
-  const refs=filter==='all'?D.refs:D.refs.filter(r=>r.folder===filter);
-  if(!refs.length){
-    document.getElementById('refGrid').innerHTML='<div class="glass rounded-2xl text-center text-zinc-500 text-[13px] py-10 border-dashed col-span-full">Instagram 게시물을 스크랩해서 레퍼런스를 모아보세요</div>';
-    return;
-  }
-  document.getElementById('refGrid').innerHTML=refs.map(r=>{
-    const embedUrl=refEmbed(r.url);
-    const fcls=REF_F_CLS[r.folder]||'rf-visual';
-    return `<div class="glass rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/[.06]">
-      ${embedUrl?`<iframe src="${embedUrl}" scrolling="no" allowtransparency="true" loading="lazy" class="w-full border-none h-[420px] block"></iframe>`:`<div class="py-10 text-center text-zinc-500 text-sm">임베드 불가</div>`}
-      <div class="flex items-start gap-2 px-3.5 py-2.5">
-        <div class="flex-1 min-w-0">
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded inline-block mb-1 ${fcls}">${REF_FOLDERS[r.folder]||r.folder}</span>
-          ${r.memo?`<div class="text-xs text-zinc-400 mt-0.5 leading-relaxed break-keep">${esc(r.memo)}</div>`:''}
-        </div>
-        <button class="w-7 h-7 rounded-lg bg-transparent border border-white/10 text-zinc-500 cursor-pointer text-sm flex items-center justify-center shrink-0 transition-all hover:border-red-400 hover:text-red-400 hover:bg-red-500/10" onclick="delRef(${r.id})"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button>
-      </div>
-    </div>`;
-  }).join('');
-}
 function openRefAdd(){
-  openModal(`<div class="${MC}"><h3 class="text-base font-bold text-zinc-100">레퍼런스 스크랩</h3><button class="bg-transparent border-none text-zinc-500 cursor-pointer text-lg hover:text-zinc-300" onclick="closeModal()"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
-    <div class="${MB}">
-      <div class="${FD}"><label class="${FL}">Instagram URL</label><input type="url" class="${FI}" id="mRefUrl" placeholder="https://www.instagram.com/reel/..."></div>
-      <div class="${FD}"><label class="${FL}">폴더</label><select class="${FI}" id="mRefFolder"><option value="visual">비주얼</option><option value="caption">자막</option><option value="tempo">템포</option><option value="script">대본</option></select></div>
-      <div class="${FD}"><label class="${FL}">메모 (선택)</label><textarea class="${FI} min-h-[50px] resize-y" id="mRefMemo" rows="2" placeholder="참고할 포인트, 벤치마크 이유 등"></textarea></div>
-    </div>
-    <div class="${MF}"><button class="${BTN}" onclick="closeModal()">취소</button><button class="${BTNP}" onclick="saveRef()">스크랩</button></div>`);
+  openModal(M('레퍼런스 추가',
+    F('계정 / 이름',`<input id="r_h" placeholder="@handle">`)
+    +F('링크 — 릴스/게시물 주소를 넣으면 영상이 카드 안에서 재생됩니다',`<input id="r_l" placeholder="https://instagram.com/reel/...">`)
+    +F('태그 — 공백이나 쉼표로 구분',`<input id="r_t" placeholder="가격훅 원테이크 고객반응">`)
+    +F('팔로워 / 지표',`<input id="r_f" placeholder="461K">`)
+    +F('분류',`<select id="r_c">${Object.entries(RCAT).map(([k,x])=>`<option value="${k}">${x}</option>`).join('')}</select>`)
+    +F('스크랩 폴더 (릴스 스크랩일 때만)',`<select id="r_fo"><option value="">— 없음 —</option>${Object.entries(FOLDER).map(([k,x])=>`<option value="${k}">${x}</option>`).join('')}</select>`)
+    +F('무엇을 하는 계정인가',`<textarea id="r_d" rows="2"></textarea>`)
+    +F('왜 참고할 만한가',`<textarea id="r_w" rows="2"></textarea>`),
+    BTN('추가','saveRef()')));
 }
 function saveRef(){
-  const url=document.getElementById('mRefUrl').value.trim();
-  if(!url||!url.match(/instagram\.com\/(?:p|reel|reels)\//)){alert('올바른 Instagram URL을 입력해주세요.');return}
-  const maxId=D.refs.reduce((m,r)=>Math.max(m,r.id),0);
-  D.refs.push({id:maxId+1,url,folder:document.getElementById('mRefFolder').value,memo:document.getElementById('mRefMemo').value.trim(),date:new Date().toLocaleDateString('ko-KR')});
-  save();renderRefs();closeModal();
+  const h=v('r_h').trim();if(!h)return alert('계정명을 입력하세요');
+  D.refs.unshift({id:uid(),handle:h,link:v('r_l'),followers:v('r_f'),cat:v('r_c'),folder:v('r_fo'),tags:v('r_t'),desc:v('r_d'),why:v('r_w'),eng:'',insights:[]});
+  save();closeModal();D.tab='ref';D.refTag='';render();
 }
-function delRef(id){if(!confirm('이 레퍼런스를 삭제할까요?'))return;D.refs=D.refs.filter(r=>r.id!==id);save();renderRefs()}
+function delRef(id){if(!confirm('이 레퍼런스를 삭제할까요?'))return;D.refs=D.refs.filter(r=>r.id!==id);save();render()}
 
-/* ---- scroll reveal ---- */
-function initReveal(){
-  const obs=new IntersectionObserver((entries)=>{
-    entries.forEach((e,i)=>{if(e.isIntersecting){e.target.style.animationDelay=`${i*80}ms`;e.target.classList.add('visible');obs.unobserve(e.target)}})
-  },{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+/* 콘텐츠 상세 — 4단계 세로 폼 */
+function openPost(id){
+  const p=D.posts.find(x=>x.id===id);if(!p)return;
+  const si=SIDX(p.stage);
+  const step=(k,title,body)=>{
+    const i=SIDX(k),done=si>i,cur=si===i,s=STAGES[i];
+    return `<div class="relative pl-8 pb-4 ${i<4?'border-l':''} border-white/[.08] ml-2">
+      <div class="absolute -left-[9px] top-0 w-[18px] h-[18px] rounded-full flex items-center justify-center text-[9px] font-bold ${done?'text-black':'text-zinc-500'}" style="background:${done||cur?s.c:'rgba(255,255,255,.1)'}">${done?'✓':i}</div>
+      <div class="text-[11px] font-bold mb-2" style="color:${done||cur?s.c:'#71717a'}">${i}. ${title}</div>
+      <div class="space-y-2.5 ${done||cur?'':'opacity-45'}">${body}</div></div>`};
+  const t=p.tpl!=null?TPLS[p.tpl]:null;
+
+  openModal(M('콘텐츠 상세',
+    step('insight','적용점 — 어느 레퍼런스에서 왔나',
+      (p.refHandle?`<div class="text-[11px] text-zinc-500">레퍼런스: <b class="text-zinc-300">${esc(p.refHandle)}</b></div>`:'')
+      +F('적용점',`<textarea id="p_ins" rows="2">${esc(p.insight)}</textarea>`))
+    +step('plan','기획',
+      F('카테고리',`<select id="p_cat">${Object.entries(CATS).map(([k,c])=>`<option value="${k}"${p.cat===k?' selected':''}>${c.n} — ${c.role}</option>`).join('')}</select>`)
+      +F('훅 템플릿',`<select id="p_tpl" onchange="tplHint()"><option value="">— 미지정 —</option>${TPLS.map((x,i)=>`<option value="${i}"${p.tpl===i?' selected':''}>[${x.cat}·${HOOKS[x.cat]}] ${x.name}</option>`).join('')}</select>
+        <div id="tplHint" class="text-[11px] text-zinc-500 mt-1.5 leading-relaxed">${t?`<span class="text-emerald-400 font-bold">긍</span> ${esc(t.pos)}<br><span class="text-rose-400 font-bold">부</span> ${esc(t.neg)}`:''}</div>`)
+      +F('주제',`<input id="p_topic" value="${esc(p.topic)}" placeholder="예: 그랜저 하이브리드 옵션 다이어트">`)
+      +F('훅 — 인트로 "차키 탁 → 잠깐만요!" 다음 첫 대사',`<textarea id="p_hook" rows="2">${esc(p.hook)}</textarea>`)
+      +F('대본 — 7~30초 · 원테이크 · 엔딩 "신부장이라면 이렇게 선택하겠습니다"',`<textarea id="p_script" rows="5">${esc(p.script)}</textarea>`)
+      +F('캡션 — 1행 검색키워드+차종명 / 마지막행 답이 갈리는 질문',`<textarea id="p_cap" rows="4">${esc(p.caption)}</textarea>`)
+      +F('해시태그 — 중소형 5~8개',`<input id="p_tags" value="${esc(p.tags)}" placeholder="#그랜저견적 #광주현대차">`))
+    +step('publish','발행',
+      F('발행일 — 저녁 19~21시',`<input type="date" id="p_date" value="${p.date}">`)
+      +F('게시물 링크',`<input id="p_link" value="${esc(p.link)}" placeholder="https://instagram.com/reel/...">`))
+    +step('review','피드백',
+      `<div class="grid grid-cols-5 gap-1.5">${[['v','조회'],['l','좋아요'],['c','댓글'],['s','저장'],['dm','DM']].map(([k,l])=>
+        `<div><label class="text-[10px] text-zinc-500 block mb-1">${l}</label><input type="number" id="p_m_${k}" value="${p.m?.[k]||0}"></div>`).join('')}</div>`
+      +F('배운 것 → 다음 레퍼런스 조사에 반영',`<textarea id="p_lesson" rows="3" placeholder="무엇이 먹혔고 무엇이 안 먹혔나">${esc(p.lesson)}</textarea>`)),
+    BTN('저장',`savePost(${id})`,'bg-white/[.1] text-zinc-200')
+    +(p.stage!=='review'?BTN(`저장 + ${STAGES[SIDX(NEXT[p.stage])].n} 단계로 →`,`savePost(${id},1)`):'')
+    +`<button onclick="delPost(${id})" class="px-4 py-2.5 rounded-xl text-[13px] font-bold bg-rose-500/15 text-rose-400">삭제</button>`));
+}
+function tplHint(){
+  const i=v('p_tpl'),el=document.getElementById('tplHint');
+  el.innerHTML=i===''?'':`<span class="text-emerald-400 font-bold">긍</span> ${esc(TPLS[+i].pos)}<br><span class="text-rose-400 font-bold">부</span> ${esc(TPLS[+i].neg)}`;
+}
+function savePost(id,adv){
+  const p=D.posts.find(x=>x.id===id);
+  Object.assign(p,{insight:v('p_ins'),cat:v('p_cat'),topic:v('p_topic'),hook:v('p_hook'),script:v('p_script'),
+    caption:v('p_cap'),tags:v('p_tags'),date:v('p_date'),link:v('p_link'),lesson:v('p_lesson'),
+    m:{v:+v('p_m_v'),l:+v('p_m_l'),c:+v('p_m_c'),s:+v('p_m_s'),dm:+v('p_m_dm')}});
+  const t=v('p_tpl');p.tpl=t===''?null:+t;
+  if(adv){
+    if(p.stage==='plan'&&!p.hook.trim())return alert('훅 없이 발행 단계로 넘길 수 없습니다');
+    if(p.stage==='publish'&&!p.date)return alert('발행일을 입력하세요');
+    p.stage=NEXT[p.stage];
+  }
+  save();closeModal();render();
+}
+function delPost(id){if(!confirm('삭제할까요?'))return;D.posts=D.posts.filter(x=>x.id!==id);save();closeModal();render()}
+
+/* ═══ 인스타 동기화 — 내 계정만. 숫자만 덮어쓰고 사람이 쓴 기획·대본은 건드리지 않는다 ═══ */
+function openSync(){
+  openModal(M('인스타 동기화',
+    F('Apps Script 웹앱 주소',`<input id="sy_url" value="${esc(D.syncUrl)}" placeholder="https://script.google.com/macros/s/.../exec">`)
+    +`<p class="text-[11px] text-zinc-500 leading-relaxed">ig_sync.gs를 Apps Script에 올리고 배포한 주소입니다. 토큰은 그쪽에만 있고 이 파일에는 저장되지 않습니다.</p>
+      <p class="text-[11px] text-zinc-600 leading-relaxed">동기화는 <b class="text-zinc-400">조회·좋아요·댓글·저장</b>과 팔로워 수만 덮어씁니다. 훅·대본·적용점은 그대로 둡니다.
+      게시물 링크가 입력된 콘텐츠끼리 자동으로 짝지어집니다.</p>
+      ${D.syncAt?`<p class="text-[11px] text-zinc-600">마지막 동기화: ${new Date(D.syncAt).toLocaleString('ko-KR')}</p>`:''}`,
+    BTN('저장하고 지금 동기화','saveSync()')));
+}
+function saveSync(){D.syncUrl=v('sy_url').trim();save();closeModal();syncIG(1)}
+
+async function syncIG(loud){
+  if(!D.syncUrl)return openSync();
+  const b=document.getElementById('syncBtn');if(b)b.textContent='동기화 중…';
+  try{
+    const res=await fetch(D.syncUrl);
+    const d=await res.json();
+    if(!d.ok)throw new Error(d.error||'응답을 이해할 수 없습니다');
+    D.ig.followers=d.followers;
+    const by={};d.posts.forEach(p=>{const c=igCode(p.permalink);if(c)by[c]=p});
+    let hit=0;
+    D.posts.forEach(p=>{
+      const s=by[igCode(p.link)];if(!s)return;
+      p.m={...p.m,v:s.v,l:s.l,c:s.c,s:s.s};
+      if(!p.date)p.date=s.date;
+      delete by[igCode(p.link)];hit++;
+    });
+    /* 팔로워 목표는 사람이 다시 옮겨 적을 이유가 없다 */
+    D.goals.forEach(g=>g.items.forEach(it=>{if(it.l==='팔로워')it.c=d.followers}));
+    const rest=Object.values(by);
+    D.syncAt=d.at;save();render();
+    if(loud||hit)alert(`동기화 완료 — 성과 ${hit}건 갱신, 팔로워 ${n(d.followers)}명`
+      +(rest.length?`\n\n대시보드에 없는 인스타 게시물 ${rest.length}건이 있습니다. "가져오기" 버튼으로 불러올 수 있습니다.`:''));
+    D._orphan=rest;render();
+  }catch(e){if(loud)alert('동기화 실패 — '+e.message+'\n\n주소가 맞는지, 배포 액세스가 "모든 사용자"인지 확인하세요.');else console.warn('동기화 실패',e)}
+  finally{if(document.getElementById('syncBtn'))document.getElementById('syncBtn').textContent='동기화'}
+}
+/* 인스타에는 있는데 대시보드에 없는 게시물 — 5.피드백 단계로 취합한다 */
+function importOrphans(){
+  const o=D._orphan||[];if(!o.length)return;
+  if(!confirm(`인스타 게시물 ${o.length}건을 피드백 단계로 가져옵니다. 기획 내용은 비어 있습니다.`))return;
+  o.forEach(s=>D.posts.push(blank({stage:'review',topic:s.caption||'(인스타에서 가져옴)',link:s.permalink,
+    date:s.date,m:{v:s.v,l:s.l,c:s.c,s:s.s,dm:0}})));
+  D._orphan=[];save();D.tab='review';render();
+}
+
+/* 되돌릴 수 없다. 백업을 먼저 권한다. */
+function resetAll(){
+  if(!confirm('기획·수치·메모·레퍼런스를 모두 지우고 처음 상태로 되돌립니다.\n되돌릴 수 없습니다. 계속할까요?'))return;
+  if(D.posts.length&&!confirm(`기획 ${D.posts.length}건이 사라집니다. 백업 없이 진행할까요?`))return;
+  localStorage.removeItem(KEY);location.reload();
+}
+
+/* 백업 — localStorage는 브라우저를 넘지 못한다 */
+function exportJSON(){
+  const b=new Blob([JSON.stringify(D,null,1)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download=`신부장_스튜디오_${new Date().toISOString().slice(0,10)}.json`;a.click();
+}
+function importJSON(el){
+  const f=el.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{D={...clone(DEFAULTS),...JSON.parse(r.result)};save();render();alert('복원 완료')}catch(e){alert('파일을 읽을 수 없습니다')}};
+  r.readAsText(f);el.value='';
 }
 
 render();
+/* 주소가 등록돼 있으면 열 때마다 조용히 최신 지표를 당겨온다. 실패해도 화면은 그대로 쓴다. */
+if(D.syncUrl)syncIG();
 </script>
