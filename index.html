@@ -18,6 +18,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,15
 
 <div class="max-w-4xl mx-auto px-4 pb-24">
 
+<div id="hint"></div>
+
 <header class="pt-8 pb-5">
   <div class="flex items-center gap-6 sm:gap-10">
     <div class="ring-ig p-[3px] rounded-full shrink-0">
@@ -26,6 +28,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,15
     <div class="flex-1 min-w-0">
       <div class="flex items-center gap-2.5 flex-wrap">
         <span class="text-lg font-semibold text-zinc-100" id="hHandle"></span>
+        <button id="linkDot" onclick="openShare()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.08] text-zinc-600">○ 공유</button>
         <button id="syncBtn" onclick="syncIG(1)" oncontextmenu="openSync();return false" title="우클릭 = 주소 설정" class="text-xs font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 px-3 py-1.5 rounded-lg">동기화</button>
         <button onclick="openStats()" class="text-xs font-semibold bg-white/[.08] hover:bg-white/[.14] px-3 py-1.5 rounded-lg">수치 입력</button>
         <button onclick="D.tab='base';save();render()" class="text-xs font-semibold bg-white/[.08] hover:bg-white/[.14] px-3 py-1.5 rounded-lg">채널 기준</button>
@@ -52,6 +55,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(52,211,15
 <div class="flex items-center justify-between gap-3 py-3.5 border-b border-white/[.07]" id="crumb"></div>
 <div id="view" class="pt-4"></div>
 </div>
+
+<input type="file" id="bmFileInput" accept=".json" class="hidden" onchange="bmFile(this)">
 
 <button onclick="newPost()" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black shadow-xl flex items-center justify-center text-2xl font-light">+</button>
 
@@ -117,12 +122,92 @@ const DEFAULTS={
   syncUrl:'',syncAt:''  /* 내 계정 자동 동기화. 레퍼런스는 수동이 맞다 — 남의 계정은 API로 안 열린다 */
 };
 
-let D=load(),warned=0;
+/* ═══ 저장 ═══
+   SHARED = 구글 시트에 올라가 모두가 같이 보는 것.
+   나머지(보고 있는 탭, 필터, 펼친 템플릿)는 개인 화면 상태라 이 브라우저에만 둔다.
+   같이 쓰는 판에서 남이 탭을 바꾸면 방해가 된다. */
+const SHARED=['refs','posts','ig','identity','goals','notes'];
+const CFG='sbj_cfg';
+let D=load(),warned=0,cfg=loadCfg(),rev=0,pushT=null,link='local',lastErr='',pushing=false,dirty=false,edits=0;
+
 function clone(o){return JSON.parse(JSON.stringify(o))}
 const OLD_TAB={feed:'all',reels:'review',refs:'ref'};/* 탭 4개 → 파이프라인 단일 네비 전환 */
 function load(){try{const r=localStorage.getItem(KEY);if(!r)return clone(DEFAULTS);
   const d={...clone(DEFAULTS),...JSON.parse(r)};d.tab=OLD_TAB[d.tab]||d.tab;delete d.filter;return d}catch(e){return clone(DEFAULTS)}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){if(!warned++)alert('저장 실패 — 브라우저 저장 공간이 가득 찼거나 차단됐습니다. 백업 버튼으로 내보내세요.')}}
+function loadCfg(){try{return JSON.parse(localStorage.getItem(CFG)||'{}')}catch(e){return{}}}
+function saveCfg(){localStorage.setItem(CFG,JSON.stringify(cfg))}
+
+/* 로컬은 항상 먼저 쓴다 — 인터넷이 끊겨도 작업은 계속돼야 한다 */
+function save(){
+  edits++;
+  try{localStorage.setItem(KEY,JSON.stringify(D))}
+  catch(e){if(!warned++)alert('브라우저 저장에 실패했습니다. 백업 버튼으로 내보내세요.')}
+  if(cfg.url)queuePush();
+}
+function queuePush(){clearTimeout(pushT);setLink('pending');pushT=setTimeout(push,900)}
+
+async function call(body){
+  const u=cfg.url+(body?'':'?key='+encodeURIComponent(cfg.key));
+  const opt=body?{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({...body,key:cfg.key})}:{};   /* text/plain = preflight 없음 */
+  const r=await fetch(u,opt);
+  return r.json();
+}
+
+async function pull(loud){
+  if(!cfg.url)return;
+  setLink('pending');
+  const seen=edits;
+  try{
+    const d=await call(null);
+    if(!d.ok)throw new Error(d.error);
+    rev=d.rev;
+    /* 불러오는 동안 내가 편집했다면 덮어쓰지 않는다 — 페이지를 열자마자 고칠 때 작업이 사라진다.
+       버튼으로 직접 부른 불러오기(loud)는 의도한 것이므로 그대로 적용한다. */
+    if(!loud&&edits!==seen){setLink('ok');return queuePush()}
+    SHARED.forEach(k=>{if(d[k]!==undefined)D[k]=d[k]});
+    /* 시트는 id를 문자열로 돌려준다. 카드 클릭이 숫자로 찾으므로 맞춰 놓는다. */
+    const num=x=>x===''||x==null?null:(isNaN(+x)?x:+x);
+    (D.refs||[]).forEach(r=>r.id=num(r.id));
+    (D.posts||[]).forEach(p=>{p.id=num(p.id);p.refId=num(p.refId)});
+    localStorage.setItem(KEY,JSON.stringify(D));
+    setLink('ok');render();
+    if(loud)alert(`불러왔습니다 — 레퍼런스 ${D.refs.length}건, 기획 ${D.posts.length}건`);
+  }catch(e){setLink('off',e.message);if(loud)alert('불러오기 실패 — '+e.message)}
+}
+
+/* 시트 왕복이 5~8초다. 그 사이 또 저장하면 낡은 rev로 나가 자기 자신과 충돌한다.
+   보내는 중이면 표시만 해두고, 끝난 뒤 한 번 더 보낸다. */
+async function push(){
+  if(!cfg.url)return;
+  if(pushing){dirty=true;return}
+  pushing=true;
+  try{
+    const body={rev};SHARED.forEach(k=>body[k]=D[k]);
+    const d=await call(body);
+    if(d.conflict){
+      /* 남이 먼저 저장했다. 조용히 덮어쓰면 그 사람 작업이 사라진다. */
+      setLink('conflict');
+      if(confirm('다른 사람이 먼저 저장했습니다.\n\n[확인] 그쪽 내용을 불러옵니다 (내 최근 변경은 사라짐)\n[취소] 그대로 두고 백업으로 내보냅니다'))
+        return pull(1);
+      return exportJSON();
+    }
+    if(!d.ok)throw new Error(d.error);
+    rev=d.rev;setLink('ok');renderCrumb();
+  }catch(e){setLink('off',e.message)}
+  finally{pushing=false;if(dirty){dirty=false;queuePush()}}
+}
+
+function setLink(s,err){link=s;lastErr=err||'';renderLink()}
+const LINK={ok:['●','text-emerald-400','시트 연결됨'],pending:['◐','text-amber-400','저장 중'],
+  off:['○','text-rose-400','연결 끊김 — 이 브라우저에만 저장됨'],conflict:['◑','text-rose-400','충돌'],
+  local:['○','text-zinc-600','공유 안 함 — 이 브라우저에만 저장됨']};
+function renderLink(){
+  const el=document.getElementById('linkDot');if(!el)return;
+  const [ic,c,t]=LINK[link];
+  el.className=`text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/[.08] hover:bg-white/[.14] ${c}`;
+  el.textContent=`${ic} 공유`;el.title=t+(lastErr?` (${lastErr})`:'');
+}
 function esc(s){const d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
 function uid(){return Date.now()+Math.floor(Math.random()*1000)}
 function n(v){return(+v||0).toLocaleString()}
@@ -133,7 +218,7 @@ const v=id=>document.getElementById(id).value;
 function render(){
   document.getElementById('hHandle').textContent=D.identity.handle.replace('@','');
   document.getElementById('bio').textContent=D.identity.bio;
-  renderStats();renderPipe();renderMix();renderCrumb();
+  renderHint();renderStats();renderPipe();renderMix();renderCrumb();
   document.getElementById('view').innerHTML=VIEW[D.tab]();
 }
 /* 화면은 파이프라인 단계와 1:1. 같은 것이 두 곳에 있으면 안 된다. */
@@ -153,6 +238,17 @@ const CRUMB={ref:['1. 레퍼런스','벤치마킹 계정과 스크랩한 릴스.
   review:['5. 피드백','성과를 기록하고 다음 레퍼런스 조사에 반영한다'],
   all:['전체 피드','모든 단계의 기획을 한눈에'],
   base:['채널 기준','아이덴티티 · 훅 템플릿 20 · 메모 (작업 단계 아님)']};
+/* 링크로 처음 열어본 사람은 여기가 공유되는 판인지 모른다. 연결 전까지만 알린다. */
+function renderHint(){
+  const el=document.getElementById('hint');if(!el)return;
+  el.innerHTML=cfg.url?'':`<div class="mt-5 rounded-xl px-4 py-3 flex items-start gap-3 bg-amber-500/10 border border-amber-500/30">
+    <span class="text-amber-400 text-sm leading-none mt-0.5">!</span>
+    <div class="flex-1 text-[12px] leading-relaxed">
+      <b class="text-amber-300">아직 공유되지 않는 판입니다.</b>
+      <span class="text-zinc-400">지금 입력하는 내용은 이 브라우저에만 저장됩니다.
+      함께 쓰려면 위 <b class="text-zinc-200">공유</b> 버튼에 구글 시트 주소와 접근키를 넣으세요.</span>
+    </div></div>`;
+}
 function renderCrumb(){
   const [t,s]=CRUMB[D.tab];
   document.getElementById('crumb').innerHTML=
@@ -284,7 +380,8 @@ function refsHTML(){
   return `<div class="flex gap-1.5 mb-4 flex-wrap items-center">
     ${['all',...Object.keys(RCAT).filter(c=>D.refs.some(r=>r.cat===c))].map(c=>`<button onclick="D.refCat='${c}';save();render()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg ${D.refCat===c?'bg-white/[.14] text-zinc-100':'bg-white/[.05] text-zinc-500'}">${c==='all'?'전체':RCAT[c]}</button>`).join('')}
     ${D.refTag?`<button onclick="D.refTag='';save();render()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-pink-500/15 text-pink-300">#${esc(D.refTag)} ✕</button>`:''}
-    <button onclick="openRefAdd()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 ml-auto">+ 추가</button></div>
+    <button onclick="openRefImport()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-white/[.05] text-zinc-400 ml-auto">조사분 가져오기</button>
+    <button onclick="openRefAdd()" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400">+ 추가</button></div>
   ${rs.length?'':empty('해당하는 레퍼런스가 없습니다','필터를 지우거나 새 레퍼런스를 추가하세요')}
   <div class="grid sm:grid-cols-2 gap-2.5">${rs.map(r=>`
     <div class="glass rounded-xl p-3.5">
@@ -438,6 +535,42 @@ function saveRef(){
 }
 function delRef(id){if(!confirm('이 레퍼런스를 삭제할까요?'))return;D.refs=D.refs.filter(r=>r.id!==id);save();render()}
 
+/* ─── 조사분 가져오기 ───
+   bm_import.json = 조사 라운드가 쌓이는 누적 배열.
+   같은 폴더에 있으면 자동으로 읽고, 없으면 파일을 고르게 한다(file:// 대응). */
+let ROUNDS=null;
+async function openRefImport(){
+  try{const r=await fetch('bm_import.json',{cache:'no-store'});if(r.ok)return pickRound(await r.json())}catch(e){}
+  document.getElementById('bmFileInput').click();
+}
+function bmFile(el){
+  const f=el.files[0];el.value='';if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{try{pickRound(JSON.parse(rd.result))}catch(e){alert('bm_import.json 형식이 아닙니다')}};
+  rd.readAsText(f);
+}
+function pickRound(rounds){
+  if(!Array.isArray(rounds)||!rounds.length)return alert('조사 라운드가 없습니다');
+  ROUNDS=rounds;
+  const have=new Set(D.refs.map(r=>r.handle));
+  openModal(M('조사분 가져오기',
+    `<p class="text-[11px] text-zinc-500 leading-relaxed">라운드를 고르면 <b class="text-zinc-300">아직 없는 계정만</b> 추가합니다. 기존 레퍼런스와 기획은 그대로 둡니다.</p>`
+    +rounds.map((rd,i)=>{
+      const nu=(rd.entries||[]).filter(e=>!have.has(e.handle)).length;
+      return `<button onclick="importRound(${i})" ${nu?'':'disabled'} class="w-full text-left px-4 py-3 rounded-xl ${nu?'bg-white/[.05] hover:bg-white/[.1]':'bg-white/[.02] opacity-40 cursor-default'}">
+        <div class="text-[13px] font-bold text-zinc-100">${esc(rd.label||'이름 없는 라운드')}</div>
+        <div class="text-[11px] text-zinc-500 mt-0.5">${esc(rd.date||'')} · 전체 ${(rd.entries||[]).length}건 · ${nu?`<b class="text-emerald-400">새 계정 ${nu}건</b>`:'이미 다 있음'}</div>
+      </button>`}).join('')));
+}
+function importRound(i){
+  const have=new Set(D.refs.map(r=>r.handle));
+  const add=(ROUNDS[i].entries||[]).filter(e=>e.handle&&!have.has(e.handle));
+  if(!add.length)return;
+  add.forEach(e=>D.refs.unshift({id:uid(),folder:'',tags:'',insights:[],...e}));
+  save();closeModal();D.tab='ref';D.refCat='all';D.refTag='';render();
+  alert(`${add.length}건 추가했습니다.\n필요 없는 계정은 카드의 ✕로 지우면 됩니다.`);
+}
+
 /* 콘텐츠 상세 — 4단계 세로 폼 */
 function openPost(id){
   const p=D.posts.find(x=>x.id===id);if(!p)return;
@@ -540,10 +673,45 @@ function importOrphans(){
   D._orphan=[];save();D.tab='review';render();
 }
 
+/* ═══ 공유 설정 ═══ */
+function openShare(){
+  const on=!!cfg.url;
+  openModal(M('구글 시트 공유',
+    F('웹 앱 주소',`<input id="sh_url" value="${esc(cfg.url||'')}" placeholder="https://script.google.com/macros/s/.../exec">`)
+    +F('접근키',`<input id="sh_key" value="${esc(cfg.key||'')}" placeholder="setup() 실행 로그의 ACCESS KEY">`)
+    +`<div class="text-[11px] text-zinc-500 leading-relaxed">
+        <p class="mb-2">sheet_api.gs를 시트의 Apps Script에 올리고 <b class="text-zinc-300">setup()</b>을 한 번 실행한 뒤 배포하세요.
+        같은 주소·키를 넣은 사람끼리 레퍼런스·기획·수치를 함께 봅니다.</p>
+        <p class="text-zinc-600">보고 있는 탭과 필터는 공유되지 않습니다 — 각자 화면입니다.</p>
+        ${on?`<p class="text-zinc-600 mt-2">현재 상태: ${LINK[link][2]}</p>`:''}
+      </div>`,
+    BTN('저장하고 불러오기','saveShare()')
+    +(on?BTN('시트에 올리기','pushNow()','bg-white/[.1] text-zinc-200')
+        +`<button onclick="unlinkShare()" class="px-4 py-2.5 rounded-xl text-[13px] font-bold bg-rose-500/15 text-rose-400">해제</button>`:'')));
+}
+function saveShare(){
+  const u=v('sh_url').trim(),k=v('sh_key').trim();
+  if(!u||!k)return alert('주소와 접근키를 모두 입력하세요');
+  cfg={url:u,key:k};saveCfg();closeModal();pull(1);
+}
+function pushNow(){
+  if(!confirm('지금 이 브라우저의 내용을 시트에 올립니다.\n시트에 있던 내용은 덮어써집니다. 계속할까요?'))return;
+  rev=0;closeModal();
+  /* rev를 서버 값에 맞춘 뒤 올린다 */
+  call(null).then(d=>{if(d.ok){rev=d.rev;push()}else alert('실패 — '+d.error)});
+}
+function unlinkShare(){
+  if(!confirm('공유를 해제합니다. 이 브라우저에 있는 내용은 그대로 남습니다.'))return;
+  cfg={};saveCfg();setLink('local');closeModal();
+}
+
 /* 되돌릴 수 없다. 백업을 먼저 권한다. */
 function resetAll(){
-  if(!confirm('기획·수치·메모·레퍼런스를 모두 지우고 처음 상태로 되돌립니다.\n되돌릴 수 없습니다. 계속할까요?'))return;
-  if(D.posts.length&&!confirm(`기획 ${D.posts.length}건이 사라집니다. 백업 없이 진행할까요?`))return;
+  const msg=cfg.url
+    ?'이 브라우저의 내용을 지우고 시트에서 다시 불러옵니다.\n시트 내용은 지워지지 않습니다. 계속할까요?'
+    :'기획·수치·메모·레퍼런스를 모두 지우고 처음 상태로 되돌립니다.\n되돌릴 수 없습니다. 계속할까요?';
+  if(!confirm(msg))return;
+  if(!cfg.url&&D.posts.length&&!confirm(`기획 ${D.posts.length}건이 사라집니다. 백업 없이 진행할까요?`))return;
   localStorage.removeItem(KEY);location.reload();
 }
 
@@ -558,7 +726,19 @@ function importJSON(el){
   r.readAsText(f);el.value='';
 }
 
+/* 남이 고친 걸 볼 방법이 없으면 낡은 화면 위에서 작업하다 충돌만 난다.
+   주기적으로 조르지 않고, 탭으로 돌아올 때만 조용히 당겨온다. */
+let lastPull=0;
+addEventListener('focus',()=>{
+  if(!cfg.url||pushing||dirty)return;
+  if(Date.now()-lastPull<30000)return;
+  lastPull=Date.now();pull();
+});
+
 render();
-/* 주소가 등록돼 있으면 열 때마다 조용히 최신 지표를 당겨온다. 실패해도 화면은 그대로 쓴다. */
+setLink(cfg.url?'pending':'local');
+/* 열 때 시트에서 먼저 당겨온다. 남이 그 사이에 바꾼 걸 모르고 덮어쓰면 안 된다. */
+if(cfg.url){lastPull=Date.now();pull()}
+/* 인스타 주소가 등록돼 있으면 조용히 최신 지표도 당겨온다. */
 if(D.syncUrl)syncIG();
 </script>
